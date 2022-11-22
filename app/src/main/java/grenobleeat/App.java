@@ -14,8 +14,57 @@ public class App {
     public static void main(String[] args) {
         System.out.println("\nBienvenue sur GrenobleEat\n");
 
+        System.out.println("*                                             *");
+        System.out.println("                                               *");
+        System.out.println("                    *");
+        System.out.println("                                  *");
+        System.out.println("                                                            *");
+        System.out.println("         *");
+        System.out.println("                                                  *");
+        System.out.println("             *");
+        System.out.println("                           *             *");
+        System.out.println("                                                     *");
+        System.out.println("      *                                                               *");
+        System.out.println("               *");
+        System.out.println("                               (             )");
+        System.out.println("                       )      (*)           (*)      (");
+        System.out.println("              *       (*)      |             |      (*)");
+        System.out.println("                       |      |~|           |~|      |          *");
+        System.out.println("                      |~|     | |           | |     |~|");
+        System.out.println("                      | |     | |           | |     | |");
+        System.out.println("                     ,| |a@@@@| |@@@@@@@@@@@| |@@@@a| |.");
+        System.out.println("                .,a@@@| |@@@@@| |@@@@@@@@@@@| |@@@@@| |@@@@a,.");
+        System.out.println("              ,a@@@@@@| |@@@@@@@@@@@@.@@@@@@@@@@@@@@| |@@@@@@@a,");
+        System.out.println("             a@@@@@@@@@@@@@@@@@@@@@' . `@@@@@@@@@@@@@@@@@@@@@@@@a);
+        System.out.println("             ;`@@@@@@@@@@@@@@@@@@'   .   `@@@@@@@@@@@@@@@@@@@@@';");
+        System.out.println("             ;@@@`@@@@@@@@@@@@@'     .     `@@@@@@@@@@@@@@@@'@@@;");
+        System.out.println("             ;@@@;,.aaaaaaaaaa       .       aaaaa,,aaaaaaa,;@@@;");
+        System.out.println("             ;;@;;;;@@@@@@@@;@      @.@      ;@@@;;;@@@@@@;;;;@@;");
+        System.out.println("             ;;;;;;;@@@@;@@;;@    @@ . @@    ;;@;;;;@@;@@@;;;;;;;");
+        System.out.println("             ;;;;;;;;@@;;;;;;;  @@   .   @@  ;;;;;;;;;;;@@;;;;@;;");
+        System.out.println("             ;;;;;;;;;;;;;;;;;@@     .     @@;;;;;;;;;;;;;;;;@@@;");
+        System.out.println("         ,%%%;;;;;;;;@;;;;;;;;       .       ;;;;;;;;;;;;;;;;@@;;%%%,");
+        System.out.println("      .%%%%%%;;;;;;;@@;;;;;;;;     ,%%%,     ;;;;;;;;;;;;;;;;;;;;%%%%%%,");
+        System.out.println("     .%%%%%%%;;;;;;;@@;;;;;;;;   ,%%%%%%%,   ;;;;;;;;;;;;;;;;;;;;%%%%%%%,");
+        System.out.println("     %%%%%%%%`;;;;;;;;;;;;;;;;  %%%%%%%%%%%  ;;;;;;;;;;;;;;;;;;;'%%%%%%%%");
+        System.out.println("     %%%%%%%%%%%%`;;;;;;;;;;;;,%%%%%%%%%%%%%,;;;;;;;;;;;;;;;'%%%%%%%%%%%%");
+        System.out.println("     `%%%%%%%%%%%%%%%%%,,,,,,,%%%%%%%%%%%%%%%,,,,,,,%%%%%%%%%%%%%%%%%%%%'");
+        System.out.println("       `%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'");
+        System.out.println("           `%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'");
+        System.out.println("                  """"""""""""""`,,,,,,,,,'"""""""""""""""""");
+        System.out.println("                                 `%%%%%%%'");
+        System.out.println("                                  `%%%%%'");
+        System.out.println("                                    %%%");
+        System.out.println("                                   %%%%%");
+        System.out.println("                                .,%%%%%%%,.");
+        System.out.println("                           ,%%%%%%%%%%%%%%%%%%%,");
+
+        System.out.println("");
+
         StringBuilder sb = new StringBuilder();
-        sb.append("1. Connexion\n");
+        sb.append("Etes-vous déjà inscrit ?\n");
+        sb.append("1. Se connecter\n");
+        sb.append("2. S'inscrire\n");
         System.out.println(sb.toString());
 
         try {
@@ -28,11 +77,16 @@ public class App {
             if (option.equals("quit") || option.equals("q"))
                 System.exit(0);
 
-            if (option.equals("1")) {
+            switch(option){
+            case "1":
                 System.out.println("Starting connexion");
                 int codeRetournConnexion = Connexion.connexion();
+                break;
+            case "2":
+                System.out.println("Création d'un compte pour l'utilisateur");
+                int codeRetourCreation = Register.register();
             }
-        } catch (Exception e) {
+       } catch (Exception e) {
             e.printStackTrace();
         }
     }
