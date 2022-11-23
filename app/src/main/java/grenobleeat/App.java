@@ -7,87 +7,18 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+import grenobleeat.database.JavaConnectorDB;
 import grenobleeat.session.Connexion;
 
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("\nBienvenue sur GrenobleEat\n");
+        System.out.println("Connexion à la base de données en cours...");
+        JavaConnectorDB.initConnection();
 
-        System.out.println("*                                             *");
-        System.out.println("                                               *");
-        System.out.println("                    *");
-        System.out.println("                                  *");
-        System.out.println("                                                            *");
-        System.out.println("         *");
-        System.out.println("                                                  *");
-        System.out.println("             *");
-        System.out.println("                           *             *");
-        System.out.println("                                                     *");
-        System.out.println("      *                                                               *");
-        System.out.println("               *");
-        System.out.println("                               (             )");
-        System.out.println("                       )      (*)           (*)      (");
-        System.out.println("              *       (*)      |             |      (*)");
-        System.out.println("                       |      |~|           |~|      |          *");
-        System.out.println("                      |~|     | |           | |     |~|");
-        System.out.println("                      | |     | |           | |     | |");
-        System.out.println("                     ,| |a@@@@| |@@@@@@@@@@@| |@@@@a| |.");
-        System.out.println("                .,a@@@| |@@@@@| |@@@@@@@@@@@| |@@@@@| |@@@@a,.");
-        System.out.println("              ,a@@@@@@| |@@@@@@@@@@@@.@@@@@@@@@@@@@@| |@@@@@@@a,");
-        System.out.println("             a@@@@@@@@@@@@@@@@@@@@@' . `@@@@@@@@@@@@@@@@@@@@@@@@a);
-        System.out.println("             ;`@@@@@@@@@@@@@@@@@@'   .   `@@@@@@@@@@@@@@@@@@@@@';");
-        System.out.println("             ;@@@`@@@@@@@@@@@@@'     .     `@@@@@@@@@@@@@@@@'@@@;");
-        System.out.println("             ;@@@;,.aaaaaaaaaa       .       aaaaa,,aaaaaaa,;@@@;");
-        System.out.println("             ;;@;;;;@@@@@@@@;@      @.@      ;@@@;;;@@@@@@;;;;@@;");
-        System.out.println("             ;;;;;;;@@@@;@@;;@    @@ . @@    ;;@;;;;@@;@@@;;;;;;;");
-        System.out.println("             ;;;;;;;;@@;;;;;;;  @@   .   @@  ;;;;;;;;;;;@@;;;;@;;");
-        System.out.println("             ;;;;;;;;;;;;;;;;;@@     .     @@;;;;;;;;;;;;;;;;@@@;");
-        System.out.println("         ,%%%;;;;;;;;@;;;;;;;;       .       ;;;;;;;;;;;;;;;;@@;;%%%,");
-        System.out.println("      .%%%%%%;;;;;;;@@;;;;;;;;     ,%%%,     ;;;;;;;;;;;;;;;;;;;;%%%%%%,");
-        System.out.println("     .%%%%%%%;;;;;;;@@;;;;;;;;   ,%%%%%%%,   ;;;;;;;;;;;;;;;;;;;;%%%%%%%,");
-        System.out.println("     %%%%%%%%`;;;;;;;;;;;;;;;;  %%%%%%%%%%%  ;;;;;;;;;;;;;;;;;;;'%%%%%%%%");
-        System.out.println("     %%%%%%%%%%%%`;;;;;;;;;;;;,%%%%%%%%%%%%%,;;;;;;;;;;;;;;;'%%%%%%%%%%%%");
-        System.out.println("     `%%%%%%%%%%%%%%%%%,,,,,,,%%%%%%%%%%%%%%%,,,,,,,%%%%%%%%%%%%%%%%%%%%'");
-        System.out.println("       `%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'");
-        System.out.println("           `%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'");
-        System.out.println("                  """"""""""""""`,,,,,,,,,'"""""""""""""""""");
-        System.out.println("                                 `%%%%%%%'");
-        System.out.println("                                  `%%%%%'");
-        System.out.println("                                    %%%");
-        System.out.println("                                   %%%%%");
-        System.out.println("                                .,%%%%%%%,.");
-        System.out.println("                           ,%%%%%%%%%%%%%%%%%%%,");
+        // TODO Draw something cool
 
-        System.out.println("");
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("Etes-vous déjà inscrit ?\n");
-        sb.append("1. Se connecter\n");
-        sb.append("2. S'inscrire\n");
-        System.out.println(sb.toString());
-
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-            StringTokenizer st = new StringTokenizer(br.readLine());
-
-            String option = st.nextToken();
-
-            if (option.equals("quit") || option.equals("q"))
-                System.exit(0);
-
-            switch(option){
-            case "1":
-                System.out.println("Starting connexion");
-                int codeRetournConnexion = Connexion.connexion();
-                break;
-            case "2":
-                System.out.println("Création d'un compte pour l'utilisateur");
-                int codeRetourCreation = Register.register();
-            }
-       } catch (Exception e) {
-            e.printStackTrace();
-        }
+        int codeRetournConnexion = Connexion.connexion();
     }
+
 }
