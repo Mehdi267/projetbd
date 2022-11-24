@@ -2,6 +2,7 @@ package grenobleeat.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
@@ -68,48 +69,25 @@ public class JavaConnectorDB {
         }
     }
 
-    /*--------- Mode d'emploi de cette fonction -----------
 
-    choix 0 : correspond a une requete de mise a jour de la base de donnees(Ajout d'une nouvelle information)
-    choix 1 : correspond a une requete de consultation de la base de donnees
-
-    */
-    public static ResultSet JavaConnectorCommunicate(int choice, String table) throws SQLException {
-        Statement stmt = null;
-        try {
-            if (connection != null) {
-                stmt = connection.createStatement(); // Prevenir la base de donnes de l'envoi d'une syntaxe
-                if (choice == 0) {
-                    stmt.executeUpdate(query); // executeUpdate methode pour une requete de mise a jour de la BD; va
-                                               // apporter une modification
-                    System.out.println("Requete execute");
-
-                    return null;
-                } else if (choice == 1) {
-                    changeRows(table);
-                    ResultSet rs = null;
-                    rs = stmt.executeQuery(query); // executeQuery methode pour une requete de consultation de la BD
-                    return rs;
-                }
+    public static boolean checkIfUserExist(String username, String password){
+        try{
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Client WHERE username = ? AND password = ?");
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            if(rs != null){
+                System.out.println("Connexion réussie");
+                return true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null)
-                    stmt.close(); // Dire a la base de donnes qu'elle ne recevra plus d'instructions
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        }catch(SQLException e){
+            System.out.println("Impossible de vérifier dans la base de données");
         }
-        return null;
+        System.out.println("Impossible de vous connectez, vous n'etes pas enregistré");
+        return false;
     }
 
-    private static void changeRows(String nomTable) {
-        if (nomTable.equals("Client")) {
-            rows = Client;
-        }
-    }
+
 
     public static void printResults(ResultSet rs) {
         try {

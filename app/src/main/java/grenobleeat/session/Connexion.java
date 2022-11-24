@@ -10,25 +10,35 @@ import grenobleeat.database.JavaConnectorDB;
 public class Connexion {
     public static int connexion() {
         System.out.println("\nConnexion en cours...\n");
-        System.out.println("Entrez votre nom d'utilisateur");
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            String userName = st.nextToken();
-            if (userName.length() <= 0) {
-                System.out.println("Vous devez entrer un nom d'utilisateur");
-            }
-            ResultSet rs = JavaConnectorDB.JavaConnectorCommunicate(0, "client",
-                    "CREATE TABLE Client(id INT, nom VARCHAR(10))");
-            if (rs != null) {
-                return 0; // Connexion réussie
-            } else {
-                return -1; // Echec de la connexion
-            }
+        while (true) {
+            System.out.println("Entrez votre nom d'utilisateur");
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                StringTokenizer st = new StringTokenizer(br.readLine());
+                String userName = st.nextToken();
+                String password = st.nextToken();
+                if (userName.length() <= 0 || password.length() <= 0) {
+                    System.out.println("Nom d'utilisateur ou mot de passe non défini");
+                    continue;
+                }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+
+                boolean isConnected = JavaConnectorDB.checkIfUserExist(userName, password);
+                if(isConnected){
+                    StringBuilder sb = new StringBuilder().append("\nBienvenue chez Grenoble Eat ");
+                    sb.append(userName);
+                    System.out.println(sb.toString());
+                    return 0;
+                }else{
+                    System.out.println("Mauvais mot de passe");
+                    continue;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return -1;
         }
-        return -1;
     }
+
 }
