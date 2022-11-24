@@ -13,12 +13,45 @@ import grenobleeat.session.Connexion;
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("Connexion à la base de données en cours...");
-        JavaConnectorDB.initConnection();
+        try{
+            System.out.println("Connexion à la base de données en cours...");
+            JavaConnectorDB.initConnection();
 
-        // TODO Draw something cool
+            // TODO Draw something cool
 
-        int codeRetournConnexion = Connexion.connexion();
+            int codeRetournConnexion = Connexion.connexion();
+
+            if (codeRetournConnexion == 0) {
+                StringBuilder sb = new StringBuilder()
+                    /*
+                    * TODO
+                    * Après avoir choisi le menu 1 demander si affichage des catégories en fonction de nos recommandations
+                    * OUI ou NON,
+                    * -> NON afficher les catégories mères comme option en triant par ordre alphabétique ensuite aller en cascade
+                    * -> OUI Executer la requete qu'il faut pour afficher les catégories en fonction du client connecté */
+                    .append("1. Voir la liste de nos plats\n")
+                    .append("2. Afficher la liste des restaurants partenaires\n");
+
+                System.out.println(sb.toString());
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                StringTokenizer st = new StringTokenizer(br.readLine());
+
+                String choix = st.nextToken();
+
+                switch(choix){
+                    case "1":
+
+                }
+            } else {
+                System.out.println("Erreur du système, vérifier votre connexion à internet");
+                System.exit(1);
+            }
+        }catch(Exception e){
+            System.out.println("Echec pendant le fonction de l'application");
+            System.exit(1);
+        }
+
     }
 
 }

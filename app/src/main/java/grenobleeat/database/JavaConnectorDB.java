@@ -13,10 +13,6 @@ import java.lang.ClassNotFoundException;
 
 public class JavaConnectorDB {
 
-    private static String rows[];
-    private static String Client[] = { "idClient", "emailClient", "motDePasse", "NomClient", "PrenomClient",
-            "addrClient" };
-
     private static Connection connection;
 
     /*
@@ -70,10 +66,10 @@ public class JavaConnectorDB {
     }
 
 
-    public static boolean checkIfUserExist(String username, String password){
+    public static boolean checkIfUserExist(String email, String password){
         try{
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Client WHERE username = ? AND password = ?");
-            ps.setString(1, username);
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Client WHERE emailClient = ? AND motDePasse = ?");
+            ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if(rs != null){
