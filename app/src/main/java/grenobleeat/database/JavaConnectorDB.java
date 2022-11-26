@@ -104,6 +104,22 @@ public class JavaConnectorDB {
     }
 
 
+    public static int getNombreOfPlacesLeft(String restName){
+        // TODO prepare the right query to get the number of places left in this restaurant
+        try{
+            PreparedStatement ps = connection.prepareStatement("");
+
+            ResultSet rs = ps.executeQuery();
+            return rs.getInt("NbrPlace");
+
+        }catch(Exception e){
+            System.out.print("Impossible de récupérer le nombre de la places restant dans le restaurant ");
+            System.out.println(restName);
+            System.exit(1);
+        }
+    }
+
+
     // TODO delete this function that is not used actually
     // Juge if it can be use in the future
     public static void printResults(ResultSet rs) {
