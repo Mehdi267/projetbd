@@ -84,7 +84,28 @@ public class JavaConnectorDB {
     }
 
 
+    public static boolean deleteAccount(int userId){
+        try{
+            // TODO prepare the right query for account deletion and maj of the
+            // other table are required
+            PreparedStatement ps = connection.prepareStatement("");
 
+            ResultSet rs = ps.executeQuery();
+            if(rs != null){
+                System.out.println("\nCompte supprimé avoir avec succès");
+                System.out.println("Nous espérons vous revoir bientôt\n");
+                return true;
+            }
+        }catch(SQLException e){
+            System.out.println("Impossible d'accéder à la base de données");
+        }
+        return false;
+
+    }
+
+
+    // TODO delete this function that is not used actually
+    // Juge if it can be use in the future
     public static void printResults(ResultSet rs) {
         try {
             while (rs.next()) {

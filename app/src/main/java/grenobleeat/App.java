@@ -30,7 +30,8 @@ public class App {
                     * -> NON afficher les catégories mères comme option en triant par ordre alphabétique ensuite aller en cascade
                     * -> OUI Executer la requete qu'il faut pour afficher les catégories en fonction du client connecté */
                     .append("1. Voir la liste de nos plats\n")
-                    .append("2. Afficher la liste des restaurants partenaires\n");
+                    .append("2. Afficher la liste des restaurants partenaires\n")
+                    .append("3. Supprimer votre compte");
 
                 System.out.println(sb.toString());
 
