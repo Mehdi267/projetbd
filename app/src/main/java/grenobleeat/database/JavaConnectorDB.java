@@ -34,8 +34,6 @@ public class JavaConnectorDB {
         String uname = "vanieb";
         String password = "20082001";
 
-        Connection connection = null; // Va nous permettre d'obtenir la connection a la base de donnees grace a nos
-                                      // objets
         Statement stmt = null; // Permet d'envoyer la syntaxe a la base de donnees en fonction de son type
                                // grace a des methodes
 
@@ -117,28 +115,49 @@ public class JavaConnectorDB {
             System.out.println(restName);
             System.exit(1);
         }
+
+        return -1;
     }
 
-
-    // TODO delete this function that is not used actually
-    // Juge if it can be use in the future
-    public static void printResults(ResultSet rs) {
-        try {
+    /**
+     * Récupérer le contenu d'une table
+     *
+     * Parameters:
+     * @param fields - liste des champs dont on veut récupérer la valeur dans la table
+     *
+     * Return:
+     * @return la liste des valeurs des champs fields dans la table */
+	public static String printTableElementList(String table, String[] fields){
+		try{
+            String query = String.format("SELECT * FROM %s", table);
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(query);
+            StringBuilder sb = new StringBuilder();
             while (rs.next()) {
-                /* Affichage dans le format : <<nomChamp>> : <<valeur>> \t .... */
-                for (String fieldName : rows) {
-                    try {
-                        System.out.print(fieldName + " : " + rs.getString(fieldName) + "\t");
-                    } catch (Exception e) {
-                        System.out.print(fieldName + " : " + rs.getInt(fieldName) + "\t");
+                for (String field : fields) {
+                    try{
+                        sb.append(field);
+                        sb.append(" : ");
+                        sb.append(rs.getString(field));
+                        sb.append("\t");
+                    }catch (Exception e){
+                        sb.append(field);
+                        sb.append(" : ");
+                        sb.append(rs.getInt(field));
+                        sb.append("\t");
                     }
                 }
+                sb.append("\n");
             }
-            System.out.println("\n");
-
-        } catch (SQLException e) {
+            return sb.toString();
+		}catch(SQLException e){
             e.printStackTrace();
-        }
-    }
+			System.out.println("Une erreur est survenue lors de la récupération des données dans la BD");
+		}
+
+        return null;
+	}
+
+
 
 }

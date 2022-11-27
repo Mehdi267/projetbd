@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 import grenobleeat.database.JavaConnectorDB;
+import grenobleeat.database.Restaurant;
 import grenobleeat.session.Connexion;
 
 public class App {
@@ -42,7 +43,10 @@ public class App {
 
                 switch(choix){
                     case "1":
-
+                        break;
+                    case "2":
+                        Restaurant.printRestaurantList();
+                        break;
                 }
             } else {
                 System.out.println("Erreur du système, vérifier votre connexion à internet");

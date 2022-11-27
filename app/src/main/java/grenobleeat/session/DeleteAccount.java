@@ -23,11 +23,12 @@ public class DeleteAccount {
 
                 case "2":
                     System.out.println("\nL'aventure continue...\n");
-                    return 1;
             }
         }catch(Exception e){
            System.out.println("\nImpossible de supprimer cet compte\n");
            System.exit(-1);
         }
+
+        return 1;
     }
 }
