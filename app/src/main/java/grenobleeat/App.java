@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 import grenobleeat.database.JavaConnectorDB;
+import grenobleeat.database.Plat;
 import grenobleeat.database.Restaurant;
 import grenobleeat.session.Connexion;
 
@@ -43,6 +44,7 @@ public class App {
 
                 switch(choix){
                     case "1":
+                        Plat.printMealsList();
                         break;
                     case "2":
                         Restaurant.printRestaurantList();
