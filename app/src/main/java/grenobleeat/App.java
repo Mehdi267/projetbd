@@ -27,13 +27,25 @@ public class App {
                 StringBuilder sb = new StringBuilder()
                     /*
                     * TODO
-                    * Après avoir choisi le menu 1 demander si affichage des catégories en fonction de nos recommandations
-                    * OUI ou NON,
-                    * -> NON afficher les catégories mères comme option en triant par ordre alphabétique ensuite aller en cascade
-                    * -> OUI Executer la requete qu'il faut pour afficher les catégories en fonction du client connecté */
-                    .append("1. Voir la liste de nos plats\n")
-                    .append("2. Afficher la liste des restaurants partenaires\n")
-                    .append("3. Supprimer votre compte");
+                    * 1. 2.
+                    * Après avoir choisi le restaurant
+                    * Demander le type de commande souhaité (en fonction du restaurant choisi)
+                    * Si surplace demander le nombre de places (continuer si le restaurant a assez de place, sinon recommander d'autres)
+                    * Demander la période de la journée. (Midi, soir, ou peut importe pour afficher midi et soir)
+                    * Afficher la liste des plats pour qu'il puisse faire un choix (garder quelque part les prix des plats pour le calcul du prix total)
+                    * Recommandations ou découverte
+                    *
+                    * 3. Demander le type de commande souhaité
+                    * Demander la période de la journée (Midi, soir ou peut importe)
+                    * Afficher les restaurants qui font ce type de commande et qui ont sont disponibles dans cette période
+                    * Si type de commande surplace demander le nombre de place afin d'afficher que les restaurants qui ont
+                    * assez de place.
+                    * Afficher la liste des plats (selon recommandations ou découvrir)
+                    *  */
+                    .append("1. Afficher la liste des restaurants partenaires\n")
+                    .append("2. Afficher la liste de nos restaurants recommandés pour vous\n")
+                    .append("3. Vous ne connaissez pas nos restaurants ? Faire une commande")
+                    .append("4. Supprimer votre compte");
 
                 System.out.println(sb.toString());
 
