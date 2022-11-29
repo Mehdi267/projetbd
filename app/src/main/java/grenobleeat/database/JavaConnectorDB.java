@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.lang.ClassNotFoundException;
 
 /* Cette classe va me permettre de lancer directement mes requetes SQL dans mon code */
@@ -63,54 +67,53 @@ public class JavaConnectorDB {
         }
     }
 
-
-    public static boolean checkIfUserExist(String email, String password){
-        try{
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Client WHERE emailClient = ? AND motDePasse = ?");
+    public static boolean checkIfUserExist(String email, String password) {
+        try {
+            PreparedStatement ps = connection
+                    .prepareStatement("SELECT * FROM Client WHERE emailClient = ? AND motDePasse = ?");
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            if(rs != null){
+            if (rs != null) {
                 System.out.println("Connexion réussie");
                 return true;
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Impossible de vérifier dans la base de données");
         }
         System.out.println("Impossible de vous connectez, vous n'etes pas enregistré");
         return false;
     }
 
-
-    public static boolean deleteAccount(int userId){
-        try{
+    public static boolean deleteAccount(int userId) {
+        try {
             // TODO prepare the right query for account deletion and maj of the
             // other table are required
             PreparedStatement ps = connection.prepareStatement("");
 
             ResultSet rs = ps.executeQuery();
-            if(rs != null){
+            if (rs != null) {
                 System.out.println("\nCompte supprimé avoir avec succès");
                 System.out.println("Nous espérons vous revoir bientôt\n");
                 return true;
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Impossible d'accéder à la base de données");
         }
         return false;
 
     }
 
-
-    public static int getNombreOfPlacesLeft(String restName){
-        // TODO prepare the right query to get the number of places left in this restaurant
-        try{
+    public static int getNombreOfPlacesLeft(String restName) {
+        // TODO prepare the right query to get the number of places left in this
+        // restaurant
+        try {
             PreparedStatement ps = connection.prepareStatement("");
 
             ResultSet rs = ps.executeQuery();
             return rs.getInt("NbrPlace");
 
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.print("Impossible de récupérer le nombre de la places restant dans le restaurant ");
             System.out.println(restName);
             System.exit(1);
@@ -123,41 +126,38 @@ public class JavaConnectorDB {
      * Récupérer le contenu d'une table
      *
      * Parameters:
-     * @param fields - liste des champs dont on veut récupérer la valeur dans la table
      *
-     * Return:
-     * @return la liste des valeurs des champs fields dans la table */
-	public static String printTableElementList(String table, String[] fields){
-		try{
+     * @param fields - liste des champs dont on veut récupérer la valeur dans la
+     *               table
+     *
+     *               Return:
+     * @return List de Map contenant chaque ligne du tableau sous forme de clé -
+     *         valeur
+     */
+    public static List<Map<String, String>> printTableElementList(String table, String[] fields) {
+        try {
             String query = String.format("SELECT * FROM %s", table);
-			Statement st = connection.createStatement();
-			ResultSet rs = st.executeQuery(query);
-            StringBuilder sb = new StringBuilder();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            Map<String, String> lineValues = new HashMap<>();
+            List<Map<String, String>> results = new ArrayList<>();
             while (rs.next()) {
                 for (String field : fields) {
-                    try{
-                        sb.append(field);
-                        sb.append(" : ");
-                        sb.append(rs.getString(field));
-                        sb.append("\t");
-                    }catch (Exception e){
-                        sb.append(field);
-                        sb.append(" : ");
-                        sb.append(rs.getInt(field));
-                        sb.append("\t");
+                    try {
+                        lineValues.put(field, rs.getString(field));
+                    } catch (Exception e) {
+                        lineValues.put(field, Integer.toString(rs.getInt(field)));
                     }
                 }
-                sb.append("\n");
+                results.add(lineValues);
             }
-            return sb.toString();
-		}catch(SQLException e){
+            return results;
+        } catch (SQLException e) {
             e.printStackTrace();
-			System.out.println("Une erreur est survenue lors de la récupération des données dans la BD");
-		}
+            System.out.println("Une erreur est survenue lors de la récupération des données dans la BD");
+        }
 
         return null;
-	}
-
-
+    }
 
 }
