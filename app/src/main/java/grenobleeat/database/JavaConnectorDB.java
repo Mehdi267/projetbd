@@ -130,7 +130,9 @@ public class JavaConnectorDB {
      * @param fields - liste des champs dont on veut récupérer la valeur dans la
      *               table
      *
-     *               Return:
+     *
+     * Return:
+     *
      * @return List de Map contenant chaque ligne du tableau sous forme de clé -
      *         valeur
      */
@@ -150,6 +152,7 @@ public class JavaConnectorDB {
                     }
                 }
                 results.add(lineValues);
+                lineValues = new HashMap<>();
             }
             return results;
         } catch (SQLException e) {

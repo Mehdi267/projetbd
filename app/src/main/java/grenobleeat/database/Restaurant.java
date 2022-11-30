@@ -1,9 +1,8 @@
 package grenobleeat.database;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Restaurant {
     /**
@@ -19,18 +18,33 @@ public class Restaurant {
         String fieldToPrintAsAchoice = "nomrest";
         List<Map<String, String>> restList = JavaConnectorDB.printTableElementList("restaurant", restaurantFields);
 
-        int i = 0;
+        int i = 1;
         for (Map<String, String> line : restList) {
-            System.out.println(String.format("{%d}. {%s}", i, line.get(fieldToPrintAsAchoice)));
+            System.out.println(String.format("%d. %s", i, line.get(fieldToPrintAsAchoice)));
+            ++i;
         }
 
         return restList;
     }
 
-    public static int selectRestaurant(List<Map<String, String>> restaurantList) {
-        System.out.println("\nChoisir un restaurant\n");
-        final String fieldToPrint = "idrest";
+    public static String selectRestaurant(List<Map<String, String>> restaurantList) {
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("\nChoisir un restaurant\n");
+        final String idField = "idrest";
+
+
+        Scanner sc = new Scanner(System.in);
+        int choice = sc.nextInt();
+
+        sc.close();
+
+        try{
+            String restChosenId = restaurantList.get(choice).get(idField);
+            return restChosenId;
+        }catch(IndexOutOfBoundsException e){
+            System.out.println("\nChoix incorrect\n");
+            return null;
+        }
+
     }
 }

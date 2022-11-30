@@ -55,7 +55,11 @@ public class App {
 
                 switch (choix) {
                 case "1":
-                    int selectedRestId = Restaurant.selectRestaurant(Restaurant.getRestaurantList());
+                    String selectedRestId = null;
+                    while(selectedRestId == null){
+                        selectedRestId = Restaurant.selectRestaurant(Restaurant.getRestaurantList());
+                    }
+                    System.out.println(selectedRestId); // TODO use the restaurant selected
                     break;
                 case "2":
                     // TODO Print recommended restaurant
@@ -69,7 +73,8 @@ public class App {
                 System.exit(1);
             }
         } catch (Exception e) {
-            System.out.println("Echec pendant le fonction de l'application");
+            e.printStackTrace();
+            System.out.println("Echec pendant le fonctionnement de l'application");
             System.exit(1);
         }
 
