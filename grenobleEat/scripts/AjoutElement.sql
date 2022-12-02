@@ -203,7 +203,7 @@ INSERT INTO AllergenePlat VALUES (4,3, 'protéines');
 INSERT INTO AllergenePlat VALUES (4,4, 'Soja');
 
 
--- emporte  livraison  surPlace
+-- oracle
 INSERT INTO Commande VALUES (1, DATE '2022-11-13',  TO_DATE('2022/11/13 8:30:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'attente de confirmation', 'surPlace');
 INSERT INTO Commande VALUES (2, DATE '2022-11-14',  TO_DATE('2022/11/14 8:33:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'disponible', 'livraison');
 INSERT INTO Commande VALUES (3, DATE '2022-11-14',  TO_DATE('2022/11/14 8:35:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'disponible', 'livraison');
