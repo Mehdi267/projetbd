@@ -113,6 +113,12 @@ CREATE VIEW PrixCommade AS (
 		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat and Plat.idRest = PlatsDeCommande.idRest
 		GROUP BY idCommande);
 
+CREATE VIEW CategorieRestoAssocieOrdreDecroissant AS (
+        SELECT categorie, Restaurant.idRest, Restaurant.nomRest, noteRest
+        FROM CategorieRest
+        JOIN Restaurant ON   Restaurant.idRest = CategorieRest.idRest
+        JOIN NoteMoyenneDesRest ON NoteMoyenneDesRest.idRest =  Restaurant.idRest
+        ORDER BY noteRest DESC,  Restaurant.nomRest );
 
 CREATE VIEW NbrPlaceRestante AS (
         SELECT Restaurant.idRest, Restaurant.nomRest, Commande.dateCommande, ComSurPlace.heureArriveSurPlace, nbPlaceRest-sum(ComSurPlace.nbrPersonne) as placeRestante
@@ -120,8 +126,22 @@ CREATE VIEW NbrPlaceRestante AS (
         JOIN ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
         JOIN Restaurant ON   Restaurant.idRest = PasserCommande.idRest
         JOIN Commande ON   Commande.idCommande = PasserCommande.idCommande
-        WHERE Commande.statutCommande = 'validee'
-        group by Restaurant.idRest and dateCommande and heureArriveSurPlace and Restaurant.nomRest  );
+        WHERE Commande.statutCommande = 'validee' );
+
+
+
+
+
+        SELECT categorie, CategorieRest.idRest, noteRest
+        FROM CategorieRest
+        LEFT OUTER JOIN NoteMoyenneDesRest ON NoteMoyenneDesRest.idRest = CategorieRest.idRest;
+        group by categorie ;
+
+        SELECT categorie, CategorieRest.idRest
+        FROM CategorieRest
+        JOIN NoteMoyenneDesRest ON NoteMoyenneDesRest.idRest = CategorieRest.idRest;
+        group by categorie ;
+
 
 
 SELECT Restaurant.idRest, Restaurant.nomRest, dateCommande, heureArriveSurPlace, nbPlaceRest-sum(nbrPersonne) as placeRestante
@@ -132,8 +152,30 @@ SELECT Restaurant.idRest, Restaurant.nomRest, dateCommande, heureArriveSurPlace,
         WHERE Commande.statutCommande = 'validee'
         group by Restaurant.idRest and dateCommande and heureArriveSurPlace and Restaurant.nomRest  ;
 
+SELECT PasserCommande.idRest, Restaurant.nomRest, dateCommande, heureArriveSurPlace, nbPlaceRest-sum(nbrPersonne) as placeRestante
+        FROM PasserCommande 
+        JOIN ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
+        JOIN Restaurant ON   Restaurant.idRest = PasserCommande.idRest
+        JOIN Commande ON   Commande.idCommande = PasserCommande.idCommande
+        WHERE Commande.statutCommande = 'validee';
 
-SELECT Restaurant.idRest, 
+
+
+
+
+SELECT *
+        FROM PasserCommande 
+        JOIN  ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
+        JOIN  Restaurant ON   Restaurant.idRest = PasserCommande.idRest
+        JOIN  Commande ON   Commande.idCommande = PasserCommande.idCommande
+        WHERE Commande.statutCommande = 'validee'
+        group by Restaurant.idRest;
+        and ComSurPlace.heureArriveSurPlace;
+        and dateCommande and heureArriveSurPlace;
+
+
+
+SELECT Restaurant.idRest
         FROM PasserCommande 
         INNER JOIN ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
         INNER JOIN Restaurant ON   Restaurant.idRest = PasserCommande.idRest
@@ -167,11 +209,4 @@ CREATE TABLE ComSurPlace(idComSurPlace INT PRIMARY KEY,
                        FOREIGN KEY (heureArriveSurPlace) REFERENCES Horaire(horaire));
 
 
-
-
-
-
-
-
-
-
+SET sql_mode = '';
