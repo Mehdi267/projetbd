@@ -41,9 +41,9 @@ public class App {
                          * ont assez de place. Afficher la liste des plats (selon recommandations ou
                          * découvrir)
                          */
-                        .append("1. Afficher nos catégories de restaurants\n")
-                        .append("2. Afficher nos recommandations de catégories pour vous\n")
-                        .append("3. Un restaurant en tête ? Parcourir la liste de nos restaurants")
+                        .append("1. Afficher la liste des restaurants partenaires\n")
+                        .append("2. Afficher la liste de nos restaurants recommandés pour vous\n")
+                        .append("3. Vous ne connaissez pas nos restaurants ? Faire une commande")
                         .append("4. Supprimer votre compte");
 
                 System.out.println(sb.toString());
@@ -55,25 +55,25 @@ public class App {
 
                 switch (choix) {
                 case "1":
+                    String selectedRestId = null;
+                    while(selectedRestId == null){
+                        selectedRestId = Restaurant.selectRestaurant(Restaurant.getRestaurantList());
+                    }
+                    System.out.println(selectedRestId); // TODO use the restaurant selected
                     break;
-
                 case "2":
                     // TODO Print recommended restaurant
                     Plat.printMealsList();
                     break;
 
                 case "3":
-                    Restaurant ourRestaurants = new Restaurant();
-                    ourRestaurants.getRestaurantList();
-                    ourRestaurants.selectRestaurant();
-                    break;
-
                 }
             } else {
                 System.out.println("Erreur du système, vérifier votre connexion à internet");
                 System.exit(1);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Echec pendant le fonctionnement de l'application");
             System.exit(1);
         }
