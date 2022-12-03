@@ -1,16 +1,17 @@
 package grenobleeat.database;
 
+import java.util.Scanner;
 
 /**
  * Table restaurant de la base de données
  */
 public class Restaurant extends Table {
 
-    private static String tableName = "restaurant";
-    private static String[] fields = { "idrest", "emailrest", "nomrest", "addrrest", "nbplacerest",
-            "textpresentationrest", "horaireouverturerest" };
+    private static String tableName = "Restaurant";
+    private static String[] fields = { "idRest", "emailRest", "nomRest", "addrRest", "nbplaceRest",
+            "textPresentaionRest", "horaireOuvertureRest" };
 
-    private static String fieldToPrintAsName = "restname"; // le champ a afficher dans le menu comme choix pour l'utilisateur
+    private static String fieldToPrintAsName = "nomRest"; // le champ a afficher dans le menu comme choix pour l'utilisateur
 
     public Restaurant(){
        super(tableName, fields);
@@ -26,7 +27,18 @@ public class Restaurant extends Table {
     /**
      * Demander à l'utilisateur de faire un choix parmis nos restaurants */
     public void selectRestaurant() {
-        System.out.println("");
+        while(true){
+            System.out.println("\nVeuillez choisir un restaurant\n");
+            Scanner sc = new Scanner(System.in);
+            int userChoice = sc.nextInt();
+            sc.close();
+            int isChoiceSuccessfullySet = this.selectAvalue(userChoice);
+
+            if(isChoiceSuccessfullySet == 0){
+                break;
+            }
+            System.out.println("\nChoix incorrect\n");
+        }
     }
 
 }

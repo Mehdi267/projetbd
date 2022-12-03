@@ -30,18 +30,33 @@ public class JavaConnectorDB {
          *
          */
 
+        // TODO Uncomment this part to do the connection to the ensimag database
         // Essai de connectionTotheDatabase
-        String url = "jdbc:oracle:thin:@oracle1.ensimag.fr:1521:oracle1";
-        String uname = "vanieb";
+        // String url = "jdbc:oracle:thin:@oracle1.ensimag.fr:1521:oracle1";
+        // String uname = "vanieb";
+        // String password = "20082001";
+
+        // try {
+        //     DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver()); // récupération du pilote de oracle
+        //     connectionTotheDatabase = DriverManager.getConnection(url, uname, password);
+        //     connectionTotheDatabase.setAutoCommit(false);
+        // } catch (SQLException e) {
+        //     System.out.println("Erreur de connexion à la base de données");
+        //     System.exit(1);
+        // }
+
+        String url = "jdbc:mysql://localhost:3306/grenobleeat";
+        String uname = "samuel";
         String password = "20082001";
 
         try {
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver()); // récupération du pilote de oracle
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connectionTotheDatabase = DriverManager.getConnection(url, uname, password);
             connectionTotheDatabase.setAutoCommit(false);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Erreur de connexion à la base de données");
             System.exit(1);
+
         }
 
         System.out.println("Connexion réussie");
@@ -151,11 +166,13 @@ public class JavaConnectorDB {
                 }
                 results.put(currentLineNumber, lineValues);
                 lineValues = new HashMap<>();
+
                 ++currentLineNumber;
             }
 
             return results;
         } catch (SQLException e) {
+            e.printStackTrace();
             System.out.println("Une erreur est survenue lors de la récupération des données dans la BD");
         }
 

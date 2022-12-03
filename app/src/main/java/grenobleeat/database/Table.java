@@ -13,7 +13,7 @@ public class Table {
     private String[] fields;
     private Map<Integer, Map<String, String>> bdContents; // le contenu de la table dans la base de données ligne par ligne
 
-    private static int currentSelectedTable = -1; // représente le choix de l'utilisateur
+    private static Map<String, String> currentSelectedTable = new HashMap<>(); // représente le choix de l'utilisateur
 
     public Table(String name, String[] fields) {
         this.name = name;
@@ -56,7 +56,7 @@ public class Table {
      * @param choice - choix de l'utilisateur dans le menu contextuelle
      * */
     public String getFieldValue(String field){
-        return this.getBdContents().get(currentSelectedTable).get(field);
+        return currentSelectedTable.get(field);
     }
 
 
@@ -65,17 +65,21 @@ public class Table {
      *
      * Parameters:
      * @param choice - choix de l'utilisateur
+     *
+     * Return:
+     * @return 0 - si le choix a pu être défini
+     * @return -1 - si ce choix est invalide
      * */
-    public void selectAvalue(int choice){
-        if(choice > 0){
-            currentSelectedTable = choice;
+    public int selectAvalue(int choice){
+
+        Map<String, String> selectedTable = bdContents.get(choice);
+        if(selectedTable != null){
+           currentSelectedTable = selectedTable;
+           return 0;
         }
+
+        return -1;
     }
 
-    /**
-     * Vérifier si un choix a bien été fait */
-    public boolean isChoiceSet(){
-
-    }
 
 }

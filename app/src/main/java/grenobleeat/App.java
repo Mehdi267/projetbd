@@ -55,37 +55,25 @@ public class App {
 
                 switch (choix) {
                 case "1":
-
-                    System.out.println(selectedRestId); // TODO use the restaurant selected
                     break;
+
                 case "2":
                     // TODO Print recommended restaurant
                     Plat.printMealsList();
                     break;
 
                 case "3":
-                    String selectedRestId = null;
-                    List<Map<String, String>> restaurants = Restaurant.getRestaurantList();
+                    Restaurant ourRestaurants = new Restaurant();
+                    ourRestaurants.getRestaurantList();
+                    ourRestaurants.selectRestaurant();
+                    break;
 
-                    selectedRestId = Restaurant.selectRestaurant(restaurants);
-                    while(restaurants == null || selectedRestId == null){
-
-                        if(restaurants == null){
-                            restaurants = Restaurant.getRestaurantList();
-                        }
-
-                        if (selectedRestId == null) {
-                            selectedRestId = Restaurant.selectRestaurant(restaurants);
-                        }
-
-                    }
                 }
             } else {
                 System.out.println("Erreur du système, vérifier votre connexion à internet");
                 System.exit(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Echec pendant le fonctionnement de l'application");
             System.exit(1);
         }
