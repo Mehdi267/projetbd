@@ -9,9 +9,9 @@
 #
 
 build:
-	javac -d build -cp ./app/src/main/resources/mysql-connector.jar ./app/src/main/java/grenobleeat/database/*.java
+	javac -d build -cp ./app/src/main/resources/ojdbc6.jar ./app/src/main/java/grenobleeat/database/*.java
 	javac -d build -cp build/ ./app/src/main/java/grenobleeat/session/*.java
 	javac -d build -cp build/ ./app/src/main/java/grenobleeat/App.java
 
 run:
-	java -cp build:app/src/main/resources/mysql-connector.jar grenobleeat/App
+	java -cp build:app/src/main/resources/ojdbc6.jar grenobleeat/App
