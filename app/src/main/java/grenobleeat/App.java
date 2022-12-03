@@ -41,9 +41,9 @@ public class App {
                          * ont assez de place. Afficher la liste des plats (selon recommandations ou
                          * découvrir)
                          */
-                        .append("1. Afficher la liste des restaurants partenaires\n")
-                        .append("2. Afficher la liste de nos restaurants recommandés pour vous\n")
-                        .append("3. Vous ne connaissez pas nos restaurants ? Faire une commande")
+                        .append("1. Afficher nos catégories de restaurants\n")
+                        .append("2. Afficher nos recommandations de catégories pour vous\n")
+                        .append("3. Un restaurant en tête ? Parcourir la liste de nos restaurants")
                         .append("4. Supprimer votre compte");
 
                 System.out.println(sb.toString());
@@ -55,10 +55,7 @@ public class App {
 
                 switch (choix) {
                 case "1":
-                    String selectedRestId = null;
-                    while(selectedRestId == null){
-                        selectedRestId = Restaurant.selectRestaurant(Restaurant.getRestaurantList());
-                    }
+
                     System.out.println(selectedRestId); // TODO use the restaurant selected
                     break;
                 case "2":
@@ -67,6 +64,21 @@ public class App {
                     break;
 
                 case "3":
+                    String selectedRestId = null;
+                    List<Map<String, String>> restaurants = Restaurant.getRestaurantList();
+
+                    selectedRestId = Restaurant.selectRestaurant(restaurants);
+                    while(restaurants == null || selectedRestId == null){
+
+                        if(restaurants == null){
+                            restaurants = Restaurant.getRestaurantList();
+                        }
+
+                        if (selectedRestId == null) {
+                            selectedRestId = Restaurant.selectRestaurant(restaurants);
+                        }
+
+                    }
                 }
             } else {
                 System.out.println("Erreur du système, vérifier votre connexion à internet");

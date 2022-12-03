@@ -6,16 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-/* Cette classe va me permettre de lancer directement mes requetes SQL dans mon code */
 
+/**
+ * La seule classe qui fait des requêtes à la base de données */
 public class JavaConnectorDB {
 
-    private static Connection connection;
+    private static Connection connectionTotheDatabase;
 
     /*
      * Initialisation de la connexion pour une session
@@ -24,25 +23,22 @@ public class JavaConnectorDB {
      */
     public static void initConnection() {
         /*
-         * Creation de tous les objets qui vont nous permettre d'obtenir la connection
-         * url : l'url complete de connection - uname : nom d'utilisateur utilise pour
+         * Creation de tous les objets qui vont nous permettre d'obtenir la connectionTotheDatabase
+         * url : l'url complete de connectionTotheDatabase - uname : nom d'utilisateur utilise pour
          * acceder a la base de donnees password : mot de passe de l'utilisateur query :
          * Syntaxe(ou instruction) a envoyer a la base de donnees
          *
          */
 
-        // Essai de connection
+        // Essai de connectionTotheDatabase
         String url = "jdbc:oracle:thin:@oracle1.ensimag.fr:1521:oracle1";
         String uname = "vanieb";
         String password = "20082001";
 
-        Statement stmt = null; // Permet d'envoyer la syntaxe a la base de donnees en fonction de son type
-                               // grace a des methodes
-
         try {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver()); // récupération du pilote de oracle
-            connection = DriverManager.getConnection(url, uname, password);
-            connection.setAutoCommit(false);
+            connectionTotheDatabase = DriverManager.getConnection(url, uname, password);
+            connectionTotheDatabase.setAutoCommit(false);
         } catch (SQLException e) {
             System.out.println("Erreur de connexion à la base de données");
             System.exit(1);
@@ -54,11 +50,11 @@ public class JavaConnectorDB {
 
     }
 
-    // fermeture de la connection
+    // fermeture de la connectionTotheDatabase
     public static void closeConnection() {
         try {
-            if (connection != null)
-                connection.close();
+            if (connectionTotheDatabase != null)
+                connectionTotheDatabase.close();
         } catch (SQLException e) {
             System.out.println("Fermeture de la connexion impossible");
             System.exit(1);
@@ -67,7 +63,7 @@ public class JavaConnectorDB {
 
     public static boolean checkIfUserExist(String email, String password) {
         try {
-            PreparedStatement ps = connection
+            PreparedStatement ps = connectionTotheDatabase
                     .prepareStatement("SELECT * FROM Client WHERE emailClient = ? AND motDePasse = ?");
             ps.setString(1, email);
             ps.setString(2, password);
@@ -87,7 +83,7 @@ public class JavaConnectorDB {
         try {
             // TODO prepare the right query for account deletion and maj of the
             // other table are required
-            PreparedStatement ps = connection.prepareStatement("");
+            PreparedStatement ps = connectionTotheDatabase.prepareStatement("");
 
             ResultSet rs = ps.executeQuery();
             if (rs != null) {
@@ -106,7 +102,7 @@ public class JavaConnectorDB {
         // TODO prepare the right query to get the number of places left in this
         // restaurant
         try {
-            PreparedStatement ps = connection.prepareStatement("");
+            PreparedStatement ps = connectionTotheDatabase.prepareStatement("");
 
             ResultSet rs = ps.executeQuery();
             return rs.getInt("NbrPlace");
@@ -133,14 +129,18 @@ public class JavaConnectorDB {
      *
      * @return List de Map contenant chaque ligne du tableau sous forme de clé -
      *         valeur
+     *         Chaque ligne de la list est une ligne de la BD, et les paires clés valeurs sont les noms
+     *         des champs dans la table et leur valeurs
      */
-    public static List<Map<String, String>> printTableElementList(String table, String[] fields) {
+    public static Map<Integer, Map<String, String>> fetchDataFromDB(String table, String[] fields) {
         try {
             String query = String.format("SELECT * FROM %s", table);
-            Statement st = connection.createStatement();
+            Statement st = connectionTotheDatabase.createStatement();
             ResultSet rs = st.executeQuery(query);
             Map<String, String> lineValues = new HashMap<>();
-            List<Map<String, String>> results = new ArrayList<>();
+            Map<Integer, Map<String, String>> results = new HashMap<>();
+
+            int currentLineNumber = 1;
             while (rs.next()) {
                 for (String field : fields) {
                     try {
@@ -149,12 +149,13 @@ public class JavaConnectorDB {
                         lineValues.put(field, Integer.toString(rs.getInt(field)));
                     }
                 }
-                results.add(lineValues);
+                results.put(currentLineNumber, lineValues);
                 lineValues = new HashMap<>();
+                ++currentLineNumber;
             }
+
             return results;
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Une erreur est survenue lors de la récupération des données dans la BD");
         }
 

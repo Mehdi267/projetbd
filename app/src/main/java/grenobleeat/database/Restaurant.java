@@ -1,50 +1,32 @@
 package grenobleeat.database;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
-public class Restaurant {
+/**
+ * Table restaurant de la base de données
+ */
+public class Restaurant extends Table {
+
+    private static String tableName = "restaurant";
+    private static String[] fields = { "idrest", "emailrest", "nomrest", "addrrest", "nbplacerest",
+            "textpresentationrest", "horaireouverturerest" };
+
+    private static String fieldToPrintAsName = "restname"; // le champ a afficher dans le menu comme choix pour l'utilisateur
+
+    public Restaurant(){
+       super(tableName, fields);
+    }
+
     /**
-     * Affiche la liste des restaurants contenu dans la base de données sans tenir
-     * compte des recommandations pour l'utilisateur.
-     *
-     * @return List représentant la liste des restaurants avec les valeurs des
-     *         différents champs
-     */
-    public static List<Map<String, String>> getRestaurantList() {
-        System.out.println("\nNos restaurants partenaires\n");
-        String restaurantFields[] = { "idrest", "emailrest", "nomrest", "addrrest", "nbplacerest" };
-        String fieldToPrintAsAchoice = "nomrest";
-        List<Map<String, String>> restList = JavaConnectorDB.printTableElementList("restaurant", restaurantFields);
-
-        int i = 1;
-        for (Map<String, String> line : restList) {
-            System.out.println(String.format("%d. %s", i, line.get(fieldToPrintAsAchoice)));
-            ++i;
-        }
-
-        return restList;
+     * Afficher dans le menu le choix d'un restaurant à l'utilisateur en affichant les noms des
+     * restaurants comme choix dans le menu */
+    public void getRestaurantList() {
+        printTableValues(fieldToPrintAsName);
     }
 
-    public static String selectRestaurant(List<Map<String, String>> restaurantList) {
-
-        System.out.println("\nChoisir un restaurant\n");
-        final String idField = "idrest";
-
-
-        Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();
-
-        sc.close();
-
-        try{
-            String restChosenId = restaurantList.get(choice).get(idField);
-            return restChosenId;
-        }catch(IndexOutOfBoundsException e){
-            System.out.println("\nChoix incorrect\n");
-            return null;
-        }
-
+    /**
+     * Demander à l'utilisateur de faire un choix parmis nos restaurants */
+    public void selectRestaurant() {
+        System.out.println("");
     }
+
 }
