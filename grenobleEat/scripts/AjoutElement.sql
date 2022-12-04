@@ -84,16 +84,20 @@ INSERT INTO CategorieRest VALUES (1, 'Fast food');
 
 INSERT INTO CategorieRest VALUES (2, 'Fast food');
 INSERT INTO CategorieRest VALUES (2, 'cuisine des alpes');
+INSERT INTO CategorieRest VALUES (2, 'cuisine française');
+
 
 
 INSERT INTO CategorieRest VALUES (3, 'cuisine italienne');
 INSERT INTO CategorieRest VALUES (3, 'cuisine de la mer');
+
 
 INSERT INTO CategorieRest VALUES (4, 'cuisine régionale');
 INSERT INTO CategorieRest VALUES (4, 'cuisines royales');
 INSERT INTO CategorieRest VALUES (4, 'cuisine savoyarde');
 INSERT INTO CategorieRest VALUES (4, 'cuisine à la bière');
 INSERT INTO CategorieRest VALUES (4, 'cuisine du nord');
+INSERT INTO CategorieRest VALUES (4, 'cuisine française');
 
 
 INSERT INTO CategorieRest VALUES (5, 'cuisine chinoise');
@@ -103,6 +107,7 @@ INSERT INTO CategorieRest VALUES (5, 'cuisine au beurre');
 
 INSERT INTO CategorieRest VALUES (6, 'cuisine arabe');
 INSERT INTO CategorieRest VALUES (6, 'cuisine méditerranéenne');
+INSERT INTO CategorieRest VALUES (6, 'cuisine française');
 
 
 
@@ -362,4 +367,5 @@ INSERT INTO Evaluation VALUES (10, 4, DATE '2022-11-13',  STR_TO_DATE('20221113 
 INSERT INTO Evaluation VALUES (11, 1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  2);
 INSERT INTO Evaluation VALUES (12, 1, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 'good food',  5);
 INSERT INTO Evaluation VALUES (13, 1, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 'bad food',  1.5);
+
 

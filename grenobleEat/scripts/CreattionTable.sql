@@ -51,7 +51,7 @@ CREATE TABLE Commande(idCommande INT  PRIMARY KEY,
            FOREIGN KEY (typeCommande)  REFERENCES typeCommande(type));
 
 CREATE TABLE ComLivraison(idComLivraison INT PRIMARY KEY,
-                adresseLivraison VARCHAR(100),
+                adresseLivraison VARCHAR(30),
                 textLivreur VARCHAR(100),
                 heureLivraison DATE,
                 FOREIGN KEY (idComLivraison) REFERENCES Commande(idCommande));

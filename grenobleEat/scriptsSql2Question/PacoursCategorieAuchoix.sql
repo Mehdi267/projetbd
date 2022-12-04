@@ -1,10 +1,11 @@
 
 /******************
-Cette transaction retourne les restaurants d'une catégorie spécifique, 
-par exemple ici la catégorie pris est 'cuisine chinoise'.
-Les restaurants sont ordonnée suivant leur évaluation 
-et si ils on les même évolutions on les ordonne suivant l’ordre alphabétique de leur nom.
+Cette transaction retourne les restaurants d'une catégorie spécifique,
+Par exemple ici la catégorie pris est 'cuisine chinoise'.
+Les restaurants sont ordonnée suivant leur évaluation
+et si ils ont les mêmes évolutions on les ordonne suivant l’ordre alphabétique de leur nom.
 *****************/
+
 Begin;
 SELECT Restaurant.idRest, Restaurant.nomRest 
 FROM CategorieRest 
