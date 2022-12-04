@@ -139,7 +139,7 @@ CREATE TABLE `CategorieRest` (
 
 LOCK TABLES `CategorieRest` WRITE;
 /*!40000 ALTER TABLE `CategorieRest` DISABLE KEYS */;
-INSERT INTO `CategorieRest` VALUES (4,'cuisine à la bière'),(5,'cuisine chinoise'),(3,'cuisine italienne'),(4,'cuisine régionale'),(4,'cuisine savoyarde'),(1,'cuisine turque'),(4,'cuisines royales'),(1,'Fast food'),(2,'Fast food');
+INSERT INTO `CategorieRest` VALUES (4,'cuisine à la bière'),(5,'cuisine à la bière'),(6,'cuisine arabe'),(5,'cuisine au beurre'),(5,'cuisine chinoise'),(3,'cuisine de la mer'),(2,'cuisine des alpes'),(4,'cuisine du nord'),(3,'cuisine italienne'),(6,'cuisine méditerranéenne'),(4,'cuisine régionale'),(4,'cuisine savoyarde'),(1,'cuisine turque'),(4,'cuisines royales'),(1,'Fast food'),(2,'Fast food');
 /*!40000 ALTER TABLE `CategorieRest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +153,9 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `CategorieRestoAssocieOrdreDecroissant` AS SELECT 
  1 AS `categorie`,
- 1 AS `idRest`*/;
+ 1 AS `idRest`,
+ 1 AS `nomRest`,
+ 1 AS `noteRest`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -194,7 +196,7 @@ DROP TABLE IF EXISTS `ComLivraison`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ComLivraison` (
   `idComLivraison` int NOT NULL,
-  `adresseLivraison` varchar(30) DEFAULT NULL,
+  `adresseLivraison` varchar(100) DEFAULT NULL,
   `textLivreur` varchar(100) DEFAULT NULL,
   `heureLivraison` date DEFAULT NULL,
   PRIMARY KEY (`idComLivraison`),
@@ -208,6 +210,7 @@ CREATE TABLE `ComLivraison` (
 
 LOCK TABLES `ComLivraison` WRITE;
 /*!40000 ALTER TABLE `ComLivraison` DISABLE KEYS */;
+INSERT INTO `ComLivraison` VALUES (20,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-04'),(21,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-04'),(22,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-04'),(23,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-04');
 /*!40000 ALTER TABLE `ComLivraison` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +238,7 @@ CREATE TABLE `ComSurPlace` (
 
 LOCK TABLES `ComSurPlace` WRITE;
 /*!40000 ALTER TABLE `ComSurPlace` DISABLE KEYS */;
-INSERT INTO `ComSurPlace` VALUES (1,6,'midi'),(7,6,'midi'),(8,6,'midi'),(9,6,'soir'),(10,6,'soir');
+INSERT INTO `ComSurPlace` VALUES (1,6,'midi'),(7,6,'midi'),(8,6,'midi'),(9,6,'soir'),(10,6,'soir'),(11,7,'soir'),(12,7,'soir'),(13,7,'soir'),(14,5,'midi'),(15,5,'midi'),(17,5,'midi'),(18,5,'midi');
 /*!40000 ALTER TABLE `ComSurPlace` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,7 +271,7 @@ CREATE TABLE `Commande` (
 
 LOCK TABLES `Commande` WRITE;
 /*!40000 ALTER TABLE `Commande` DISABLE KEYS */;
-INSERT INTO `Commande` VALUES (1,'2022-11-13','2022-11-13',30,'attente de confirmation','surPlace'),(2,'2022-11-14','2022-11-14',30,'disponible','livraison'),(3,'2022-11-14','2022-11-14',30,'disponible','livraison'),(4,'2022-11-16','2022-11-16',30,'annulee par le client','emporte'),(5,'2022-11-17','2022-11-17',30,'attente de confirmation','emporte'),(6,'2022-11-13','2022-11-13',30,'attente de confirmation','surPlace'),(7,'2022-11-13','2022-11-13',30,'validee','surPlace'),(8,'2022-11-13','2022-11-13',30,'validee','surPlace'),(9,'2022-11-13','2022-11-13',30,'validee','surPlace'),(10,'2022-11-13','2022-11-13',30,'validee','surPlace');
+INSERT INTO `Commande` VALUES (1,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(2,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(3,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(4,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(5,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(6,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(7,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(8,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(9,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(10,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(11,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(12,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(13,'2022-11-13','2022-12-04',20,'attente de confirmation','surPlace'),(14,'2022-12-04','2022-12-04',1,'attente de confirmation','livraison'),(15,'2022-12-04','2022-12-04',115,'validee','livraison'),(16,'2022-12-04','2022-12-04',1,'validee','emporte'),(17,'2022-12-04','2022-12-04',115,'validee','surPlace'),(18,'2022-12-04','2022-12-04',115,'validee','surPlace'),(19,'2022-12-04','2022-12-04',115,'validee','livraison'),(20,'2022-12-04','2022-12-04',115,'validee','livraison'),(21,'2022-12-04','2022-12-04',115,'validee','livraison'),(22,'2022-12-04','2022-12-04',115,'validee','livraison'),(23,'2022-12-04','2022-12-04',115,'validee','livraison'),(24,'2022-12-04','2022-12-04',115,'validee','emporte');
 /*!40000 ALTER TABLE `Commande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,7 +303,7 @@ CREATE TABLE `Evaluation` (
 
 LOCK TABLES `Evaluation` WRITE;
 /*!40000 ALTER TABLE `Evaluation` DISABLE KEYS */;
-INSERT INTO `Evaluation` VALUES (1,1,'2022-11-13','2022-11-13','good food',4),(2,2,'2022-11-13','2022-11-13','good food',4),(3,3,'2022-11-13','2022-11-13','good food',4),(4,4,'2022-11-13','2022-11-13','good food',4),(5,5,'2022-11-13','2022-11-13','good food',4),(6,6,'2022-11-13','2022-11-13','good food',4),(7,1,'2022-11-13','2022-11-13','good food',4),(8,6,'2022-11-13','2022-11-13','good food',4),(9,6,'2022-11-13','2022-11-13','good food',4);
+INSERT INTO `Evaluation` VALUES (1,1,'2022-11-13','2022-11-13','good food',4),(2,2,'2022-11-13','2022-11-13','good food',4),(3,3,'2022-11-13','2022-11-13','good food',4),(4,4,'2022-11-13','2022-11-13','good food',4),(5,5,'2022-11-13','2022-11-13','good food',4),(6,6,'2022-11-13','2022-11-13','good food',4),(7,1,'2022-11-13','2022-11-13','good food',4),(8,6,'2022-11-13','2022-11-13','good food',4),(9,6,'2022-11-13','2022-11-13','good food',4),(10,4,'2022-11-13','2022-11-13','good food',3),(11,1,'2022-11-13','2022-11-13','good food',2),(12,1,'2022-11-14','2022-11-14','good food',5),(13,1,'2022-11-14','2022-11-14','bad food',2),(14,2,'2022-12-04','2022-12-04','good food',4),(15,2,'2022-12-04','2022-12-04','good food',4),(17,2,'2022-12-04','2022-12-04','good food',4),(18,2,'2022-12-04','2022-12-04','good food',4),(19,2,'2022-12-04','2022-12-04','good food',4),(20,2,'2022-12-04','2022-12-04','good food',4),(21,2,'2022-12-04','2022-12-04','good food',4),(22,NULL,NULL,NULL,NULL,NULL),(23,NULL,NULL,NULL,NULL,NULL),(24,2,'2022-12-04','2022-12-04','good food',4);
 /*!40000 ALTER TABLE `Evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,6 +329,57 @@ LOCK TABLES `Horaire` WRITE;
 /*!40000 ALTER TABLE `Horaire` DISABLE KEYS */;
 INSERT INTO `Horaire` VALUES ('midi'),('midi et soir'),('soir');
 /*!40000 ALTER TABLE `Horaire` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Jour`
+--
+
+DROP TABLE IF EXISTS `Jour`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Jour` (
+  `jour` varchar(30) NOT NULL,
+  PRIMARY KEY (`jour`),
+  CONSTRAINT `Jour_chk_1` CHECK ((`jour` in (_utf8mb4'lundi',_utf8mb4'mardi',_utf8mb4'mercredi',_utf8mb4'jeudi',_utf8mb4'vendredi',_utf8mb4'samedi',_utf8mb4'dimanche')))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Jour`
+--
+
+LOCK TABLES `Jour` WRITE;
+/*!40000 ALTER TABLE `Jour` DISABLE KEYS */;
+INSERT INTO `Jour` VALUES ('dimanche'),('jeudi'),('lundi'),('mardi'),('mercredi'),('samedi'),('vendredi');
+/*!40000 ALTER TABLE `Jour` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `JourResto`
+--
+
+DROP TABLE IF EXISTS `JourResto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `JourResto` (
+  `idRest` int NOT NULL,
+  `jour` varchar(30) NOT NULL,
+  PRIMARY KEY (`idRest`,`jour`),
+  KEY `jour` (`jour`),
+  CONSTRAINT `JourResto_ibfk_1` FOREIGN KEY (`jour`) REFERENCES `Jour` (`jour`),
+  CONSTRAINT `JourResto_ibfk_2` FOREIGN KEY (`idRest`) REFERENCES `Restaurant` (`idRest`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `JourResto`
+--
+
+LOCK TABLES `JourResto` WRITE;
+/*!40000 ALTER TABLE `JourResto` DISABLE KEYS */;
+INSERT INTO `JourResto` VALUES (4,'dimanche'),(1,'jeudi'),(2,'jeudi'),(3,'jeudi'),(4,'jeudi'),(5,'jeudi'),(6,'jeudi'),(1,'lundi'),(2,'lundi'),(3,'lundi'),(4,'lundi'),(5,'lundi'),(6,'lundi'),(1,'mardi'),(2,'mardi'),(3,'mardi'),(4,'mardi'),(5,'mardi'),(6,'mardi'),(1,'mercredi'),(2,'mercredi'),(3,'mercredi'),(4,'mercredi'),(5,'mercredi'),(6,'mercredi'),(3,'samedi'),(6,'samedi'),(1,'vendredi'),(2,'vendredi'),(5,'vendredi');
+/*!40000 ALTER TABLE `JourResto` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -383,7 +437,7 @@ CREATE TABLE `PasserCommande` (
 
 LOCK TABLES `PasserCommande` WRITE;
 /*!40000 ALTER TABLE `PasserCommande` DISABLE KEYS */;
-INSERT INTO `PasserCommande` VALUES (1,1,1),(2,2,2),(3,3,3),(1,4,4),(4,5,5),(3,6,6),(2,7,1),(1,8,6),(1,9,3),(3,10,4);
+INSERT INTO `PasserCommande` VALUES (1,1,1),(2,2,2),(3,3,3),(1,4,4),(4,5,5),(3,6,6),(2,7,1),(1,8,6),(1,9,3),(3,10,4),(2,11,1),(2,12,1),(2,13,1),(3,15,1),(3,16,1),(3,17,1),(3,18,1),(3,19,1),(3,20,1),(3,21,1),(3,22,1),(3,23,1),(3,24,1);
 /*!40000 ALTER TABLE `PasserCommande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -443,7 +497,7 @@ CREATE TABLE `PlatsDeCommande` (
 
 LOCK TABLES `PlatsDeCommande` WRITE;
 /*!40000 ALTER TABLE `PlatsDeCommande` DISABLE KEYS */;
-INSERT INTO `PlatsDeCommande` VALUES (1,1,1,3),(1,1,3,3),(2,2,1,3),(2,2,3,3),(3,3,1,3),(3,3,3,3),(4,4,2,3),(4,4,3,3),(5,5,3,3),(5,5,4,3),(6,6,3,3),(7,1,1,3),(7,1,3,3),(8,6,2,3),(8,6,3,3),(9,3,1,3),(9,3,3,3),(10,4,2,1),(10,4,3,3);
+INSERT INTO `PlatsDeCommande` VALUES (1,1,1,3),(1,1,3,3),(2,2,1,3),(2,2,3,3),(3,3,1,3),(3,3,3,3),(4,4,2,3),(4,4,3,3),(5,5,3,3),(5,5,4,3),(6,6,3,3),(7,1,1,3),(7,1,3,3),(8,6,2,3),(8,6,3,3),(9,3,1,3),(9,3,3,3),(10,4,2,1),(10,4,3,3),(11,1,2,1),(11,1,3,3),(12,4,2,1),(12,4,3,3),(13,1,2,1),(13,1,3,3),(14,1,1,3),(14,1,3,5),(15,1,1,3),(15,1,2,5),(15,1,3,5),(16,1,1,3),(16,1,2,5),(16,1,3,5),(17,1,1,3),(17,1,2,5),(17,1,3,5),(18,1,1,3),(18,1,2,5),(18,1,3,5),(19,1,1,3),(19,1,2,5),(19,1,3,5),(20,1,1,3),(20,1,2,5),(20,1,3,5),(21,1,1,3),(21,1,2,5),(21,1,3,5),(22,1,1,3),(22,1,2,5),(22,1,3,5),(23,1,1,3),(23,1,2,5),(23,1,3,5),(24,1,1,3),(24,1,2,5),(24,1,3,5);
 /*!40000 ALTER TABLE `PlatsDeCommande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -456,7 +510,7 @@ DROP TABLE IF EXISTS `PrixCommade`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `PrixCommade` AS SELECT 
- 1 AS `SUM(prixPlat*Quantite)`,
+ 1 AS `prixcommande`,
  1 AS `idCommande`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -581,7 +635,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `CategorieRestoAssocieOrdreDecroissant` AS select `CategorieRest`.`categorie` AS `categorie`,`Restaurant`.`idRest` AS `idRest` from ((`CategorieRest` join `Restaurant` on((`Restaurant`.`idRest` = `CategorieRest`.`idRest`))) join `NoteMoyenneDesRest` on((`NoteMoyenneDesRest`.`idRest` = `Restaurant`.`idRest`))) order by `NoteMoyenneDesRest`.`noteRest` */;
+/*!50001 VIEW `CategorieRestoAssocieOrdreDecroissant` AS select `CategorieRest`.`categorie` AS `categorie`,`Restaurant`.`idRest` AS `idRest`,`Restaurant`.`nomRest` AS `nomRest`,`NoteMoyenneDesRest`.`noteRest` AS `noteRest` from ((`CategorieRest` join `Restaurant` on((`Restaurant`.`idRest` = `CategorieRest`.`idRest`))) join `NoteMoyenneDesRest` on((`NoteMoyenneDesRest`.`idRest` = `Restaurant`.`idRest`))) group by `CategorieRest`.`categorie`,`CategorieRest`.`idRest` order by `NoteMoyenneDesRest`.`noteRest` desc,`Restaurant`.`nomRest` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -599,7 +653,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `NbrPlaceRestante` AS select `Restaurant`.`idRest` AS `idRest`,`Restaurant`.`nomRest` AS `nomRest`,`Commande`.`dateCommande` AS `dateCommande`,`ComSurPlace`.`heureArriveSurPlace` AS `heureArriveSurPlace`,(`Restaurant`.`nbPlaceRest` - sum(`ComSurPlace`.`nbrPersonne`)) AS `placeRestante` from (((`PasserCommande` join `ComSurPlace` on((`ComSurPlace`.`idComSurPlace` = `PasserCommande`.`idCommande`))) join `Restaurant` on((`Restaurant`.`idRest` = `PasserCommande`.`idRest`))) join `Commande` on((`Commande`.`idCommande` = `PasserCommande`.`idCommande`))) where (`Commande`.`statutCommande` = 'validee') */;
+/*!50001 VIEW `NbrPlaceRestante` AS select `Restaurant`.`idRest` AS `idRest`,`Restaurant`.`nomRest` AS `nomRest`,`Commande`.`dateCommande` AS `dateCommande`,`ComSurPlace`.`heureArriveSurPlace` AS `heureArriveSurPlace`,(`Restaurant`.`nbPlaceRest` - sum(`ComSurPlace`.`nbrPersonne`)) AS `placeRestante` from (((`PasserCommande` join `ComSurPlace` on((`ComSurPlace`.`idComSurPlace` = `PasserCommande`.`idCommande`))) join `Restaurant` on((`Restaurant`.`idRest` = `PasserCommande`.`idRest`))) join `Commande` on((`Commande`.`idCommande` = `PasserCommande`.`idCommande`))) where (`Commande`.`statutCommande` = 'validee') group by `Restaurant`.`idRest`,`Commande`.`dateCommande`,`ComSurPlace`.`heureArriveSurPlace`,`Restaurant`.`nomRest` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -635,7 +689,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `PrixCommade` AS select sum((`Plat`.`prixPlat` * `PlatsDeCommande`.`Quantite`)) AS `SUM(prixPlat*Quantite)`,`PlatsDeCommande`.`idCommande` AS `idCommande` from (`Plat` join `PlatsDeCommande` on(((`Plat`.`idPlat` = `PlatsDeCommande`.`idPlat`) and (`Plat`.`idRest` = `PlatsDeCommande`.`idRest`)))) group by `PlatsDeCommande`.`idCommande` */;
+/*!50001 VIEW `PrixCommade` AS select sum((`Plat`.`prixPlat` * `PlatsDeCommande`.`Quantite`)) AS `prixcommande`,`PlatsDeCommande`.`idCommande` AS `idCommande` from (`Plat` join `PlatsDeCommande` on(((`Plat`.`idPlat` = `PlatsDeCommande`.`idPlat`) and (`Plat`.`idRest` = `PlatsDeCommande`.`idRest`)))) group by `PlatsDeCommande`.`idCommande` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -649,4 +703,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-03 12:01:08
+-- Dump completed on 2022-12-04  3:53:07

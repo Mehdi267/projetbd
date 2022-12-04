@@ -19,6 +19,15 @@ INSERT INTO Statut VALUES ( 'annulee par le client');
 INSERT INTO Statut VALUES ( 'annulee par le restaurant');
 
 
+INSERT INTO Jour VALUES ('lundi');
+INSERT INTO Jour VALUES ('mardi');
+INSERT INTO Jour VALUES ('mercredi');
+INSERT INTO Jour VALUES ('jeudi');
+INSERT INTO Jour VALUES ('vendredi');
+INSERT INTO Jour VALUES ('samedi');
+INSERT INTO Jour VALUES ('dimanche');
+
+
 INSERT INTO Client VALUES (1, 'mehdi@gmail.com', '123456789', 'Kamoun', 'Mehdi', '2 rue de la liberté, Grenoble');
 INSERT INTO Client VALUES (2, 'iheb@gmail.com', 'iheb45688', 'Karoui', 'Iheb', '3 rue de la liberté, Grenoble');
 INSERT INTO Client VALUES (3, 'sami@gmail.com', 'sami123456789', 'Trabelsi', 'Sami', '1 rue de la liberté, Grenoble');
@@ -31,22 +40,69 @@ INSERT INTO Restaurant VALUES (4, 'Blue_Diamond@gmail.com', 'Blue Diamond', '2 r
 INSERT INTO Restaurant VALUES (5, 'Dragonfly_China@gmail.com', 'Dragonfly China', '17 rue de Stalingrad, Grenoble', 30, 'Every bowl of noodles is a surprise.', 'soir') ;
 INSERT INTO Restaurant VALUES (6, 'Tunisian_magic@gmail.com', 'Tunisian magic', '17 rue de Victoire, Grenoble', 50, 'Best food that you will ever eat.', 'soir') ;
 
+INSERT INTO JourResto VALUES (1,'lundi');
+INSERT INTO JourResto VALUES (1,'mardi');
+INSERT INTO JourResto VALUES (1,'mercredi');
+INSERT INTO JourResto VALUES (1,'jeudi');
+INSERT INTO JourResto VALUES (1,'vendredi');
+
+INSERT INTO JourResto VALUES (2,'lundi');
+INSERT INTO JourResto VALUES (2,'mardi');
+INSERT INTO JourResto VALUES (2,'mercredi');
+INSERT INTO JourResto VALUES (2,'jeudi');
+INSERT INTO JourResto VALUES (2,'vendredi');
+
+INSERT INTO JourResto VALUES (3,'lundi');
+INSERT INTO JourResto VALUES (3,'mardi');
+INSERT INTO JourResto VALUES (3,'mercredi');
+INSERT INTO JourResto VALUES (3,'jeudi');
+INSERT INTO JourResto VALUES (3,'samedi');
+
+INSERT INTO JourResto VALUES (4,'lundi');
+INSERT INTO JourResto VALUES (4,'mardi');
+INSERT INTO JourResto VALUES (4,'mercredi');
+INSERT INTO JourResto VALUES (4,'jeudi');
+INSERT INTO JourResto VALUES (4,'dimanche');
+
+INSERT INTO JourResto VALUES (5,'lundi');
+INSERT INTO JourResto VALUES (5,'mardi');
+INSERT INTO JourResto VALUES (5,'mercredi');
+INSERT INTO JourResto VALUES (5,'jeudi');
+INSERT INTO JourResto VALUES (5,'vendredi');
+
+INSERT INTO JourResto VALUES (6,'lundi');
+INSERT INTO JourResto VALUES (6,'mardi');
+INSERT INTO JourResto VALUES (6,'mercredi');
+INSERT INTO JourResto VALUES (6,'jeudi');
+INSERT INTO JourResto VALUES (6,'samedi');
+
+
+
 
 INSERT INTO CategorieRest VALUES (1, 'cuisine turque');
 INSERT INTO CategorieRest VALUES (1, 'Fast food');
 
 INSERT INTO CategorieRest VALUES (2, 'Fast food');
+INSERT INTO CategorieRest VALUES (2, 'cuisine des alpes');
+
 
 INSERT INTO CategorieRest VALUES (3, 'cuisine italienne');
-INSERT INTO CategorieRest VALUES (3, 'cuisine italienne');
+INSERT INTO CategorieRest VALUES (3, 'cuisine de la mer');
 
 INSERT INTO CategorieRest VALUES (4, 'cuisine régionale');
 INSERT INTO CategorieRest VALUES (4, 'cuisines royales');
 INSERT INTO CategorieRest VALUES (4, 'cuisine savoyarde');
 INSERT INTO CategorieRest VALUES (4, 'cuisine à la bière');
+INSERT INTO CategorieRest VALUES (4, 'cuisine du nord');
 
 
 INSERT INTO CategorieRest VALUES (5, 'cuisine chinoise');
+INSERT INTO CategorieRest VALUES (5, 'cuisine à la bière');
+INSERT INTO CategorieRest VALUES (5, 'cuisine au beurre');
+
+
+INSERT INTO CategorieRest VALUES (6, 'cuisine arabe');
+INSERT INTO CategorieRest VALUES (6, 'cuisine méditerranéenne');
 
 
 
@@ -218,13 +274,19 @@ INSERT INTO Commande VALUES (7, DATE '2022-11-13',  STR_TO_DATE('20221113 103545
 INSERT INTO Commande VALUES (8, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
 INSERT INTO Commande VALUES (9, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
 INSERT INTO Commande VALUES (10, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (11, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (12, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (13, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
+
 
 INSERT INTO ComSurPlace VALUES (1, 6, 'midi'); -- restaurant
 INSERT INTO ComSurPlace VALUES (7, 6, 'midi');
 INSERT INTO ComSurPlace VALUES (8, 6, 'midi');
 INSERT INTO ComSurPlace VALUES (9, 6, 'soir');
 INSERT INTO ComSurPlace VALUES (10, 6, 'soir');
-
+INSERT INTO ComSurPlace VALUES (11, 7, 'soir');
+INSERT INTO ComSurPlace VALUES (12, 7, 'soir');
+INSERT INTO ComSurPlace VALUES (13, 7, 'soir');
 
 --client/commande/rest
 INSERT INTO PasserCommande VALUES (1,1,1);
@@ -237,6 +299,11 @@ INSERT INTO PasserCommande VALUES (2,7,1);
 INSERT INTO PasserCommande VALUES (1,8,6);
 INSERT INTO PasserCommande VALUES (1,9,3);
 INSERT INTO PasserCommande VALUES (3,10,4);
+INSERT INTO PasserCommande VALUES (2,11,1);
+INSERT INTO PasserCommande VALUES (2,12,1);
+INSERT INTO PasserCommande VALUES (2,13,1);
+
+
 
 -- comande / rest / plat
 INSERT INTO PlatsDeCommande VALUES (1,1,1, 3);
@@ -270,15 +337,17 @@ INSERT INTO PlatsDeCommande VALUES (9,3,1, 3);
 INSERT INTO PlatsDeCommande VALUES (10,4,3, 3);
 INSERT INTO PlatsDeCommande VALUES (10,4,2, 1);
 
+INSERT INTO PlatsDeCommande VALUES (11,1,3, 3);
+INSERT INTO PlatsDeCommande VALUES (11,1,2, 1);
 
-CREATE TABLE Evaluation(idCommandeEval int PRIMARY KEY,
-                       idRest INT,
-                       dateEval DATE,
-                       heureEval DATE,
-                       avisEval VARCHAR(100),
-                       noteEval INT CHECK(noteEval BETWEEN 0 and 5),
-                       FOREIGN KEY (idRest) REFERENCES Restaurant(idRest),
-                       FOREIGN KEY(idCommandeEval) REFERENCES Commande(idCommande));
+
+INSERT INTO PlatsDeCommande VALUES (12,4,3, 3);
+INSERT INTO PlatsDeCommande VALUES (12,4,2, 1);
+
+INSERT INTO PlatsDeCommande VALUES (13,1,3, 3);
+INSERT INTO PlatsDeCommande VALUES (13,1,2, 1);
+
+
 
 INSERT INTO Evaluation VALUES (1, 1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  4);
 INSERT INTO Evaluation VALUES (2, 2, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  4);
@@ -289,4 +358,8 @@ INSERT INTO Evaluation VALUES (6, 6, DATE '2022-11-13',  STR_TO_DATE('20221113 1
 INSERT INTO Evaluation VALUES (7, 1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  4);
 INSERT INTO Evaluation VALUES (8, 6, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  4);
 INSERT INTO Evaluation VALUES (9, 6, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  4);
+INSERT INTO Evaluation VALUES (10, 4, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  3);
+INSERT INTO Evaluation VALUES (11, 1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  2);
+INSERT INTO Evaluation VALUES (12, 1, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 'good food',  5);
+INSERT INTO Evaluation VALUES (13, 1, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 'bad food',  1.5);
 

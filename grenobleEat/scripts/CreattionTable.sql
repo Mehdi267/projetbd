@@ -3,6 +3,11 @@ CREATE TABLE Statut(
        'en livraison', 'annulee par le client', 'annulee par le restaurant'))
        );
 
+CREATE TABLE Jour(
+       jour VARCHAR(30) PRIMARY KEY CHECK(jour IN ('lundi', 'mardi', 'mercredi',
+       'jeudi', 'vendredi', 'samedi', 'dimanche'))
+       );
+
 CREATE TABLE Allergene(nomAllergene VARCHAR(20) NOT NULL PRIMARY KEY);
 
 CREATE TABLE Categorie(categorie VARCHAR(40) PRIMARY KEY);
@@ -46,7 +51,7 @@ CREATE TABLE Commande(idCommande INT  PRIMARY KEY,
            FOREIGN KEY (typeCommande)  REFERENCES typeCommande(type));
 
 CREATE TABLE ComLivraison(idComLivraison INT PRIMARY KEY,
-                adresseLivraison VARCHAR(30),
+                adresseLivraison VARCHAR(100),
                 textLivreur VARCHAR(100),
                 heureLivraison DATE,
                 FOREIGN KEY (idComLivraison) REFERENCES Commande(idCommande));
@@ -81,6 +86,13 @@ CREATE TABLE CategorieRest(idRest INT,
                            PRIMARY KEY(idRest, categorie),
                            FOREIGN KEY (categorie) REFERENCES Categorie(categorie),
                            FOREIGN KEY (idRest) REFERENCES Restaurant(idRest));
+
+CREATE TABLE JourResto(    idRest INT,
+                        jour VARCHAR(30),
+                        PRIMARY KEY(idRest, jour),
+                        FOREIGN KEY (jour) REFERENCES Jour(jour),
+                        FOREIGN KEY (idRest) REFERENCES Restaurant(idRest));
+
 CREATE TABLE AllergenePlat(idPlat INT,
                            idRest INT,
                            allergene VARCHAR(20),
@@ -113,11 +125,17 @@ CREATE VIEW PrixCommade AS (
 		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat and Plat.idRest = PlatsDeCommande.idRest
 		GROUP BY idCommande);
 
+CREATE VIEW PrixCommade AS (
+		SELECT SUM(prixPlat*Quantite) as prixcommande, idCommande
+		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat and Plat.idRest = PlatsDeCommande.idRest
+		GROUP BY idCommande);
+                
 CREATE VIEW CategorieRestoAssocieOrdreDecroissant AS (
         SELECT categorie, Restaurant.idRest, Restaurant.nomRest, noteRest
         FROM CategorieRest
         JOIN Restaurant ON   Restaurant.idRest = CategorieRest.idRest
         JOIN NoteMoyenneDesRest ON NoteMoyenneDesRest.idRest =  Restaurant.idRest
+        group by categorie, CategorieRest.idRest
         ORDER BY noteRest DESC,  Restaurant.nomRest );
 
 CREATE VIEW NbrPlaceRestante AS (
@@ -126,60 +144,19 @@ CREATE VIEW NbrPlaceRestante AS (
         JOIN ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
         JOIN Restaurant ON   Restaurant.idRest = PasserCommande.idRest
         JOIN Commande ON   Commande.idCommande = PasserCommande.idCommande
-        WHERE Commande.statutCommande = 'validee' );
-
-
-
-
-
-        SELECT categorie, CategorieRest.idRest, noteRest
-        FROM CategorieRest
-        LEFT OUTER JOIN NoteMoyenneDesRest ON NoteMoyenneDesRest.idRest = CategorieRest.idRest;
-        group by categorie ;
-
-        SELECT categorie, CategorieRest.idRest
-        FROM CategorieRest
-        JOIN NoteMoyenneDesRest ON NoteMoyenneDesRest.idRest = CategorieRest.idRest;
-        group by categorie ;
-
-
-
-SELECT Restaurant.idRest, Restaurant.nomRest, dateCommande, heureArriveSurPlace, nbPlaceRest-sum(nbrPersonne) as placeRestante
-        FROM PasserCommande 
-        JOIN ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
-        JOIN Restaurant ON   Restaurant.idRest = PasserCommande.idRest
-        JOIN Commande ON   Commande.idCommande = PasserCommande.idCommande
         WHERE Commande.statutCommande = 'validee'
-        group by Restaurant.idRest and dateCommande and heureArriveSurPlace and Restaurant.nomRest  ;
-
-SELECT PasserCommande.idRest, Restaurant.nomRest, dateCommande, heureArriveSurPlace, nbPlaceRest-sum(nbrPersonne) as placeRestante
-        FROM PasserCommande 
-        JOIN ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
-        JOIN Restaurant ON   Restaurant.idRest = PasserCommande.idRest
-        JOIN Commande ON   Commande.idCommande = PasserCommande.idCommande
-        WHERE Commande.statutCommande = 'validee';
-
-
+        group by Restaurant.idRest , dateCommande , heureArriveSurPlace , Restaurant.nomRest   );
 
 
 
 SELECT *
-        FROM PasserCommande 
-        JOIN  ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
-        JOIN  Restaurant ON   Restaurant.idRest = PasserCommande.idRest
-        JOIN  Commande ON   Commande.idCommande = PasserCommande.idCommande
-        WHERE Commande.statutCommande = 'validee'
-        group by Restaurant.idRest;
-        and ComSurPlace.heureArriveSurPlace;
-        and dateCommande and heureArriveSurPlace;
-
-
-
-SELECT Restaurant.idRest
-        FROM PasserCommande 
-        INNER JOIN ComSurPlace ON   ComSurPlace.idComSurPlace = PasserCommande.idCommande
-        INNER JOIN Restaurant ON   Restaurant.idRest = PasserCommande.idRest
-        INNER JOIN Commande ON   Commande.idCommande = PasserCommande.idCommande;
+        FROM CategorieRest join Restaurant on CategorieRest.idRest = Restaurant.idRest join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest
+        WHERE categorie in (
+        SELECT categorie
+        FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
+			WHERE idClient = 2
+        )
+        ORDER BY noteRest DESC, nomRest ASC;
 
 
 
