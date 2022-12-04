@@ -28,7 +28,7 @@ where idCommande = (
 La commande a été faite;*/
 
 INSERT INTO PasserCommande(idCommande, idClient, idRest)
-SELECT  max(idCommande),3,1
+SELECT  max(idCommande),3,2
 from Commande;
 
 /*Dans une commande de livraison, on doit ajouter un instance 
@@ -66,13 +66,13 @@ INSERT INTO PlatsDeCommande(idCommande, idRest, idPlat, Quantite)
 SELECT  max(idCommande), 1 ,3 ,5
 from Commande; 
 
-/*--Ensuite si l'utilsateur et le resto valide la commande, on fait l'update de la commande du status de la commande
--- et on fait une évalution si on veut.;*/
+/*--Ensuite si l'utilsateur et le resto valide la commande, 
+on fait l'update de la commande du status de la commande*/
 
 update Commande set
 prixCommande = (select prixcommande from PrixCommade 
                 where idCommande = ( select * from (select max(idCommande) from Commande ) as t) ),
-statutCommande = 'validee'
+statutCommande = 'en livraison'
 where idCommande = ( 
     select * from (select max(idCommande) from Commande ) as t
 );  

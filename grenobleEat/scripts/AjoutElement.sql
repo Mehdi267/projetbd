@@ -14,7 +14,7 @@ INSERT INTO typeCommande VALUES ( 'emporte');
 INSERT INTO Statut VALUES ( 'attente de confirmation'); 
 INSERT INTO Statut VALUES ( 'validee');
 INSERT INTO Statut VALUES ( 'disponible'); 
-INSERT INTO Statut VALUES (  'en livraison'); 
+INSERT INTO Statut VALUES ( 'en livraison'); 
 INSERT INTO Statut VALUES ( 'annulee par le client');
 INSERT INTO Statut VALUES ( 'annulee par le restaurant');
 

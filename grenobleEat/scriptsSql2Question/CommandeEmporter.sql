@@ -30,23 +30,23 @@ where idCommande = (
 --La commande a été faite*/
 
 INSERT INTO PasserCommande(idCommande, idClient, idRest)
-SELECT  max(idCommande),3,1
+SELECT  max(idCommande),3,2
 from Commande;
 
 /*On doit ajouter les plats de la commande
 --On soit aussi d'assurer que le restaurant correspand au restaurent de passer commande */
 
 INSERT INTO PlatsDeCommande(idCommande, idRest, idPlat, Quantite)
-SELECT  max(idCommande), 1 ,1 ,3
+SELECT  max(idCommande), 2,1 ,3
 from Commande;                   
 
 
 INSERT INTO PlatsDeCommande(idCommande, idRest, idPlat, Quantite)
-SELECT  max(idCommande), 1 ,2 ,5
+SELECT  max(idCommande), 2 ,2 ,5
 from Commande;                   
 
 INSERT INTO PlatsDeCommande(idCommande, idRest, idPlat, Quantite)
-SELECT  max(idCommande), 1 ,3 ,5
+SELECT  max(idCommande), 2 ,3 ,5
 from Commande; 
 
 
@@ -57,7 +57,7 @@ from Commande;
 update Commande set
 prixCommande = (select prixcommande from PrixCommade 
                 where idCommande = ( select * from (select max(idCommande) from Commande ) as t) ),
-statutCommande = 'validee'
+statutCommande = 'disponible'
 where idCommande = ( 
     select * from (select max(idCommande) from Commande ) as t
 );  
@@ -73,7 +73,7 @@ idRest = 2,
 dateEval = CURDATE(),
 heureEval = CURRENT_TIME(),
 avisEval = "good food",
-noteEval = 4
+noteEval = 5
 where idCommandeEval = ( 
     select * from (select max(idCommande) from Commande ) as t
 );  

@@ -6,6 +6,20 @@ On annule la commande
 *****************/
 
 Begin;
+
+SELECT * FROM CategorieRest join Restaurant on CategorieRest.idRest = Restaurant.idRest join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest
+WHERE categorie in (
+SELECT categorie
+FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
+			WHERE idClient = client)
+and idRest in (
+	SELECT idRest
+		FROM NbrPlaceRestante
+		WHERE NbrPlaceRestante > (SELECT nbrPersonne FROM ComSurPlace WHERE idCommande=’commandeEnCours’) )
+
+ORDER BY noteRest DESC, nomRest ASC;
+
+
 SELECT placeRestante
     FROM NbrPlaceRestante 
     WHERE idRest = 1 
