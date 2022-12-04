@@ -113,45 +113,10 @@ public class JavaConnectorDB {
 
     }
 
-    public static int getNombreOfPlacesLeft(String restName) {
-        // TODO prepare the right query to get the number of places left in this
-        // restaurant
-        try {
-            PreparedStatement ps = connectionTotheDatabase.prepareStatement("");
-
-            ResultSet rs = ps.executeQuery();
-            return rs.getInt("NbrPlace");
-
-        } catch (Exception e) {
-            System.out.print("Impossible de récupérer le nombre de la places restant dans le restaurant ");
-            System.out.println(restName);
-            System.exit(1);
-        }
-
-        return -1;
-    }
-
     /**
-     * Récupérer le contenu d'une table
-     *
-     * Parameters:
-     *
-     * @param fields - liste des champs dont on veut récupérer la valeur dans la
-     *               table
-     *
-     *
-     * Return:
-     *
-     * @return List de Map contenant chaque ligne du tableau sous forme de clé -
-     *         valeur
-     *         Chaque ligne de la list est une ligne de la BD, et les paires clés valeurs sont les noms
-     *         des champs dans la table et leur valeurs
-     */
-    public static Map<Integer, Map<String, String>> fetchDataFromDB(String table, String[] fields) {
+     * Transform the results took from database to a map with key values for each line */
+    private static Map<Integer, Map<String, String>> buildResultMap(ResultSet rs, String[] fields){
         try {
-            String query = String.format("SELECT * FROM %s", table);
-            Statement st = connectionTotheDatabase.createStatement();
-            ResultSet rs = st.executeQuery(query);
             Map<String, String> lineValues = new HashMap<>();
             Map<Integer, Map<String, String>> results = new HashMap<>();
 
@@ -178,5 +143,112 @@ public class JavaConnectorDB {
 
         return null;
     }
+
+
+    /**
+     * Execute a query and build the result map */
+    private static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields){
+        try{
+            Statement st = connectionTotheDatabase.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            return buildResultMap(rs, fields);
+        }catch(SQLException e){
+            System.out.println("Une erreur est survenue lors de la récupération des données dans la BD");
+            System.exit(1);
+        }
+        return null;
+    }
+
+    /**
+     * Récupérer le contenu d'une table
+     *
+     * Parameters:
+     *
+     * @param fields - liste des champs dont on veut récupérer la valeur dans la
+     *               table
+     * @param table - table name to fetch from
+     *
+     *
+     * Return:
+     *
+     * @return List de Map contenant chaque ligne du tableau sous forme de clé -
+     *         valeur
+     *         Chaque ligne de la list est une ligne de la BD, et les paires clés valeurs sont les noms
+     *         des champs dans la table et leur valeurs
+     */
+    public static Map<Integer, Map<String, String>> fetchDataFromDB(String table, String[] fields) {
+        String query = String.format("SELECT * FROM %s", table);
+        return executeQueryAndBuildResult(query, fields);
+    }
+
+
+    /**
+     * Récupère les données dans une table de la base de données selon une condition
+     * de valeur sur un champ.
+     *
+     * Parameters:
+     * @param table - table dans laquelle on récupère les données
+     * @param fieldsToPrint - valeurs devant apparaître dans les résultats
+     * @param fieldTofilter - champ utilisé dans la condition
+     * @param valueTofilterWith - valeur que le champ filtré doit avoir dans les résultats
+     *
+     * Return:
+     * @return - map avec le numéro de ligne comme clé et la paire <champ_de_la_base_de_donnee, valeur> comme valeur */
+    public static Map<Integer, Map<String, String>> fetchDataFromDB(String table, String[] fieldsToPrint, String fieldTofilter, String valueTofilterWith){
+        String query = String.format("SELECT * FROM %s WHERE %s = %s", table, fieldTofilter, valueTofilterWith);
+        return executeQueryAndBuildResult(query, fieldsToPrint);
+    }
+
+
+    /**
+     * Exécuter une requête personnalisé, une requête différente de toutes les autres
+     *
+     * Parameters:
+     * @param query - La requête à exécuter
+     *
+     * Return:
+     * @return - le résultat de la requête dans un objet de type {@link ResultSet} */
+    public static ResultSet executeCustomQuery(String query){
+        try{
+            Statement st = connectionTotheDatabase.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            return rs;
+        }catch(SQLException e){
+            System.out.println("Erreur d'exécution de la requête vérifier votre connexion internet");
+            System.exit(1);
+        }
+        return null;
+    }
+
+    /**
+     * Exécuter une requête préparée ( {@link PreparedStatement} ) personnalisé, une requête différente de toutes les autres
+     *
+     * Parameters:
+     * @param query - La requête à exécuter
+     * @param values - les valeurs que les différents paramètres de la requêtre préparée
+     *
+     * Return:
+     * @return - le résultat de la requête dans un objet de type {@link ResultSet} */
+    public static ResultSet executeCustomQuery(String query, String ...values){
+        try{
+            PreparedStatement ps = connectionTotheDatabase.prepareStatement(query);
+            int value;
+            for(int i=0; i<values.length; i++){
+                try{
+                    value = Integer.parseInt(values[i]);
+                    ps.setInt(i+1, value);
+                }catch(Exception e){
+                    ps.setString(i+1, values[i]);
+                }
+            }
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        }catch(SQLException e){
+            System.out.println("Erreur d'exécution de la requête vérifier votre connexion internet");
+            System.exit(1);
+        }
+        return null;
+    }
+
 
 }
