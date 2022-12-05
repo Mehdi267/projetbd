@@ -14,7 +14,7 @@ public class Plat extends Table {
 
     /* Afficher la liste des plats pour que l'utilisateur fasse son choix */
     public void getMealList() {
-        String restId = Restaurant.getCurrentSelectedTable().get(fields[0]); // en supposant que le premier élément est la clé primaire
+        String restId = Restaurant.getCurrentSelectedTable().get(fields[1]); // en supposant que le premier élément est la clé primaire
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ");

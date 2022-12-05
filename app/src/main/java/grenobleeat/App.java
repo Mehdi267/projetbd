@@ -6,6 +6,7 @@ package grenobleeat;
 import java.util.Map;
 import java.util.Scanner;
 
+import grenobleeat.database.Categorie;
 import grenobleeat.database.ComSurPlace;
 import grenobleeat.database.JavaConnectorDB;
 import grenobleeat.database.Plat;
@@ -17,7 +18,7 @@ public class App {
 
     private static int[] choices = new int[5];
 
-    private static void mainMenu() {
+    private static void depthZero() {
 
         StringBuilder sb = new StringBuilder().append("1. Afficher nos catégories de restaurants\n")
                 .append("2. Afficher nos recommandations de catégories pour vous\n")
@@ -32,40 +33,44 @@ public class App {
 
         switch (choix) {
         case "1":
+            choices[0] = 1;
+            Categorie categorie = new Categorie();
+            categorie.getCategoryList();
+            categorie.selectCategory();
+            depthOne();
             break;
 
         case "2":
-            // TODO Print recommended restaurant
-            Plat.printMealsList();
             break;
 
         case "3":
+            break;
         }
+
 
         System.out.println("Mauvais choix");
     }
 
 
-    private static
-
     /**
      * Les fonctions qui sont exécutées en fonction du choix effectué au premier menu */
-    private static void depthZero(){
+    private static void depthOne(){
       if(choices[0] == 1){
+        Restaurant ourRestaurants = new Restaurant();
+        ourRestaurants.getRestaurantList();
+        ourRestaurants.selectRestaurant();
 
       }else if(choices[0] == 2){
 
       }else if(choices[0] == 3){
-        Restaurant ourRestaurants = new Restaurant();
-        ourRestaurants.getRestaurantList();
-        ourRestaurants.selectRestaurant();
-      }else if(choices[0] == 4){
+
+        }else if(choices[0] == 4){
 
       }
     }
 
 
-    private static void depthOne(){
+    private static void depthTwo(){
         if(choices[0] == 1){
 
         }else if(choices[0] == 2){
@@ -81,7 +86,7 @@ public class App {
     }
 
 
-    private static void depthTwo(){
+    private static void depthThree(){
         if(choices[1] == 1){
 
         }else if(choices[1] == 2){
@@ -105,7 +110,7 @@ public class App {
         }
     }
 
-    private static void depthThree(){
+    private static void depthFour(){
         if(choices[2] == 1){
 
         }else if(choices[2] == 2){

@@ -61,7 +61,7 @@ public class Table {
 
 
     /**
-     * Faire le choix d'une Restaurant depuis ceux qui ont été récupérés dans la base de données.
+     * Faire le choix d'une Table depuis ceux qui ont été récupérés dans la base de données.
      *
      * Parameters:
      * @param choice - choix de l'utilisateur
