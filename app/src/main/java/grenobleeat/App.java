@@ -6,6 +6,7 @@ package grenobleeat;
 import java.util.Map;
 import java.util.Scanner;
 
+import grenobleeat.database.ComSurPlace;
 import grenobleeat.database.JavaConnectorDB;
 import grenobleeat.database.Plat;
 import grenobleeat.database.Restaurant;
@@ -88,10 +89,28 @@ public class App {
         }else if(choices[1] == 3){
             Map<String, String> selectedType = TypeCommandeRest.getCurrentSelectedTable();
             if(selectedType.get("type").equals("SurPlace")){
-                int nbreDePlaceRequis =
-                int nombreDePlaceRest = Restaurant.getPlacesLeft("");
+                ComSurPlace.getNbPeopleFromUser();
+                ComSurPlace.getHeureArriveeFromUser();
+                int nombreDePlaceRest = Restaurant.getPlacesLeft(ComSurPlace.getHeureArriveSurPlace());
+                if(nombreDePlaceRest > ComSurPlace.getNbPersonnes()){
+                    depthThree();
+                }
+            }else if(selectedType.get("type").equals("Livraison")){
+
+            }else if(selectedType.get("type").equals("Emporte")){
+
             }
         }else if(choices[1] == 4){
+
+        }
+    }
+
+    private static void depthThree(){
+        if(choices[2] == 1){
+
+        }else if(choices[2] == 2){
+
+        }else if(choices[3] == 3){
 
         }
     }

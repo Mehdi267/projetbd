@@ -53,6 +53,7 @@ public class Restaurant extends Table {
         String restId = Restaurant.getCurrentSelectedTable().get(fields[0]); // en supposant que le premier élément est la clé primaire
         ResultSet rs = JavaConnectorDB.executeCustomQuery(sb.toString(), restId, heureArrivee);
         try{
+            System.out.println(nombreDePlaces);
             nombreDePlaces = rs.getInt("placeRestante");
         }catch(Exception e){
             e.printStackTrace();

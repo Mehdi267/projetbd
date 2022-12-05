@@ -77,6 +77,9 @@ public class JavaConnectorDB {
     }
 
     public static boolean checkIfUserExist(String email, String password) {
+
+        String[] userTableFields = {}; // TODO Define the user in a global variable
+
         try {
             PreparedStatement ps = connectionTotheDatabase
                     .prepareStatement("SELECT * FROM Client WHERE emailClient = ? AND motDePasse = ?");
@@ -147,7 +150,7 @@ public class JavaConnectorDB {
 
     /**
      * Execute a query and build the result map */
-    private static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields){
+    public static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields){
         try{
             Statement st = connectionTotheDatabase.createStatement();
             ResultSet rs = st.executeQuery(query);
