@@ -78,23 +78,23 @@ public class JavaConnectorDB {
 
     public static int checkIfUserExist(String email, String password) {
 
-        String[] userTableFields = {}; // TODO Define the user in a global variable
-
         try {
-            PreparedStatement ps = connectionTotheDatabase
-                    .prepareStatement("SELECT idClient FROM Client WHERE emailClient = ? AND motDePasse = ?");
+            PreparedStatement ps = connectionTotheDatabase.prepareStatement("SELECT * FROM Client WHERE emailClient = ? AND motDePasse = ?");
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs != null) {
                 System.out.println("Connexion réussie");
-                return rs.getInt(0);
+                rs.next();
+                int idClient = rs.getInt("idClient");
+                return idClient;
             }
         } catch (SQLException e) {
-            System.out.println("Impossible de vérifier dans la base de données");
+            e.printStackTrace();
         }
         System.out.println("Impossible de vous connectez, vous n'etes pas enregistré");
         return -1;
+
     }
 
     public static boolean deleteAccount(int userId) {
@@ -149,13 +149,47 @@ public class JavaConnectorDB {
 
 
     /**
-     * Execute a query and build the result map */
+     * Exécute une requete préparée (ces requêtes contiennent des "?")
+     *
+     * Paramaters:
+     * @param query - la requête préparée que l'on veut exécuter
+     * @param fields - Les champs de la table dont on veut garder les résultats pour pouvoir les utiliser plus tard
+     *
+     *
+     * Return:
+     * @return - map qui représente les colonnes de la table avec leur valeur.
+     *
+     * Example:
+     * <pre>
+     * String query = "SELECT * FROM Restaurant";
+     * String[] fields = {"idRest", "nomRest", "emailRest"};
+     * Map<Integer, Map<String, String>> bdContents = executeQueryAndBuildResult(query, fields);
+     * </pre>
+     *  */
     public static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields){
         ResultSet rs = executeCustomQuery(query);
         return buildResultMap(rs, fields);
     }
 
-    /** Execute prepared statement */
+    /**
+     * Exécute une requete préparée (ces requêtes contiennent des "?")
+     *
+     * Paramaters:
+     * @param query - la requête préparée que l'on veut exécuter
+     * @param fields - Les champs de la table dont on veut garder les résultats pour pouvoir les utiliser plus tard
+     * @param values - les valeurs que l'on veut pour chaque "?" dans l'ordre de leur appirition
+     *
+     *
+     * Return:
+     * @return - map qui représente les colonnes de la table avec leur valeur.
+     *
+     * Example:
+     * <pre>
+     * String query = "SELECT * FROM Restaurant WHERE idRest = ?";
+     * String[] fields = {"idRest", "nomRest", "emailRest"};
+     * Map<Integer, Map<String, String>> bdContents = executeQueryAndBuildResult(query, fields, 2);
+     * </pre>
+     *  */
     public static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields, String ...values){
         ResultSet rs = executeCustomQuery(query, values);
         return buildResultMap(rs, fields);
