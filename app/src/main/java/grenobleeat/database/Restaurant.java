@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 import grenobleeat.session.Connexion;
 
@@ -76,9 +77,9 @@ public class Restaurant extends Table {
     }
 
 
-    public void getRecommendedRestaurentsFilterRecommended(){    
-        Arraylist<String> horaire = gethoraire();
-        Arraylist<String> jour = getDays();
+    public void getRecommendedRestaurentsFilter(){    
+        ArrayList<String> horaire = gethoraire();
+        ArrayList<String> jour = getDays();
         
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT Restaurant.idRest, Restaurant.nomRest");
@@ -91,7 +92,7 @@ public class Restaurant extends Table {
         sb.append("SELECT categorie ");
         sb.append("FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest ");
         sb.append("WHERE idClient = ? ");
-        sb.append("))");
+        sb.append(")");
         sb.append("ORDER BY noteRest DESC, nomRest ASC;)");
         sb.append("AND ( );");
 
@@ -118,9 +119,9 @@ public class Restaurant extends Table {
     }
 
 
-    public void getRecommendedRestaurentsFilterRecommended(String categorie){
-        Arraylist<String> horaire = gethoraire();
-        Arraylist<String> jour = getDays();
+    public void getCategorieAuChoixRestaurentsFilter(String categorie){
+        ArrayList<String> horaire = gethoraire();
+        ArrayList<String> jour = getDays();
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT Restaurant.idRest,Restaurant.emailRest,Restaurant.nomRest,Restaurant.addrRest,Restaurant.nbplaceRest");
@@ -131,7 +132,7 @@ public class Restaurant extends Table {
         sb.append("FROM CategorieRest ");
         sb.append("join Restaurant on CategorieRest.idRest = Restaurant.idRest ");
         sb.append("join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest");
-        sb.append("WHERE categorie = 'Fast food'");
+        sb.append("WHERE categorie = '?'");
         sb.append("ORDER BY noteRest DESC, nomRest ASC)");
         sb.append("ORDER BY noteRest DESC, nomRest ASC;)");
         sb.append("AND ( ");
@@ -155,7 +156,7 @@ public class Restaurant extends Table {
             sb.append(" ) ");
         }
         sb.append(" GROUP by Restaurant.idRest;");
-        JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, Integer.toString(Connexion.getCurrentUserId()));
+        JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, categorie);
     }
 
 
@@ -194,9 +195,10 @@ public class Restaurant extends Table {
         return nombreDePlaces;
     }
 
-    public Arraylist<String> getDays(){   
+    public ArrayList<String> getDays(){   
+        StringBuilder sb = new StringBuilder();
         sb.append("choisissez les jours\n"); 
-        for(Map.Entry<Integer, String> entry : listDays ){
+        for(Map.Entry<Integer, String> entry : daysHashMap.entrySet() ){
             sb.append( entry.getKey() + "->" + entry.getValue() +"\n" );
         }
         sb.append("8. appuyez sur 8 qaund vous avez termine\n");
@@ -209,7 +211,7 @@ public class Restaurant extends Table {
                 int entryuser = sc.nextInt(); 
                 while ( entryuser != 8){  
                     if (entryuser <= 7 && entryuser >= 1 ){
-                        listDaysSet.add(listDays.get(entryuser));
+                        listDaysSet.add(daysHashMap.get(entryuser));
                     }
                     entryuser = sc.nextInt();
                 }
@@ -219,17 +221,18 @@ public class Restaurant extends Table {
                 System.out.println("La entre doit être entre 1 et 7");
             }
         }
-        return new ArrayList<>(listDays);
+        return new ArrayList<>(listDaysSet);
         
     }
 
-    public Arraylist<String> gethoraire(){   
+    public ArrayList<String> gethoraire(){   
+        StringBuilder sb = new StringBuilder();
         sb.append("choisissez l'horaire\n");  
         sb.append("1 midi\n");
         sb.append("2. soir \n");
         sb.append("3. n'importe\n");
         System.out.println(sb.toString());
-        Arraylist<String> horaire = Arraylist<String>();
+        ArrayList<String> horaire = new ArrayList<String>();
         Scanner sc = new Scanner(System.in);
         boolean isSuccessful = false;
         while(!isSuccessful){
