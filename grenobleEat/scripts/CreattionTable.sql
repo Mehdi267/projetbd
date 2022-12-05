@@ -40,7 +40,7 @@ CREATE TABLE Plat(idPlat INT,
                 prixPlat int CHECK(prixPlat>0),
                 PRIMARY KEY (idPlat, idRest),  
                 FOREIGN KEY (idRest) REFERENCES Restaurant(idRest));
-                
+   
 CREATE TABLE Commande(idCommande INT  PRIMARY KEY,
            dateCommande DATE,
            heureCommande DATE,
@@ -50,17 +50,20 @@ CREATE TABLE Commande(idCommande INT  PRIMARY KEY,
            FOREIGN KEY (statutCommande)  REFERENCES Statut(statut),
            FOREIGN KEY (typeCommande)  REFERENCES typeCommande(type));
 
+
 CREATE TABLE ComLivraison(idComLivraison INT PRIMARY KEY,
                 adresseLivraison VARCHAR(30),
                 textLivreur VARCHAR(100),
                 heureLivraison DATE,
                 FOREIGN KEY (idComLivraison) REFERENCES Commande(idCommande));
-                
+
+
 CREATE TABLE ComSurPlace(idComSurPlace INT PRIMARY KEY,
                        nbrPersonne INT,
                        heureArriveSurPlace VARCHAR(15),
                        FOREIGN KEY (heureArriveSurPlace) REFERENCES Horaire(horaire),
                        FOREIGN KEY (idComSurPlace) REFERENCES Commande(idCommande));
+
 
 CREATE TABLE Evaluation(idCommandeEval int PRIMARY KEY,
                        idRest INT,
@@ -70,6 +73,7 @@ CREATE TABLE Evaluation(idCommandeEval int PRIMARY KEY,
                        noteEval INT CHECK(noteEval BETWEEN 0 and 5),
                        FOREIGN KEY (idRest) REFERENCES Restaurant(idRest),
                        FOREIGN KEY(idCommandeEval) REFERENCES Commande(idCommande));
+
 
 CREATE TABLE CategorieMere(categorie VARCHAR(40) PRIMARY KEY,
                            categorieMere VARCHAR(40),

@@ -19,7 +19,7 @@ Begin;
     WHERE categorie in (
             SELECT DISTINCT categorie
             FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
-            WHERE idClient = 2)
+            WHERE idClient = 3)
             and (Restaurant.idRest in (
                 SELECT idRest
                 FROM NbrPlaceRestante 
