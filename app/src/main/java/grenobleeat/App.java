@@ -99,7 +99,7 @@ public class App {
                 ComSurPlace.getHeureArriveeFromUser();
                 int nombreDePlaceRest = Restaurant.getPlacesLeft(ComSurPlace.getHeureArriveSurPlace());
                 if(nombreDePlaceRest > ComSurPlace.getNbPersonnes()){
-                    depthThree();
+                    depthFour();
                 }
             }else if(selectedType.get("type").equals("Livraison")){
 
@@ -111,6 +111,8 @@ public class App {
         }
     }
 
+
+ 
     private static void depthFour(){
         if(choices[2] == 1){
 
