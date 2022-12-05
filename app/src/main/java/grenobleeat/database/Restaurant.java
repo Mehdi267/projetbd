@@ -75,7 +75,11 @@ public class Restaurant extends Table {
         JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, Integer.toString(Connexion.getCurrentUserId()));
     }
 
-    public void getRecommendedRestaurentsFilterRecommended(List<String> horaire, List<String> jour){
+
+    public void getRecommendedRestaurentsFilterRecommended(){    
+        Arraylist<String> horaire = gethoraire();
+        Arraylist<String> jour = getDays();
+        
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT Restaurant.idRest, Restaurant.nomRest");
         sb.append(",Restaurant.textPresentaionRest,Restaurant.horaireOuvertureRest");
@@ -113,7 +117,11 @@ public class Restaurant extends Table {
         JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, Integer.toString(Connexion.getCurrentUserId()));
     }
 
-    public void getRecommendedRestaurentsFilterRecommended(List<String> horaire, List<String> jour, String categorie){
+
+    public void getRecommendedRestaurentsFilterRecommended(String categorie){
+        Arraylist<String> horaire = gethoraire();
+        Arraylist<String> jour = getDays();
+
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT Restaurant.idRest,Restaurant.emailRest,Restaurant.nomRest,Restaurant.addrRest,Restaurant.nbplaceRest");
         sb.append("),Restaurant.textPresentaionRest,Restaurant.horaireOuvertureRest");
@@ -186,9 +194,58 @@ public class Restaurant extends Table {
         return nombreDePlaces;
     }
 
-    private List<String> getDays(){
-        // TODO create function getDays()
+    public Arraylist<String> getDays(){   
+        sb.append("choisissez les jours\n"); 
+        for(Map.Entry<Integer, String> entry : listDays ){
+            sb.append( entry.getKey() + "->" + entry.getValue() +"\n" );
+        }
+        sb.append("8. appuyez sur 8 qaund vous avez termine\n");
+        System.out.println(sb.toString());
+        HashSet<String> listDaysSet = new HashSet<>();
+        Scanner sc = new Scanner(System.in);
+        boolean isSuccessful = false;
+        while(!isSuccessful){
+            try{
+                int entryuser = sc.nextInt(); 
+                while ( entryuser != 8){  
+                    if (entryuser <= 7 && entryuser >= 1 ){
+                        listDaysSet.add(listDays.get(entryuser));
+                    }
+                    entryuser = sc.nextInt();
+                }
+                isSuccessful = true;
+            }
+            catch(Exception e){
+                System.out.println("La entre doit être entre 1 et 7");
+            }
+        }
+        return new ArrayList<>(listDays);
+        
+    }
+
+    public Arraylist<String> gethoraire(){   
+        sb.append("choisissez l'horaire\n");  
+        sb.append("1 midi\n");
+        sb.append("2. soir \n");
+        sb.append("3. n'importe\n");
+        System.out.println(sb.toString());
+        Arraylist<String> horaire = Arraylist<String>();
+        Scanner sc = new Scanner(System.in);
+        boolean isSuccessful = false;
+        while(!isSuccessful){
+            try{
+                int entryuser = sc.nextInt(); 
+                if (entryuser == 1){horaire.add("midi"); return horaire;}
+                if (entryuser == 2){horaire.add("soir"); return horaire;}
+                if (entryuser == 3){horaire.add("soir"); horaire.add("midi"); return horaire;}
+                System.out.println("La entre doit être entre 1 et 3");
+            }
+            catch(Exception e){
+                System.out.println("La entre doit être entre 1 et 3");
+            }
+        }
         return null;
+        
     }
 
 }

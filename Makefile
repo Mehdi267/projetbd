@@ -15,3 +15,4 @@ build:
 
 run:
 	java -cp build:app/src/main/resources/mysql-connector.jar grenobleeat/App
+
