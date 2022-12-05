@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import grenobleeat.App;
+
 /**
  * Table de la base de données
  */
@@ -25,6 +27,10 @@ public class Table {
      * Contacter la base de données et récupérer toutes les données qui sont actuellement dans la bd pour la table courante */
     protected void setBdContents(){
         Map<Integer, Map<String, String>> contents = JavaConnectorDB.fetchDataFromDB(this.name, this.fields);
+        bdContents = contents;
+    }
+
+    protected void setBdContents(Map<Integer, Map<String, String>> contents){
         bdContents = contents;
     }
 
@@ -94,9 +100,8 @@ public class Table {
     protected static void getUserChoice(String promptMessage){
         while(true){
             System.out.println(promptMessage);
-            Scanner sc = new Scanner(System.in);
-            int userChoice = sc.nextInt();
-            sc.close();
+            App.sc = new Scanner(System.in);
+            int userChoice = App.sc.nextInt();
             int isChoiceSuccessfullySet = selectAvalue(userChoice);
             if(isChoiceSuccessfullySet == 0){
                 break;
@@ -109,9 +114,8 @@ public class Table {
     protected static void getUserChoice(String promptMessage, String fieldToDefine){
         if(isAfield(fieldToDefine)){
             System.out.println(promptMessage);
-            Scanner sc = new Scanner(System.in);
-            String userChoice = sc.next();
-            sc.close();
+            App.sc = new Scanner(System.in);
+            String userChoice = App.sc.next();
             currentSelectedTable.replace(fieldToDefine, userChoice);
         }
     }

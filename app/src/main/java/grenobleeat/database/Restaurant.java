@@ -8,8 +8,7 @@ import java.sql.ResultSet;
 public class Restaurant extends Table {
 
     private static String tableName = "Restaurant";
-    private static String[] fields = { "idRest", "emailRest", "nomRest", "addrRest", "nbplaceRest",
-            "textPresentaionRest", "horaireOuvertureRest" };
+    private static String[] fields = { "idRest", "nomRest" };
 
     private static String fieldToPrintAsName = "nomRest"; // le champ a afficher dans le menu comme choix pour l'utilisateur
 
@@ -21,6 +20,17 @@ public class Restaurant extends Table {
      * Afficher dans le menu le choix d'un restaurant à l'utilisateur en affichant les noms des
      * restaurants comme choix dans le menu */
     public void getRestaurantList() {
+
+        String currentCategory = Categorie.getCurrentSelectedTable().get("categorie");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT Restaurant.idRest, Restaurant.nomRest FROM CategorieRest");
+        sb.append(" JOIN Restaurant on CategorieRest.idRest = Restaurant.idRest");
+        sb.append(" JOIN NoteMoyenneDesRest ON Restaurant.idRest = NoteMoyenneDesRest.idRest");
+        sb.append(" WHERE categorie = ?");
+        sb.append("ORDER BY noteRest DESC, nomRest ASC");
+
+        setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, currentCategory));
         printTableValues(fieldToPrintAsName);
     }
 
@@ -40,7 +50,7 @@ public class Restaurant extends Table {
      * Return:
      * @return - le nombre de places
      * @return - -1 si impossible de récupérer le nombre de place */
-    public int getPlacesLeft(String heureArrivee){
+    public static int getPlacesLeft(String heureArrivee){
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT placeRestante ");

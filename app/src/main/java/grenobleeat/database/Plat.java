@@ -21,7 +21,8 @@ public class Plat extends Table {
         sb.append(tableName);
         sb.append(" WHERE idRest=");
         sb.append(restId);
-        JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields);
+        setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields));
+        printTableValues(fieldToPrintAsName);
     }
 
 

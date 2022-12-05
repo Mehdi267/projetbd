@@ -1,6 +1,6 @@
 package grenobleeat.database;
 
-public class TypeCommandeRest extends TableRelated{
+public class TypeCommandeRest extends Table{
     private static String tableName = "TypeCommandeRest";
     private static String[] fields = {"idRest", "type"};
 
@@ -11,6 +11,13 @@ public class TypeCommandeRest extends TableRelated{
     }
 
     public void getCommandTypesOfRestaurant(){
+        String currentRestaurant = Restaurant.getCurrentSelectedTable().get("idRest");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT * FROM TypeCommandeRest");
+        sb.append(" WHERE idRest = ?");
+
+        setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, currentRestaurant));
         printTableValues(fieldToPrintAsName);
     }
 
