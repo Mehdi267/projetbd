@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import grenobleeat.database.JavaConnectorDB;
 
 public class Connexion {
+    private int userIdCourant;
+    
     public static int connexion() {
         System.out.println("\nConnexion en cours...\n");
         while (true) {
@@ -22,8 +24,9 @@ public class Connexion {
                     continue;
                 }
 
-                boolean isConnected = JavaConnectorDB.checkIfUserExist(userName, password);
-                if(isConnected){
+                int idclient = JavaConnectorDB.checkIfUserExist(userName, password);
+                if(idclient != -1){
+                    setCurrentUserId(idclient);
                     StringBuilder sb = new StringBuilder().append("\nBienvenue chez Grenoble Eat ");
                     sb.append(userName);
                     System.out.println(sb.toString());
@@ -39,5 +42,14 @@ public class Connexion {
             return -1;
         }
     }
+
+    public static int getCurrentUserId(){
+        return userIdCourant;
+    }
+        
+    public void setCurrentUserId(int idClient){
+        this.userIdCourant = idClient;
+    }
+
 
 }

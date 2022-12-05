@@ -12,8 +12,21 @@ public class Restaurant extends Table {
 
     private static String fieldToPrintAsName = "nomRest"; // le champ a afficher dans le menu comme choix pour l'utilisateur
 
+    public static HashMap<Integer,String> daysHashMap = new HashMap<Integer, String>(); 
+
     public Restaurant(){
-       super(tableName, fields);
+        super(tableName, fields);
+        setupdays();
+    }
+
+    void setupdays(){
+        daysHashMap.put(1,"lundi");  
+        daysHashMap.put(2,"mardi");    
+        daysHashMap.put(3,"mercredi");   
+        daysHashMap.put(4,"jeudi");   
+        daysHashMap.put(5,"vendredi");   
+        daysHashMap.put(6,"samedi");  
+        daysHashMap.put(7,"dimanche");   
     }
 
     /**
@@ -34,11 +47,107 @@ public class Restaurant extends Table {
         printTableValues(fieldToPrintAsName);
     }
 
+         
     /**
      * Demander à l'utilisateur de faire un choix parmis nos restaurants */
     public void selectRestaurant() {
         getUserChoice("\nVeuillez choisir un restaurant\n");
     }
+    
+    public void getRecommendedRestaurents(){
+        setBdContents(buildResultMap(executeCustomQuery("SELECT Restaurant.idRest,Restaurant.emailRest,Restaurant.nomRest,Restaurant.addrRest,Restaurant.nbplaceRest
+            ,Restaurant.textPresentaionRest,Restaurant.horaireOuvertureRest  
+            FROM CategorieRest 
+            join Restaurant on CategorieRest.idRest = Restaurant.idRest 
+            join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest	
+            WHERE categorie in (
+                SELECT categorie
+                FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
+                WHERE idClient = ?
+            )
+            ORDER BY noteRest DESC, nomRest ASC;", Connexion.getCurrentUserId()), this.fields));
+    }
+
+    public void getRecommendedRestaurentsFilterRecommended(Arraylist<String> horaire, Arraylist<String> jour){
+        StringBuilder sb = new StringBuilder();
+        sb.append("
+        SELECT Restaurant.idRest,Restaurant.emailRest,Restaurant.nomRest,Restaurant.addrRest,Restaurant.nbplaceRest
+            ,Restaurant.textPresentaionRest,Restaurant.horaireOuvertureRest
+        FROM Restaurant join JourResto on Restaurant.idRest = JourResto.idRest
+        WHERE  Restaurant.nomRest IN  (
+                        SELECT  Restaurant.nomRest
+                        FROM CategorieRest 
+                        join Restaurant on CategorieRest.idRest = Restaurant.idRest 
+                        join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest	
+                        WHERE categorie in (
+                            SELECT categorie
+                            FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
+                            WHERE idClient = ?
+                        )
+                        ORDER BY noteRest DESC, nomRest ASC;)
+        AND ( ");
+        if (horaire != null){
+            for (String iterhoraire : horaire){
+                sb.append("horaireOuvertureRest ='"+ iterhoraire+"' OR");
+            }
+        }
+        sb.append("horaireOuvertureRest = 'midi et soir')");
+        if (jour != null){
+            sb.append(" AND ( ");
+            int iter = 0;
+            for (String iterjour : jour){
+                iter ++;
+                if (iter = jour.size()){
+                    sb.append("JourResto.jour = '"+ iterjour+"' OR");}
+                else{
+                   sb.append("JourResto.jour = '"+ iterjour+"'");}
+            }
+            sb.append(" ) ");
+        }
+        sb.append(" GROUP by Restaurant.idRest;");
+        setBdContents(buildResultMap(executeCustomQuery(sb.toString(),Connexion.getCurrentUserId()), this.fields));
+    }
+
+    public void getRecommendedRestaurentsFilterRecommended(Arraylist<String> horaire, Arraylist<String> jour, String categorie){
+        StringBuilder sb = new StringBuilder();
+        sb.append("
+            SELECT Restaurant.idRest,Restaurant.emailRest,Restaurant.nomRest,Restaurant.addrRest,Restaurant.nbplaceRest
+            ,Restaurant.textPresentaionRest,Restaurant.horaireOuvertureRest
+            FROM Restaurant join JourResto on Restaurant.idRest = JourResto.idRest
+            WHERE  Restaurant.nomRest IN  (
+                            SELECT Restaurant.nomRest 
+                            FROM CategorieRest 
+                            join Restaurant on CategorieRest.idRest = Restaurant.idRest 
+                            join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest
+                            WHERE categorie = 'Fast food'
+                            ORDER BY noteRest DESC, nomRest ASC)
+                                ORDER BY noteRest DESC, nomRest ASC;)
+            AND ( "
+        );
+        if (horaire != null){
+            for (String iterhoraire : horaire){
+                sb.append("horaireOuvertureRest ='"+ iterhoraire+"' OR");
+            }
+        }
+        sb.append("horaireOuvertureRest = 'midi et soir')");
+        if (jour != null){
+            sb.append(" AND ( ");
+            int iter = 0;
+            for (String iterjour : jour){
+                iter ++;
+                if (iter = jour.size()){
+                    sb.append("JourResto.jour = '"+ iterjour+"' OR");}
+                else{
+                   sb.append("JourResto.jour = '"+ iterjour+"'");}
+            }
+            sb.append(" ) ");
+        }
+        sb.append(" GROUP by Restaurant.idRest;");
+        setBdContents(buildResultMap(executeCustomQuery(sb.toString(),Connexion.getCurrentUserId()), this.fields));
+    }
+
+
+
 
 
     /**
@@ -72,5 +181,9 @@ public class Restaurant extends Table {
         }
         return nombreDePlaces;
     }
+
+    Arraylist<String> getDays(){    
+    Scanner sc = new Scanner(System.in);
+    int userChoice = sc.nextInt();
 
 }

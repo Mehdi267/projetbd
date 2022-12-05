@@ -62,6 +62,9 @@ public class App {
         depthTwo();
 
       }else if(choices[0] == 2){
+        Restaurant ourRestaurants = new Restaurant();
+        ourRestaurants.getRecommendedRestaurents();
+        ourRestaurants.selectRestaurant();
 
       }else if(choices[0] == 3){
 
