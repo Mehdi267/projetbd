@@ -76,25 +76,25 @@ public class JavaConnectorDB {
         }
     }
 
-    public static boolean checkIfUserExist(String email, String password) {
+    public static int checkIfUserExist(String email, String password) {
 
         String[] userTableFields = {}; // TODO Define the user in a global variable
 
         try {
             PreparedStatement ps = connectionTotheDatabase
-                    .prepareStatement("SELECT * FROM Client WHERE emailClient = ? AND motDePasse = ?");
+                    .prepareStatement("SELECT idClient FROM Client WHERE emailClient = ? AND motDePasse = ?");
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs != null) {
                 System.out.println("Connexion réussie");
-                return true;
+                return rs.getInt(0);
             }
         } catch (SQLException e) {
             System.out.println("Impossible de vérifier dans la base de données");
         }
         System.out.println("Impossible de vous connectez, vous n'etes pas enregistré");
-        return false;
+        return -1;
     }
 
     public static boolean deleteAccount(int userId) {

@@ -28,6 +28,9 @@ public class Table {
         bdContents = contents;
     }
 
+    protected void setBdContents(Map<Integer, Map<String, String>> table){
+        this.bdContents = contents;
+    }
 
     protected Map<Integer, Map<String, String>> getBdContents(){
         return bdContents;
