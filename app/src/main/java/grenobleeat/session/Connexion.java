@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import grenobleeat.database.JavaConnectorDB;
 
 public class Connexion {
-    private int userIdCourant;
+    private static int userIdCourant;
     
     public static int connexion() {
         System.out.println("\nConnexion en cours...\n");
@@ -47,8 +47,8 @@ public class Connexion {
         return userIdCourant;
     }
         
-    public void setCurrentUserId(int idClient){
-        this.userIdCourant = idClient;
+    public static void setCurrentUserId(int idClient){
+        userIdCourant = idClient;
     }
 
 
