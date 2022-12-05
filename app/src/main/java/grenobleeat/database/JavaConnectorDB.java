@@ -151,15 +151,14 @@ public class JavaConnectorDB {
     /**
      * Execute a query and build the result map */
     public static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields){
-        try{
-            Statement st = connectionTotheDatabase.createStatement();
-            ResultSet rs = st.executeQuery(query);
-            return buildResultMap(rs, fields);
-        }catch(SQLException e){
-            System.out.println("Une erreur est survenue lors de la récupération des données dans la BD");
-            System.exit(1);
-        }
-        return null;
+        ResultSet rs = executeCustomQuery(query);
+        return buildResultMap(rs, fields);
+    }
+
+    /** Execute prepared statement */
+    public static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields, String ...values){
+        ResultSet rs = executeCustomQuery(query, values);
+        return buildResultMap(rs, fields);
     }
 
     /**

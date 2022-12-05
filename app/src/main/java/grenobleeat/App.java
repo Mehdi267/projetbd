@@ -9,13 +9,13 @@ import java.util.Scanner;
 import grenobleeat.database.Categorie;
 import grenobleeat.database.ComSurPlace;
 import grenobleeat.database.JavaConnectorDB;
-import grenobleeat.database.Plat;
 import grenobleeat.database.Restaurant;
 import grenobleeat.database.TypeCommandeRest;
 import grenobleeat.session.Connexion;
 
 public class App {
 
+    public static Scanner sc;
     private static int[] choices = new int[5];
 
     private static void depthZero() {
@@ -26,10 +26,9 @@ public class App {
                 .append("4. Supprimer votre compte");
 
         System.out.println(sb.toString());
-        Scanner sc = new Scanner(System.in);
+        sc = new Scanner(System.in);
 
         String choix = sc.next();
-        sc.close();
 
         switch (choix) {
         case "1":
@@ -56,9 +55,11 @@ public class App {
      * Les fonctions qui sont exécutées en fonction du choix effectué au premier menu */
     private static void depthOne(){
       if(choices[0] == 1){
+        choices[1] = 1;
         Restaurant ourRestaurants = new Restaurant();
         ourRestaurants.getRestaurantList();
         ourRestaurants.selectRestaurant();
+        depthTwo();
 
       }else if(choices[0] == 2){
         Restaurant ourRestaurants = new Restaurant();
@@ -74,45 +75,47 @@ public class App {
 
 
     private static void depthTwo(){
-        if(choices[0] == 1){
-
-        }else if(choices[0] == 2){
-
-        }else if(choices[0] == 3){
-            choices[1] = 3;
-            TypeCommandeRest typeRest = new TypeCommandeRest();
-            typeRest.setRelatedTable(Restaurant.getCurrentSelectedTable());
-            typeRest.selectTypeOfCommand();
-        }else if(choices[0] == 4){
-
-        }
-    }
-
-
-    private static void depthThree(){
         if(choices[1] == 1){
+            choices[2] = 1;
+            TypeCommandeRest typeRest = new TypeCommandeRest();
+            typeRest.getCommandTypesOfRestaurant();
+            typeRest.selectTypeOfCommand();
 
         }else if(choices[1] == 2){
 
         }else if(choices[1] == 3){
+
+        }else if(choices[1] == 4){
+
+        }
+    }
+
+    private static void depthThree(){
+        if(choices[2] == 1){
+
+        }else if(choices[2] == 2){
+
+        }else if(choices[2] == 3){
             Map<String, String> selectedType = TypeCommandeRest.getCurrentSelectedTable();
             if(selectedType.get("type").equals("SurPlace")){
                 ComSurPlace.getNbPeopleFromUser();
                 ComSurPlace.getHeureArriveeFromUser();
                 int nombreDePlaceRest = Restaurant.getPlacesLeft(ComSurPlace.getHeureArriveSurPlace());
                 if(nombreDePlaceRest > ComSurPlace.getNbPersonnes()){
-                    depthThree();
+                    depthFour();
                 }
             }else if(selectedType.get("type").equals("Livraison")){
 
             }else if(selectedType.get("type").equals("Emporte")){
 
             }
-        }else if(choices[1] == 4){
+        }else if(choices[2] == 4){
 
         }
     }
 
+
+ 
     private static void depthFour(){
         if(choices[2] == 1){
 
@@ -164,17 +167,7 @@ public class App {
                  * View nbrplacerestante fonctionne pas encore mais peut ajouter du pseudo code
                  * pour faire fonctionner
                  */
-
-                String choice = mainMenu();
-                if(choice.equals("1")){
-
-                }else if(choice.equals("2")){
-
-                }else if(choice.equals("3")){
-
-                }else if(choice.equals("4")){
-
-                }
+                depthZero();
 
             } else {
                 System.out.println("Erreur du système, vérifier votre connexion à internet");
@@ -182,7 +175,8 @@ public class App {
             }
         } catch (Exception e) {
             System.out.println("Echec pendant le fonctionnement de l'application");
-            System.exit(1);
+            e.printStackTrace();
+            // System.exit(1);
         }
 
     }
