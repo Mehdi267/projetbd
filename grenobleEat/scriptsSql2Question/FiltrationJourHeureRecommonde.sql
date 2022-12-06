@@ -18,7 +18,7 @@ Begin;
                         FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
                         WHERE idClient = 2
                     )
-                    ORDER BY noteRest DESC, nomRest ASC;)
+                    ORDER BY noteRest DESC, nomRest ASC)
     AND (horaireOuvertureRest = 'midi' OR horaireOuvertureRest = 'midi et soir')
     AND (JourResto.jour = 'vendredi' OR JourResto.jour = 'samedi')
     GROUP by Restaurant.idRest;
