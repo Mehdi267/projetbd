@@ -17,7 +17,7 @@ public class Plat extends Table {
 
 
     private List<String> meals = new ArrayList<>();
-    private List<String> selectedMeals = new ArrayList<>();
+    private Map<String, Integer> selectedMeals = new HashMap<>();
     private Map<String, List<String>> selectedMealsAllergenes = new HashMap<>();
 
     public Plat(){
@@ -25,14 +25,26 @@ public class Plat extends Table {
     }
 
 
+    private void sortUserChoices(String listePlats, Map<String, Integer> storageLocation){
+       listePlats = listePlats.strip();
+       int number;
+       int quantity;
+       for(String choice: listePlats.split(",")){
+           number = Integer.parseInt(choice.strip().split(":")[0].strip());
+           quantity = Integer.parseInt(choice.strip().split(":")[1].strip());
+           storageLocation.put(meals.get(number-1), quantity);
+       }
+    }
+
     private void sortUserChoices(String listePlats, List<String> storageLocation){
        listePlats = listePlats.strip();
        int number;
-       for(String choiceNumber: listePlats.split(",")){
-           number = Integer.parseInt(choiceNumber.strip());
+       for(String choice: listePlats.split(",")){
+           number = Integer.parseInt(choice.strip());
            storageLocation.add(meals.get(number-1));
        }
     }
+
 
     private List<String> getAllallergenesOfaMeal(String meal){
         List<String> allergenes = new ArrayList<>();
@@ -45,7 +57,7 @@ public class Plat extends Table {
     }
 
     private void buildMealAllergenes(){
-        for(String meal: this.selectedMeals){
+        for(String meal: this.selectedMeals.keySet()){
             this.selectedMealsAllergenes.put(meal, this.getAllallergenesOfaMeal(meal));
         }
     }
@@ -95,7 +107,7 @@ public class Plat extends Table {
     public void selectMeal() {
         System.out.println("\nChoisissez vos plats\n");
         System.out.println("Tips: Ecrivez la liste des numéros séparés par des virgules\n");
-        System.out.println("Exemple: 1, 2, 3\n");
+        System.out.println("Exemple: 1:3, 2:1, 3:5\n");
         System.out.print("\n\nVos choix: ");
         App.sc = new Scanner(System.in);
         String listePlats = App.sc.nextLine();

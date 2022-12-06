@@ -125,7 +125,6 @@ public class JavaConnectorDB {
 
             return results;
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Une erreur est survenue lors de la récupération des données dans la BD");
         }
 
