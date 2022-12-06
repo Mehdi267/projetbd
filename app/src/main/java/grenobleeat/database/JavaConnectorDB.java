@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.sql.*;
 
 
 /**
@@ -97,25 +98,6 @@ public class JavaConnectorDB {
         }
         System.out.println("Impossible de vous connectez, vous n'etes pas enregistré");
         return -1;
-
-    }
-
-    public static boolean deleteAccount(int userId) {
-        try {
-            // TODO prepare the right query for account deletion and maj of the
-            // other table are required
-            PreparedStatement ps = connectionTotheDatabase.prepareStatement("");
-
-            ResultSet rs = ps.executeQuery();
-            if (rs != null) {
-                System.out.println("\nCompte supprimé avoir avec succès");
-                System.out.println("Nous espérons vous revoir bientôt\n");
-                return true;
-            }
-        } catch (SQLException e) {
-            System.out.println("Impossible d'accéder à la base de données");
-        }
-        return false;
 
     }
 
@@ -289,5 +271,133 @@ public class JavaConnectorDB {
         return null;
     }
 
+    public static boolean deleteAccount(int userId) {
+        Savepoint savePoint = null;
+        PreparedStatement statementToAddNewInstance = null;
+        PreparedStatement statementToDeleteAllMentions = null;
+        PreparedStatement statementToDeleteClient = null;
+        try {
+            savePoint = connectionTotheDatabase.setSavepoint();
+            StringBuilder queryAddMax = new StringBuilder();
+            queryAddMax.append(" INSERT INTO Client(idClient) ");
+            queryAddMax.append(" SELECT  max(idClient)+1   ");
+            queryAddMax.append(" from Client ; ");
+            statementToAddNewInstance = connectionTotheDatabase.prepareStatement(queryAddMax.toString());
+            int output = statementToAddNewInstance.executeUpdate();
+
+            StringBuilder queryDeleteAll = new StringBuilder();
+            queryDeleteAll.append(" update PasserCommande ");
+            queryDeleteAll.append(" SET idClient = (SELECT MAX(idClient) FROM Client)  ");
+            queryDeleteAll.append(" where idClient = ?; ");
+            statementToDeleteAllMentions = connectionTotheDatabase.prepareStatement(queryDeleteAll.toString());
+            statementToDeleteAllMentions.setInt(1, userId);
+            int output2 =statementToDeleteAllMentions.executeUpdate();
+
+            StringBuilder queryDeleteClient = new StringBuilder();
+            queryDeleteClient.append(" DELETE FROM Client WHERE idClient = ?; ");
+            statementToDeleteClient = connectionTotheDatabase.prepareStatement(queryDeleteClient.toString());
+            statementToDeleteClient.setInt(1, userId);
+            statementToDeleteClient.executeUpdate();
+            connectionTotheDatabase.commit();
+        }
+        catch (SQLException e) {
+            System.out.println("Impossible d'accéder à la base de données");
+            if( connectionTotheDatabase != null ) {
+                try { if (savePoint != null) {
+                    System.out.println("Rolling back ....");
+                    connectionTotheDatabase.rollback(savePoint);} } // rollback on error
+                catch( SQLException exp ) { }
+            }
+            return false;
+        }
+        finally{
+            if (statementToAddNewInstance != null) { try { statementToAddNewInstance.close(); } catch (SQLException e) {} statementToAddNewInstance = null; } 
+            if (statementToDeleteAllMentions != null) { try { statementToDeleteAllMentions.close(); } catch (SQLException e) {} statementToDeleteAllMentions = null; } 
+            if (statementToDeleteClient != null) { try { statementToDeleteClient.close(); } catch (SQLException e) {} statementToDeleteClient = null; } 
+        }
+        return true;
+
+    }
+
+    /**
+     * Cette fonction parcourt le tableau categorieRest
+     * ensuite elle prend chaque restaurant et la catégorie associée et cherche
+     * si cette catégorie a des parents, si elle en a on insère dans le tableau 
+     * categorieRest l’id de ce restaurant et la catégorie parent
+     */
+    public static boolean setUpCategorie() {
+        Savepoint savePoint = null;
+        PreparedStatement statementToAddRestoAndCategorie = null;
+        ResultSet rs = null;
+        try { 
+            savePoint = connectionTotheDatabase.setSavepoint();
+            StringBuilder querygetResto = new StringBuilder();
+            querygetResto.append(" Select * from CategorieRest;");
+            
+            statementToAddRestoAndCategorie = connectionTotheDatabase.prepareStatement(querygetResto.toString());
+            rs = statementToAddRestoAndCategorie.executeQuery();
+            while (rs.next()){
+                int idRest = rs.getInt("idRest");
+                String nomCategorie = rs.getString("categorie");
+                addCategorieRecursif(idRest, nomCategorie);
+            }
+            connectionTotheDatabase.commit();
+        }
+        catch (SQLException e) {
+            System.out.println("Impossible d'accéder à la base de données");
+            if( connectionTotheDatabase != null ) {
+                try { if (savePoint != null) {
+                    System.out.println("Rolling back ....");
+                    connectionTotheDatabase.rollback(savePoint);} } // rollback on error
+                catch( SQLException exp ) { }
+            }
+            return false;
+        }
+        finally{
+            if (statementToAddRestoAndCategorie != null) { try { statementToAddRestoAndCategorie.close(); } catch (SQLException e) {} statementToAddRestoAndCategorie = null; } 
+            if (rs != null) { try { rs.close(); } catch (SQLException e) {} rs = null; } 
+        }
+        return true;
+
+    }
+
+    /**
+     * Cette fonction insère la catégorie mère d’une catégorie à catégorieRest 
+     * pour un restaurant spécifique  
+     * @param idRest
+     * @param nomCategorie
+     */
+    public static void addCategorieRecursif(int idRest, String nomCategorie) {
+        PreparedStatement statementToGetCategorieMere = null;
+        PreparedStatement statementToInsertCategorie = null;
+        ResultSet rs = null;
+        try {
+            StringBuilder querygetResto = new StringBuilder();
+            querygetResto.append(" Select categorieMere from CategorieMere where categorie = '"+nomCategorie+"';");
+            statementToGetCategorieMere = connectionTotheDatabase.prepareStatement(querygetResto.toString());
+            
+            System.out.println("query = " + statementToGetCategorieMere);
+            rs = statementToGetCategorieMere.executeQuery();
+            while (rs.next()){
+                String nomCategorieMere = rs.getString("categorieMere");
+                
+                StringBuilder queryAddMax = new StringBuilder();
+                queryAddMax.append(" INSERT INTO CategorieRest VALUES ("+idRest+", '"+nomCategorieMere+"'); ");
+                statementToInsertCategorie = connectionTotheDatabase.prepareStatement(queryAddMax.toString());
+                
+                System.out.println("query = " + statementToInsertCategorie);
+                addCategorieRecursif(idRest, nomCategorieMere);
+                int output = statementToInsertCategorie.executeUpdate();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Categorie is already present");
+        }
+        finally{
+            if (statementToGetCategorieMere != null) { try { statementToGetCategorieMere.close(); } catch (SQLException e) {} statementToGetCategorieMere = null; } 
+            if (statementToInsertCategorie != null) { try { statementToInsertCategorie.close(); } catch (SQLException e) {} statementToInsertCategorie = null; } 
+            if (rs != null) { try { rs.close(); } catch (SQLException e) {} rs = null; } 
+        }
+    }
 
 }

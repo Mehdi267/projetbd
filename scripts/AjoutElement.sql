@@ -31,6 +31,7 @@ INSERT INTO Client VALUES (1, 'mehdi@gmail.com', '123456789', 'Kamoun', 'Mehdi',
 INSERT INTO Client VALUES (2, 'iheb@gmail.com', 'iheb45688', 'Karoui', 'Iheb', '3 rue de la liberté, Grenoble');
 INSERT INTO Client VALUES (3, 'sami@gmail.com', 'sami123456789', 'Trabelsi', 'Sami', '1 rue de la liberté, Grenoble');
 INSERT INTO Client VALUES (4, 'samuel@gmail.com', '123456789', 'Vanie', 'Samuel', '4 rue Stalingrad, Grenoble');
+INSERT INTO Client VALUES (6, 'test@gmail.com', '1', 'noname', 'test', '4 rue Stalingrad, Grenoble');
 
 INSERT INTO Restaurant VALUES (1, 'bestkebab@gmail.com', 'OriginalKebab', '2 rue de  Victor Hugo, Grenoble', 20, 'For the love of delicious kebab.', 'midi et soir') ;
 INSERT INTO Restaurant VALUES (2, 'FASTFOOD@gmail.com', 'FastFood', '5 rue de Louis Pasteur, Grenoble', 50, 'Low cost. High quality.', 'midi et soir') ;
@@ -276,6 +277,7 @@ INSERT INTO Commande VALUES (10, DATE '2022-11-13',  STR_TO_DATE('20221113 10354
 INSERT INTO Commande VALUES (11, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
 INSERT INTO Commande VALUES (12, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
 INSERT INTO Commande VALUES (13, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (30, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
 
 
 INSERT INTO ComSurPlace VALUES (1, 6, 'midi'); -- restaurant
@@ -286,6 +288,7 @@ INSERT INTO ComSurPlace VALUES (10, 6, 'soir');
 INSERT INTO ComSurPlace VALUES (11, 7, 'soir');
 INSERT INTO ComSurPlace VALUES (12, 7, 'soir');
 INSERT INTO ComSurPlace VALUES (13, 7, 'soir');
+INSERT INTO ComSurPlace VALUES (30, 7, 'soir');
 
 --client/commande/rest
 INSERT INTO PasserCommande VALUES (1,1,1);
@@ -301,6 +304,7 @@ INSERT INTO PasserCommande VALUES (3,10,4);
 INSERT INTO PasserCommande VALUES (2,11,1);
 INSERT INTO PasserCommande VALUES (2,12,1);
 INSERT INTO PasserCommande VALUES (2,13,1);
+INSERT INTO PasserCommande VALUES (6,30,1);
 
 
 
@@ -361,3 +365,35 @@ INSERT INTO Evaluation VALUES (10, 4, DATE '2022-11-13',  STR_TO_DATE('20221113 
 INSERT INTO Evaluation VALUES (11, 1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  2);
 INSERT INTO Evaluation VALUES (12, 1, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 'good food',  5);
 INSERT INTO Evaluation VALUES (13, 1, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 'bad food',  1.5);
+
+
+    SELECT Restaurant.idRest, Restaurant.nomRest, noteRest FROM 
+    CategorieRest 
+    join Restaurant on CategorieRest.idRest = Restaurant.idRest
+    join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest
+    WHERE categorie in (
+            SELECT DISTINCT categorie
+            FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
+            WHERE idClient = 3)
+            and (Restaurant.idRest in (
+                SELECT idRest
+                FROM NbrPlaceRestante 
+                WHERE placeRestante >= 7 and dateCommande = CURDATE() 
+                and (heureArriveSurPlace = 'midi' OR heureArriveSurPlace = 'soir' ))
+            Or Restaurant.idRest IN (
+                    select Restaurant.idRest
+                    from Restaurant
+                    join TypeCommandeRest on TypeCommandeRest.idRest = Restaurant.idRest
+                    where Restaurant.idRest NOT IN (
+                                SELECT
+                                idRest from NbrPlaceRestante
+                                where  dateCommande = CURDATE() 
+                                and (heureArriveSurPlace = 'midi' 
+                                    OR heureArriveSurPlace = 'soir'       
+                                )
+                                
+                    )
+                    AND Restaurant.nbPlaceRest >= 7
+                    AND  TypeCommandeRest.type = 'surPlace'                                                
+                ))
+GROUP by Restaurant.idRest ORDER BY noteRest DESC, nomRest ASC;

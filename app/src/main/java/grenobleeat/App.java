@@ -12,6 +12,8 @@ import grenobleeat.database.JavaConnectorDB;
 import grenobleeat.database.Restaurant;
 import grenobleeat.database.TypeCommandeRest;
 import grenobleeat.session.Connexion;
+import grenobleeat.session.DeleteAccount;
+
 
 public class App {
 
@@ -46,6 +48,12 @@ public class App {
 
         case "3":
             break;
+        
+        case "4":
+            int deleteChoice = DeleteAccount.deleteAccount();
+            if (deleteChoice == 1){depthZero();}
+            if (deleteChoice == 0){System.exit(0);}
+            break;
         }
 
 
@@ -60,14 +68,15 @@ public class App {
         choices[1] = 1;
         Restaurant ourRestaurants = new Restaurant();
         ourRestaurants.getRestaurantList();
+        //ourRestaurants.getCategorieAuChoixRestaurentsFilter("");
         ourRestaurants.selectRestaurant();
         depthTwo();
 
       }else if(choices[0] == 2){
         Restaurant ourRestaurants = new Restaurant();
-        //ourRestaurants.getRecommendedRestaurents();
+        ourRestaurants.getRecommendedRestaurents();
+        //ourRestaurants.getPropositionRestaurant(30);
         //ourRestaurants.getRecommendedRestaurentsFilter();
-        ourRestaurants.getCategorieAuChoixRestaurentsFilter("");
         ourRestaurants.selectRestaurant();
 
       }else if(choices[0] == 3){
@@ -135,7 +144,12 @@ public class App {
         try {
             System.out.println("Connexion à la base de données en cours...");
             JavaConnectorDB.initConnection();
-
+            
+            //This function is only called when we add new restaurent and we did not math them to all 
+            //the right categories
+            
+            //JavaConnectorDB.setUpCategorie();
+            
             // TODO Draw something cool
 
             int codeRetournConnexion = Connexion.connexion();
