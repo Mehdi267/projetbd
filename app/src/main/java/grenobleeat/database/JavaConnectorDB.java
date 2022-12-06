@@ -45,9 +45,12 @@ public class JavaConnectorDB {
         //     System.exit(1);
         // }
 
-        String url = "jdbc:mysql://localhost:3306/grenobleeat";
-        String uname = "samuel";
-        String password = "20082001";
+        String url = "jdbc:mysql://localhost:3306/projetbd";
+        // String uname = "samuel";
+        // String password = "20082001";
+
+        String uname = "etudiant";
+        String password = "mypass123";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

@@ -40,6 +40,8 @@ public class App {
             break;
 
         case "2":
+            choices[0] = 2;
+            depthOne();
             break;
 
         case "3":
@@ -63,7 +65,9 @@ public class App {
 
       }else if(choices[0] == 2){
         Restaurant ourRestaurants = new Restaurant();
-        ourRestaurants.getRecommendedRestaurents();
+        //ourRestaurants.getRecommendedRestaurents();
+        //ourRestaurants.getRecommendedRestaurentsFilter();
+        ourRestaurants.getCategorieAuChoixRestaurentsFilter("");
         ourRestaurants.selectRestaurant();
 
       }else if(choices[0] == 3){
