@@ -321,3 +321,29 @@ GRANT ALL PRIVILEGES ON *.* TO 'etudiant'@'%';
 GRANT ALL PRIVILEGES ON *.* TO 'etudiant'@'localhost';
 
 mysqldump -u root -p projetbd  > projet.sql
+
+
+
+SELECT Restaurant.idRest, Restaurant.nomRest 
+WHERE Restaurant.nomRest IN FROM Restaurant join JourResto on Restaurant.idRest = JourResto.idRest;SELECT Restaurant.nomRest join Restaurant on CategorieRest.idRest = Restaurant.idRest join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest WHERE categorie in (SELECT categorie FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest WHERE idClient = ? )ORDER BY noteRest DESC, nomRest ASC;)AND ( ); horaireOuvertureRest ='soir' OR  horaireOuvertureRest = 'midi et soir') AND (  JourResto.jour = 'lundi' OR  JourResto.jour = 'vendredi' OR  JourResto.jour = 'mercredi' OR  JourResto.jour = 'jeudi' OR  JourResto.jour = 'mardi'  )  
+GROUP by Restaurant.idRest;
+
+
+SELECT Restaurant.idRest, Restaurant.nomRest
+FROM Restaurant join JourResto on Restaurant.idRest = JourResto.idRest 
+WHERE  Restaurant.nomRest
+IN ( SELECT Restaurant.nomRest 
+ FROM CategorieRest 
+ join Restaurant on CategorieRest.idRest = Restaurant.idRest 
+ join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest
+  WHERE categorie in
+   (SELECT categorie FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest WHERE idClient = ? ) 
+   ORDER BY noteRest DESC, nomRest ASC)
+   AND ( ); horaireOuvertureRest ='midi' OR  horaireOuvertureRest = 'midi et soir') AND (  JourResto.jour = 'lundi' OR  JourResto.jour = 'vendredi' OR  JourResto.jour = 'mercredi' OR  JourResto.jour = 'mardi'  )  GROUP by Restaurant.idRest;
+
+
+
+SELECT Restaurant.idRest, Restaurant.nomRest
+FROM Restaurant join JourResto on Restaurant.idRest = JourResto.idRest WHERE  Restaurant.nomRest IN  ( SELECT Restaurant.nomRest FROM CategorieRest join Restaurant on CategorieRest.idRest = Restaurant.idRest join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest WHERE categorie = 'Fast Food' ORDER BY noteRest DESC, nomRest ASC) AND ( horaireOuvertureRest =' soir' OR horaireOuvertureRest = 'midi et soir')  
+GROUP by Restaurant.idRest;
+

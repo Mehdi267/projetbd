@@ -8,9 +8,14 @@
 # make run
 #
 
-build:
+build: clean
 	javac -d build -cp ./app/src/main/resources/mysql-connector.jar ./app/src/main/java/grenobleeat/database/*.java ./app/src/main/java/grenobleeat/session/*.java ./app/src/main/java/grenobleeat/App.java
 
 run:
 	java -cp build:app/src/main/resources/mysql-connector.jar grenobleeat/App
+
+
+clean:
+	rm -dr build
+
 
