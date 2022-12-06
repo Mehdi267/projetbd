@@ -251,7 +251,6 @@ public class Restaurant extends Table {
             if(rs.next()){
                 nombreDePlaces = rs.getInt("placeRestante");
             }else{
-                System.out.println(this.getCurrentSelectedTable());
                 nombreDePlaces = Integer.parseInt(this.getCurrentSelectedTable().get("nbPlaceRest"));
             }
         }catch(Exception e){

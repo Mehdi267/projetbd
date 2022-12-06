@@ -2,9 +2,11 @@ package grenobleeat.database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import grenobleeat.App;
 
@@ -13,14 +15,66 @@ public class Plat extends Table {
     private static String tableName = "Plat";
     private static String[] fields = {"idPlat", "nomPlat", "descPlat", "prixPlat", "allergene"};
 
-    private static String fieldToPrintAsName = "nomPlat"; // le champ a afficher dans le menu comme choix pour l'utilisateur
 
-    private List<Map<String, String>> selectedMeals = new ArrayList<>();
+    private List<String> meals = new ArrayList<>();
+    private List<String> selectedMeals = new ArrayList<>();
     private Map<String, List<String>> selectedMealsAllergenes = new HashMap<>();
 
     public Plat(){
        super(tableName, fields);
     }
+
+
+    private void sortUserChoices(String listePlats, List<String> storageLocation){
+       listePlats = listePlats.strip();
+       int number;
+       for(String choiceNumber: listePlats.split(",")){
+           number = Integer.parseInt(choiceNumber.strip());
+           storageLocation.add(meals.get(number-1));
+       }
+    }
+
+    private List<String> getAllallergenesOfaMeal(String meal){
+        List<String> allergenes = new ArrayList<>();
+        for(Map<String, String> line: this.getBdContents().values()){
+            if(line.get("nomPlat").equals(meal)){
+                allergenes.add(line.get("allergene"));
+            }
+        }
+        return allergenes;
+    }
+
+    private void buildMealAllergenes(){
+        for(String meal: this.selectedMeals){
+            this.selectedMealsAllergenes.put(meal, this.getAllallergenesOfaMeal(meal));
+        }
+    }
+
+    private void printAllergenes(String meal){
+        System.out.println(meal);
+        System.out.println();
+        for(String allergene: this.selectedMealsAllergenes.get(meal)){
+            System.out.println(allergene);
+        }
+        System.out.println("----");
+    }
+
+    private void printMeals(){
+        Set<String> plats = new HashSet<>();
+        for(Integer lineNumber : this.getBdContents().keySet()){
+            plats.add(this.getBdContents().get(lineNumber).get("nomPlat"));
+        }
+
+        int number = 1;
+        for(String plat: plats){
+            this.meals.add(plat);
+            System.out.format("%d. %s\n", number, plat);
+            ++number;
+        }
+    }
+
+
+
 
     /**
      * Affiche la liste des plats d'un restaurant selon la catégorie de plat choisie par l'utilisateur */
@@ -31,12 +85,9 @@ public class Plat extends Table {
         sb.append("SELECT Plat.idPlat, Plat.nomPlat, Plat.descPlat, Plat.prixPlat, AllergenePlat.allergene FROM Plat, AllergenePlat, Restaurant WHERE Plat.idPlat = AllergenePlat.idPlat");
         sb.append(" AND Restaurant.idRest = ? AND Plat.idRest = Restaurant.idRest ORDER BY Plat.nomPlat;");
         setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, restId));
-        printTableValues(fieldToPrintAsName);
+        printMeals();
     }
 
-
-    private void printMeals(){
-    }
 
 
     /**
@@ -48,25 +99,38 @@ public class Plat extends Table {
         System.out.print("\n\nVos choix: ");
         App.sc = new Scanner(System.in);
         String listePlats = App.sc.nextLine();
-        sortUserChoices(listePlats);
+        sortUserChoices(listePlats, this.selectedMeals);
     }
 
-    private void sortUserChoices(String listePlats){
-       listePlats = listePlats.strip();
-       int number;
-       for(String choiceNumber: listePlats.split(",")){
-           number = Integer.parseInt(choiceNumber.strip());
-           this.selectedMeals.add(this.getBdContents().get(number));
-       }
-    }
+
 
     public void printSelectedMealsAllergenes(){
-        for(Map<String, String> meal : selectedMeals){
-            System.out.println(meal.get("nomPlat"));
-            System.out.println(meal.get("allergene"));
+        this.buildMealAllergenes();
+        for(Map.Entry<String, List<String>> mealAller: this.selectedMealsAllergenes.entrySet()){
+           this.printAllergenes(mealAller.getKey());
         }
     }
 
+
+    public void askForRemoval(){
+        System.out.print("Voulez-vous supprimer des plats ? Oui(O) ou Non(N) :");
+        App.sc = new Scanner(System.in);
+        String choice = App.sc.next();
+        if(choice.equals("O") || choice.equals("o")){
+           removeMeal();
+        }
+    }
+
+    private void removeMeal(){
+        System.out.println("Entrez les numéros de plats séparés par des virgules\n");
+        List<String> mealToremove = new ArrayList<>();
+        App.sc = new Scanner(System.in);
+        this.sortUserChoices(App.sc.nextLine(), mealToremove);
+
+        for(String meal: mealToremove){
+            this.selectedMeals.remove(meal);
+        }
+    }
 
 
 }

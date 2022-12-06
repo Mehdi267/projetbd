@@ -146,6 +146,8 @@ public class App {
             plats.getMealList(restaurant);
             plats.selectMeal();
             plats.printSelectedMealsAllergenes();
+            plats.askForRemoval();
+
         }else if(choices[3] == 2){
 
         }else if(choices[3] == 3){
