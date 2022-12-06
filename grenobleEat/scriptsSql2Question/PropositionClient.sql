@@ -8,11 +8,9 @@ avec l'identifiant 3 et un nombre de place égal à 7
 *****************/
 
 
-SELECT Restaurant.idRest, Restaurant.nomRest, Commande.dateCommande, ComSurPlace.heureArriveSurPlace, nbPlaceRest-sum(ComSurPlace.nbrPersonne) as placeRestante
-
 
 Begin;
-    SELECT Restaurant.idRest, Restaurant.nomRest, noteRest FROM 
+  SELECT Restaurant.idRest, Restaurant.nomRest, noteRest FROM 
     CategorieRest 
     join Restaurant on CategorieRest.idRest = Restaurant.idRest
     join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest
@@ -36,7 +34,9 @@ Begin;
                                 and (heureArriveSurPlace = 'midi' 
                                     OR heureArriveSurPlace = 'soir'       
                                 )
+                                
                     )
+                    AND Restaurant.nbPlaceRest >= 7
                     AND  TypeCommandeRest.type = 'surPlace'                                                
                 ))
 GROUP by Restaurant.idRest ORDER BY noteRest DESC, nomRest ASC;
