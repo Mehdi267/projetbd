@@ -11,21 +11,12 @@ et ce type de commande est possible dans ce restaurant.
 Ces contraintes ont été traitées en java.
 */
 
-INSERT INTO Commande(idCommande)
-SELECT  max(idCommande)+1, 
+/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les plat choisi*/
+INSERT INTO Commande(idCommande, dateCommande,heureCommande,prixCommande, statutCommande, typeCommande )
+SELECT  max(idCommande)+1, CURDATE(), CURRENT_TIME(), 1, 'attente de confirmation', 'emporte' 
 from Commande;
 
-/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les plat choisi*/
 
-update Commande set
-dateCommande = ,
-heureCommande = CURRENT_TIME(),
-prixCommande = 1,
-statutCommande = 'attente de confirmation',
-typeCommande = 'emporte' 
-where idCommande = ( 
-    select * from (select max(idCommande) from Commande ) as t
-);
 
 /*Dans cette partie on relis la commande à la personne qui l'a passé et le restaurant dans le quelle 
 --La commande a été faite*/
@@ -63,21 +54,10 @@ where idCommande = (
     select * from (select max(idCommande) from Commande ) as t
 );  
 
-/*--Quand la commande est valide, on peut faire une evalution*/
-
-INSERT INTO Evaluation(idCommandeEval)
-SELECT  max(idCommande)
+/* Si la commande n'a pas été annulée. On peut faire une evalution*/
+INSERT INTO Evaluation(idCommandeEval, idRest, dateEval, heureEval, avisEval, noteEval)
+SELECT  max(idCommande), 2, CURDATE(), CURRENT_TIME(), "good food", 5 
 from Commande;
-
-update Evaluation set
-idRest = 2,
-dateEval = CURDATE(),
-heureEval = CURRENT_TIME(),
-avisEval = "good food",
-noteEval = 5
-where idCommandeEval = ( 
-    select * from (select max(idCommande) from Commande ) as t
-);  
 
 
 COMMIT;   

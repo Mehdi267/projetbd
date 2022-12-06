@@ -21,6 +21,7 @@ CREATE TABLE Restaurant(idRest INT NOT NULL PRIMARY KEY,
         nbPlaceRest INT CHECK(nbPlaceRest>=0) NOT NULL, 
         textPresentaionRest VARCHAR(100) NOT NULL, 
         horaireOuvertureRest VARCHAR(15), 
+        numTel VARCHAR(30) NOT NULL, 
         FOREIGN KEY (horaireOuvertureRest) REFERENCES Horaire(horaire));
 
 CREATE TABLE Client(idClient INT PRIMARY KEY, 
@@ -50,7 +51,7 @@ CREATE TABLE Commande(idCommande INT  PRIMARY KEY,
 
 
 CREATE TABLE ComLivraison(idComLivraison INT PRIMARY KEY,
-                adresseLivraison VARCHAR(30) NOT NULL,
+                adresseLivraison VARCHAR(100) NOT NULL,
                 textLivreur VARCHAR(100) NOT NULL,
                 heureLivraison DATE NOT NULL,
                 FOREIGN KEY (idComLivraison) REFERENCES Commande(idCommande));
@@ -112,7 +113,9 @@ CREATE TABLE PasserCommande(idClient INT NOT NULL,
                             PRIMARY KEY(idCommande));
 
 CREATE TABLE PlatsDeCommande(idCommande INT, 
-                                idRest INT NOT NULL, idPlat INT NOT NULL , Quantite INT  CHECK(Quantite>0) NOT NULL,
+                                idRest INT NOT NULL,
+                                idPlat INT NOT NULL ,
+                                Quantite INT  CHECK(Quantite>0) NOT NULL,
                                 PRIMARY KEY(idCommande, idRest ,idPlat), FOREIGN KEY(idCommande) REFERENCES Commande(idCommande),
                                 FOREIGN KEY(idPlat, idRest) REFERENCES Plat(idPlat, idRest) 
                                 );
@@ -125,7 +128,8 @@ CREATE VIEW NoteMoyenneDesRest AS (
 
 CREATE VIEW PrixCommade AS (
 		SELECT SUM(prixPlat*Quantite), idCommande
-		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat and Plat.idRest = PlatsDeCommande.idRest
+		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat
+                and Plat.idRest = PlatsDeCommande.idRest
 		GROUP BY idCommande);
 
 CREATE VIEW NbrPlaceRestante AS (
@@ -136,52 +140,6 @@ CREATE VIEW NbrPlaceRestante AS (
         JOIN Commande ON   Commande.idCommande = PasserCommande.idCommande
         WHERE Commande.statutCommande = 'validee'
         group by Restaurant.idRest , dateCommande , heureArriveSurPlace , Restaurant.nomRest   );
-
-
-
-CREATE VIEW CategorieRestoAssocieOrdreDecroissant AS (
-        SELECT categorie, Restaurant.idRest, Restaurant.nomRest, noteRest
-        FROM CategorieRest
-        JOIN Restaurant ON   Restaurant.idRest = CategorieRest.idRest
-        JOIN NoteMoyenneDesRest ON NoteMoyenneDesRest.idRest =  Restaurant.idRest
-        group by categorie, CategorieRest.idRest
-        ORDER BY noteRest DESC,  Restaurant.nomRest );
-
-
-SELECT * FROM CategorieRest join Restaurant on CategorieRest.idRest = Restaurant.idRest join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest
-        WHERE categorie in (
-        SELECT categorie
-        FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
-			WHERE idClient = 2
-        )
-        ORDER BY noteRest DESC, nomRest ASC;
-
-
-
---- ORacle stuff
-ALTER TABLE Client MODIFY ADDRCLIENT VARCHAR(100);
-ALTER TABLE Restaurant MODIFY textPresentaionRest VARCHAR(100);
-ALTER TABLE Restaurant MODIFY ADDRREST VARCHAR(100);
-ALTER TABLE CATEGORIE MODIFY CATEGORIE VARCHAR(40);
-ALTER TABLE CATEGORIEREST MODIFY CATEGORIE VARCHAR(40);
-
---to add in oracle 
-
-ALTER TABLE CATEGORIEMERE MODIFY CATEGORIE VARCHAR(40);
-ALTER TABLE CATEGORIEMERE MODIFY CATEGORIE VARCHAR(40);
-
-ALTER TABLE Evaluation ADD CONSTRAINT idCommandeEval FOREIGN KEY Commande(idCommande);
-ALTER TABLE Commande MODIFY heureCommande DATE;
-
-
-ALTER TABLE ComLivraison MODIFY heureLivraison DATE;
-ALTER TABLE Evaluation MODIFY heureEval DATE;
-
-DROP TABLE ComSurPlace;
-CREATE TABLE ComSurPlace(idComSurPlace INT PRIMARY KEY,
-                       nbrPersonne INT,
-                       heureArriveSurPlace VARCHAR(15),
-                       FOREIGN KEY (heureArriveSurPlace) REFERENCES Horaire(horaire));
 
 
 SET sql_mode = '';

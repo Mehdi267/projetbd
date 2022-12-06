@@ -11,21 +11,12 @@ et il faut chosir une type de commande que le restaurant servit.
 Ces contraintes ont été traitées en java.
 */
 
-INSERT INTO Commande(idCommande)
-SELECT  max(idCommande)+1   
+/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les plat choisi*/
+INSERT INTO Commande(idCommande, dateCommande,heureCommande,prixCommande, statutCommande, typeCommande )
+SELECT  max(idCommande)+1, CURDATE(), CURRENT_TIME(), 1, 'attente de confirmation', 'surPlace' 
 from Commande;
 
-/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les plat chosi*/
 
-update Commande set
-dateCommande = CURDATE(),
-heureCommande = CURRENT_TIME(),
-prixCommande = 1,
-statutCommande = 'attente de confirmation',
-typeCommande = 'surPlace' 
-where idCommande = ( 
-    select * from (select max(idCommande) from Commande ) as t
-);
 
 /*Dans cette partie on relis la commande à la personne qui l'a passé 
 et le restaurant dans le quelle la commande a été faite*/
@@ -43,16 +34,9 @@ sinon on annule la commande
 danc ComSurPlace qui contient l'id de la commande, le nombre de personne
 et l'horaire du repas*/
 
-INSERT INTO ComSurPlace(idComSurPlace)
-SELECT  max(idCommande)
+INSERT INTO ComSurPlace(idComSurPlace, nbrPersonne, heureArriveSurPlace)
+SELECT  max(idCommande), 5, 'midi'
 from Commande;
-
-update ComSurPlace set
-nbrPersonne = 5 ,
-heureArriveSurPlace = 'midi' 
-where idComSurPlace = ( 
-    select * from (select max(idCommande) from Commande ) as t
-);
 
 /*On doit ajouter les plats de la commande
 --On doit aussi d'assurer que le restaurant correspand au restaurent de la commande */
@@ -83,22 +67,11 @@ where idCommande = (
     select * from (select max(idCommande) from Commande ) as t
 );  
 
-/*--Quand la commande est valide,
-On peut faire une evalution*/
-
-INSERT INTO Evaluation(idCommandeEval)
-SELECT  max(idCommande)
+/* Si la commande n'a pas été annulée. On peut faire une evalution*/
+INSERT INTO Evaluation(idCommandeEval, idRest, dateEval, heureEval, avisEval, noteEval)
+SELECT  max(idCommande), 2, CURDATE(), CURRENT_TIME(), "good food", 5 
 from Commande;
 
-update Evaluation set
-idRest = 2,
-dateEval = CURDATE(),
-heureEval = CURRENT_TIME(),
-avisEval = "good food",
-noteEval = 4
-where idCommandeEval = ( 
-    select * from (select max(idCommande) from Commande ) as t
-);  
 
 
 COMMIT;   

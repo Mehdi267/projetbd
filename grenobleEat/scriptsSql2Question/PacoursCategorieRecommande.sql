@@ -14,7 +14,7 @@ join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest
 WHERE categorie in (
     SELECT categorie
     FROM PasserCommande join CategorieRest on PasserCommande.idRest = CategorieRest.idRest
-    WHERE idClient = 1
+    WHERE idClient = 2
 )
 ORDER BY noteRest DESC, nomRest ASC;
 COMMIT;
