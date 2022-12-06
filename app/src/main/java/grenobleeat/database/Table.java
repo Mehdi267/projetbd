@@ -11,15 +11,15 @@ import grenobleeat.App;
  */
 public class Table {
 
-    protected String name;
-    protected String[] fields; // on considère que le premier élément est la clé primaire
-    protected static Map<Integer, Map<String, String>> bdContents; // le contenu de la table dans la base de données ligne par ligne
+    private String name;
+    private String[] fields; // on considère que le premier élément est la clé primaire
+    private Map<Integer, Map<String, String>> bdContents; // le contenu de la table dans la base de données ligne par ligne
 
-    private static Map<String, String> currentSelectedTable = new HashMap<>(); // représente le choix de l'utilisateur
+    private Map<String, String> currentSelectedTable = new HashMap<>(); // représente le choix de l'utilisateur
 
-    public Table(String name, String[] fields) {
+    public Table(String name, String[] fls) {
         this.name = name;
-        this.fields = fields;
+        this.fields = fls;
         this.setBdContents();
     }
 
@@ -32,7 +32,7 @@ public class Table {
 
 
     protected void setBdContents(Map<Integer, Map<String, String>> contents){
-        bdContents = contents;
+        this.bdContents = contents;
     }
 
     protected Map<Integer, Map<String, String>> getBdContents(){
@@ -76,7 +76,7 @@ public class Table {
      * @return 0 - si le choix a pu être défini
      * @return -1 - si ce choix est invalide
      * */
-    private static int selectAvalue(int choice){
+    private int selectAvalue(int choice){
 
         Map<String, String> selectedTable = bdContents.get(choice);
         if(selectedTable != null){
@@ -87,22 +87,18 @@ public class Table {
         return -1;
     }
 
-    private static boolean isAfield(String valueTocheck){
-        return currentSelectedTable.containsKey(valueTocheck);
-    }
-
     /**
      * Récupère le choix de l'utilisateur et définit la l'instance de la classe avec les propriétés récupérées depuis la base de données
      *
      * Parameters:
      * @param promptMessage - Message à afficher à l'utilisateur
      * */
-    protected static void getUserChoice(String promptMessage){
+    protected void getUserChoice(String promptMessage){
         while(true){
             System.out.println(promptMessage);
             App.sc = new Scanner(System.in);
             int userChoice = App.sc.nextInt();
-            int isChoiceSuccessfullySet = selectAvalue(userChoice);
+            int isChoiceSuccessfullySet = this.selectAvalue(userChoice);
             if(isChoiceSuccessfullySet == 0){
                 break;
             }
@@ -110,18 +106,20 @@ public class Table {
         }
     }
 
-
-    protected static void getUserChoice(String promptMessage, String fieldToDefine){
-        if(isAfield(fieldToDefine)){
-            System.out.println(promptMessage);
-            App.sc = new Scanner(System.in);
-            String userChoice = App.sc.next();
-            currentSelectedTable.replace(fieldToDefine, userChoice);
+    protected void getUserChoice(String promptMessage, String fieldToDefine){
+        System.out.println(promptMessage);
+        App.sc = new Scanner(System.in);
+        String userChoice = App.sc.next();
+        if(this.currentSelectedTable.containsKey(userChoice)){
+            this.currentSelectedTable.replace(fieldToDefine, userChoice); // TODO check why we always enter in else part
+        }else{
+            this.currentSelectedTable.put(fieldToDefine, userChoice);
         }
     }
 
-    public static Map<String, String> getCurrentSelectedTable(){
-        return currentSelectedTable;
+    public Map<String, String> getCurrentSelectedTable(){
+        return this.currentSelectedTable;
     }
+
 
 }

@@ -2,10 +2,10 @@ package grenobleeat.database;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.*;
 
+import grenobleeat.App;
 import grenobleeat.session.Connexion;
 
 /**
@@ -14,7 +14,7 @@ import grenobleeat.session.Connexion;
 public class Restaurant extends Table {
 
     private static String tableName = "Restaurant";
-    private static String[] fields = { "idRest", "nomRest" };
+    private static String[] fields = { "idRest", "nomRest", "nbPlaceRest" };
 
     private static String fieldToPrintAsName = "nomRest"; // le champ a afficher dans le menu comme choix pour l'utilisateur
 
@@ -38,16 +38,16 @@ public class Restaurant extends Table {
     /**
      * Afficher dans le menu le choix d'un restaurant à l'utilisateur en affichant les noms des
      * restaurants comme choix dans le menu */
-    public void getRestaurantList() {
+    public void getRestaurantList(Categorie c) {
 
-        String currentCategory = Categorie.getCurrentSelectedTable().get("categorie");
+        String currentCategory = c.getCurrentSelectedTable().get("categorie");
 
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT Restaurant.idRest, Restaurant.nomRest FROM CategorieRest");
+        sb.append("SELECT Restaurant.idRest, Restaurant.nomRest, Restaurant.nbPlaceRest FROM CategorieRest");
         sb.append(" JOIN Restaurant on CategorieRest.idRest = Restaurant.idRest");
         sb.append(" JOIN NoteMoyenneDesRest ON Restaurant.idRest = NoteMoyenneDesRest.idRest");
         sb.append(" WHERE categorie = ?");
-        sb.append("ORDER BY noteRest DESC, nomRest ASC");
+        sb.append(" ORDER BY noteRest DESC, nomRest ASC");
 
         setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, currentCategory));
         printTableValues(fieldToPrintAsName);
@@ -67,7 +67,6 @@ public class Restaurant extends Table {
     * préférées de l'utilisateur ordonnées par leur évaluations
      */
     public void getRecommendedRestaurents(){
-        System.out.println("test");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT Restaurant.idRest,Restaurant.nomRest ");
         sb.append("FROM CategorieRest ");
@@ -234,7 +233,7 @@ public class Restaurant extends Table {
      * Return:
      * @return - le nombre de places
      * @return - -1 si impossible de récupérer le nombre de place */
-    public static int getPlacesLeft(String heureArrivee){
+    public int getPlacesLeft(String heureArrivee){
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT placeRestante ");
@@ -244,15 +243,20 @@ public class Restaurant extends Table {
         sb.append("AND heureArriveSurPlace=?;");
 
         int nombreDePlaces = -1;
-        String restId = Restaurant.getCurrentSelectedTable().get(fields[0]); // en supposant que le premier élément est la clé primaire
+        String restId = this.getCurrentSelectedTable().get(fields[0]); // en supposant que le premier élément est la clé primaire
         ResultSet rs = JavaConnectorDB.executeCustomQuery(sb.toString(), restId, heureArrivee);
+
+
         try{
-            System.out.println(nombreDePlaces);
-            nombreDePlaces = rs.getInt("placeRestante");
+            if(rs.next()){
+                nombreDePlaces = rs.getInt("placeRestante");
+            }else{
+                System.out.println(this.getCurrentSelectedTable());
+                nombreDePlaces = Integer.parseInt(this.getCurrentSelectedTable().get("nbPlaceRest"));
+            }
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("Impossible de récupérer le nombre de places restantes dans ce restaurant");
-            // TODO maybe exit the system ? or go back
         }
         return nombreDePlaces;
     }
@@ -271,17 +275,17 @@ public class Restaurant extends Table {
         sb.append("8. appuyez sur 8 quand vous avez termine\n");
         System.out.println(sb.toString());
         HashSet<String> listDaysSet = new HashSet<>();
-        Scanner sc = new Scanner(System.in);
+        App.sc = new Scanner(System.in);
         boolean isSuccessful = false;
         while(!isSuccessful){
             try{
-                int entryuser = sc.nextInt();
+                int entryuser = App.sc.nextInt();
                 while ( entryuser != 8){  
                     if (entryuser <= 7 && entryuser >= 1 ){
                         listDaysSet.add(daysHashMap.get(entryuser));
                     }
                     System.out.println("Donner un jour ou appuyez sur 8 pour quitter "); 
-                    entryuser = sc.nextInt();
+                    entryuser = App.sc.nextInt();
                 }
                 isSuccessful = true;
             }

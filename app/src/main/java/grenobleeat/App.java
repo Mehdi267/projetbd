@@ -20,6 +20,11 @@ public class App {
     public static Scanner sc;
     private static int[] choices = new int[5];
 
+    private static Categorie categorie;
+    private static Restaurant restaurant;
+    private static TypeCommandeRest typeCommandeRest;
+    private static ComSurPlace comSurPlace;
+
     private static void depthZero() {
 
         StringBuilder sb = new StringBuilder().append("1. Afficher nos catégories de restaurants\n")
@@ -35,7 +40,7 @@ public class App {
         switch (choix) {
         case "1":
             choices[0] = 1;
-            Categorie categorie = new Categorie();
+            categorie = new Categorie();
             categorie.getCategoryList();
             categorie.selectCategory();
             depthOne();
@@ -56,8 +61,6 @@ public class App {
             break;
         }
 
-
-        System.out.println("Mauvais choix");
     }
 
 
@@ -66,18 +69,18 @@ public class App {
     private static void depthOne(){
       if(choices[0] == 1){
         choices[1] = 1;
-        Restaurant ourRestaurants = new Restaurant();
-        ourRestaurants.getRestaurantList();
+        restaurant = new Restaurant();
+        restaurant.getRestaurantList(categorie);
         //ourRestaurants.getCategorieAuChoixRestaurentsFilter("");
-        ourRestaurants.selectRestaurant();
+        restaurant.selectRestaurant();
         depthTwo();
 
       }else if(choices[0] == 2){
-        Restaurant ourRestaurants = new Restaurant();
-        ourRestaurants.getRecommendedRestaurents();
-        //ourRestaurants.getPropositionRestaurant(30);
-        //ourRestaurants.getRecommendedRestaurentsFilter();
-        ourRestaurants.selectRestaurant();
+        restaurant = new Restaurant();
+        restaurant.getRecommendedRestaurents();
+        //restaurant.getPropositionRestaurant(30);
+        //restaurant.getRecommendedRestaurentsFilter();
+        restaurant.selectRestaurant();
 
       }else if(choices[0] == 3){
 
@@ -90,9 +93,10 @@ public class App {
     private static void depthTwo(){
         if(choices[1] == 1){
             choices[2] = 1;
-            TypeCommandeRest typeRest = new TypeCommandeRest();
-            typeRest.getCommandTypesOfRestaurant();
-            typeRest.selectTypeOfCommand();
+            typeCommandeRest = new TypeCommandeRest();
+            typeCommandeRest.getCommandTypesOfRestaurant(restaurant);
+            typeCommandeRest.selectTypeOfCommand();
+            depthThree();
 
         }else if(choices[1] == 2){
 
@@ -105,23 +109,26 @@ public class App {
 
     private static void depthThree(){
         if(choices[2] == 1){
+            Map<String, String> selectedType = typeCommandeRest.getCurrentSelectedTable();
+            comSurPlace = new ComSurPlace();
+            if(selectedType.get("type").equals("surPlace")){
+                comSurPlace.getNbPeopleFromUser();
+                comSurPlace.getHeureArriveeFromUser(restaurant);
+                int nombreDePlaceRest = restaurant.getPlacesLeft(comSurPlace.getHeureArriveSurPlace());
+                if(nombreDePlaceRest > comSurPlace.getNbPersonnes()){
+                    depthFour();
+                }else{
 
+                }
+            }else if(selectedType.get("type").equals("livraison")){
+
+            }else if(selectedType.get("type").equals("emporte")){
+
+            }
         }else if(choices[2] == 2){
 
         }else if(choices[2] == 3){
-            Map<String, String> selectedType = TypeCommandeRest.getCurrentSelectedTable();
-            if(selectedType.get("type").equals("SurPlace")){
-                ComSurPlace.getNbPeopleFromUser();
-                ComSurPlace.getHeureArriveeFromUser();
-                int nombreDePlaceRest = Restaurant.getPlacesLeft(ComSurPlace.getHeureArriveSurPlace());
-                if(nombreDePlaceRest > ComSurPlace.getNbPersonnes()){
-                    depthFour();
-                }
-            }else if(selectedType.get("type").equals("Livraison")){
 
-            }else if(selectedType.get("type").equals("Emporte")){
-
-            }
         }else if(choices[2] == 4){
 
         }

@@ -10,8 +10,8 @@ public class TypeCommandeRest extends Table{
         super(tableName, fields);
     }
 
-    public void getCommandTypesOfRestaurant(){
-        String currentRestaurant = Restaurant.getCurrentSelectedTable().get("idRest");
+    public void getCommandTypesOfRestaurant(Restaurant r){
+        String currentRestaurant = r.getCurrentSelectedTable().get("idRest");
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM TypeCommandeRest");
