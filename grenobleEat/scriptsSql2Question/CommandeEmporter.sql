@@ -6,18 +6,19 @@ Cette transaction permet de faire une commande à emporter et mentionne les diff
 Begin;
 /*
 La premiére étape qu'on veut faire une commande est de verifier que cette commande est possible
-Ainsi il faut vérifier que le resto est ouvert dans ce jour et horaire 
-et il faut chosir un type de commande que le restaurant servit.
+Ainsi il faut vérifier que le resto est ouvert dans ce jour 
+et ce type de commande est possible dans ce restaurant.
+Ces contraintes ont été traitées en java.
 */
 
 INSERT INTO Commande(idCommande)
-SELECT  max(idCommande)+1   
+SELECT  max(idCommande)+1, 
 from Commande;
 
-/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les palt recommandées*/
+/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les plat choisi*/
 
 update Commande set
-dateCommande = CURDATE(),
+dateCommande = ,
 heureCommande = CURRENT_TIME(),
 prixCommande = 1,
 statutCommande = 'attente de confirmation',

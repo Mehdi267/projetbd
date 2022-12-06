@@ -1,18 +1,21 @@
 /******************
 Cette transaction permet de faire une commande livraison et mentionne les differents contraintes contextuelles qui 
--- faut prendre ne compte.
+faut prendre ne compte.
 *****************/
 
 Begin;
 
-/*La premiére étape qu'on veut faire une commande est de verifier que cette commande est possible
---Ainsi il faut vérifier que le resto est ouvert dans ce jour  et il traite des commandes de livraison.;*/
+/*
+La première étape qu'on veut faire une commande est de vérifier que cette commande est possible
+Ainsi il faut vérifier que le resto est ouvert dans ce jour  et il traite des commandes de livraison
+Ces contraintes ont été traitées en java.
+*/
 
 INSERT INTO Commande(idCommande)
 SELECT  max(idCommande)+1   
 from Commande;
 
-/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les palt recommandées;*/
+/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les plat choisi*/
 
 update Commande set
 dateCommande = CURDATE(),

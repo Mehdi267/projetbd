@@ -8,13 +8,14 @@ Begin;
 La premiére étape qu'on veut faire une commande est de verifier que cette commande est possible
 Ainsi il faut vérifier que le resto est ouvert dans ce jour et horaire 
 et il faut chosir une type de commande que le restaurant servit.
+Ces contraintes ont été traitées en java.
 */
 
 INSERT INTO Commande(idCommande)
 SELECT  max(idCommande)+1   
 from Commande;
 
-/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les palt recommandées*/
+/*Le prixCommande est égal à 1 mais eventuelement on changera cette valeur suivant les plat chosi*/
 
 update Commande set
 dateCommande = CURDATE(),
@@ -26,8 +27,8 @@ where idCommande = (
     select * from (select max(idCommande) from Commande ) as t
 );
 
-/*Dans cette partie on relis la commande à la personne qui l'a passé et le restaurant dans le quelle 
---La commande a été faite*/
+/*Dans cette partie on relis la commande à la personne qui l'a passé 
+et le restaurant dans le quelle la commande a été faite*/
 
 INSERT INTO PasserCommande(idCommande, idClient, idRest)
 SELECT  max(idCommande),3,2
@@ -37,9 +38,10 @@ from Commande;
 On vérifie que le nombre de place est suffisant, si oui on crée un instance de ComSurPlace
 sinon on annule la commande
 */
+
 /*Dans une commande surplace, on doit ajouter un instance 
---danc ComSurPlace qui contient l'id de la commande, le nombre de personne
---et l'horaire du repas*/
+danc ComSurPlace qui contient l'id de la commande, le nombre de personne
+et l'horaire du repas*/
 
 INSERT INTO ComSurPlace(idComSurPlace)
 SELECT  max(idCommande)
@@ -53,7 +55,7 @@ where idComSurPlace = (
 );
 
 /*On doit ajouter les plats de la commande
---On soit aussi d'assurer que le restaurant correspand au restaurent de passer commande */
+--On doit aussi d'assurer que le restaurant correspand au restaurent de la commande */
 
 INSERT INTO PlatsDeCommande(idCommande, idRest, idPlat, Quantite)
 SELECT  max(idCommande), 2 ,1 ,3
@@ -70,8 +72,8 @@ from Commande;
 
 
 
-/*Ensuite si l'utilsateur et le resto valide la commande, on fait l'update de la commande du status de la commande
--- et on fait une évalution si on veut. ;*/
+/*Ensuite si l'utilsateur et le resto valide la commande, on fait l'update de du status de la commande
+et on fait une évalution si on veut. ;*/
 
 update Commande set
 prixCommande = (select prixcommande from PrixCommade 
@@ -81,7 +83,8 @@ where idCommande = (
     select * from (select max(idCommande) from Commande ) as t
 );  
 
-/*--Quand la commande est valide, on peut faire une evalution*/
+/*--Quand la commande est valide,
+On peut faire une evalution*/
 
 INSERT INTO Evaluation(idCommandeEval)
 SELECT  max(idCommande)
