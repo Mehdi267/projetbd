@@ -3,12 +3,14 @@
  */
 package grenobleeat;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 import grenobleeat.database.Categorie;
 import grenobleeat.database.ComSurPlace;
 import grenobleeat.database.JavaConnectorDB;
+import grenobleeat.database.Plat;
 import grenobleeat.database.Restaurant;
 import grenobleeat.database.TypeCommandeRest;
 import grenobleeat.session.Connexion;
@@ -24,6 +26,7 @@ public class App {
     private static Restaurant restaurant;
     private static TypeCommandeRest typeCommandeRest;
     private static ComSurPlace comSurPlace;
+    private static Plat plats;
 
     private static void depthZero() {
 
@@ -109,6 +112,7 @@ public class App {
 
     private static void depthThree(){
         if(choices[2] == 1){
+            choices[3] = 1;
             Map<String, String> selectedType = typeCommandeRest.getCurrentSelectedTable();
             comSurPlace = new ComSurPlace();
             if(selectedType.get("type").equals("surPlace")){
@@ -137,9 +141,12 @@ public class App {
 
  
     private static void depthFour(){
-        if(choices[2] == 1){
-
-        }else if(choices[2] == 2){
+        if(choices[3] == 1){
+            plats = new Plat();
+            plats.getMealList(restaurant);
+            plats.selectMeal();
+            plats.printSelectedMealsAllergenes();
+        }else if(choices[3] == 2){
 
         }else if(choices[3] == 3){
 
