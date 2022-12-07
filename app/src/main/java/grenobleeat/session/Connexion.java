@@ -40,7 +40,7 @@ public class Connexion {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Erreur pendant la connexion");
             }
             return -1;
         }
