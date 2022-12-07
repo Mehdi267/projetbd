@@ -91,6 +91,8 @@ public class JavaConnectorDB {
                 System.out.println("Connexion réussie");
                 rs.next();
                 int idClient = rs.getInt("idClient");
+                ps.close();
+                rs.close();
                 return idClient;
             }
         } catch (SQLException e) {
@@ -264,11 +266,73 @@ public class JavaConnectorDB {
             ResultSet rs = ps.executeQuery();
             return rs;
         }catch(SQLException e){
-            System.out.println("Erreur d'exécution de la requête vérifier votre connexion internet");
+            System.out.println("Erreur d'exécution de la requête vérifier votre connexion à la base de données");
             System.exit(1);
         }
         return null;
     }
+
+
+    public static void executeUpdate(String query, PasserCommande target){
+
+        try{
+            if(target.getSavepoint() == null){
+                target.putSavePoint(connectionTotheDatabase.setSavepoint());
+            }
+
+            Statement st = connectionTotheDatabase.createStatement();
+            int numberOfRows = st.executeUpdate(query);
+            if(numberOfRows <= 0){
+                connectionTotheDatabase.rollback(target.getSavepoint());
+            }
+        }catch (SQLException e){
+            try{
+                connectionTotheDatabase.rollback(target.getSavepoint());
+            }catch(Exception r){}
+        }
+
+    }
+
+    public static void executeUpdate(String query, PasserCommande target, String ...values){
+        try{
+            if(target.getSavepoint() == null){
+                target.putSavePoint(connectionTotheDatabase.setSavepoint());
+            }
+            PreparedStatement ps = connectionTotheDatabase.prepareStatement(query);
+            int value;
+            for(int i=0; i<values.length; i++){
+                try{
+                    value = Integer.parseInt(values[i]);
+                    ps.setInt(i+1, value);
+                }catch(Exception e){
+                    ps.setString(i+1, values[i]);
+                }
+            }
+            int numberOfrows = ps.executeUpdate();
+            if(numberOfrows <= 0){
+                connectionTotheDatabase.rollback(target.getSavepoint());
+            }
+        }catch(SQLException e){
+            // TODO change message to vérifier la bd instead of the connection
+            System.out.println("Erreur d'exécution de la requête vérifier votre connexion internet");
+            try{
+                connectionTotheDatabase.rollback(target.getSavepoint());
+            }catch(Exception r){}
+            System.exit(1);
+        }
+    }
+
+    public static void commitSavePoint(PasserCommande target){
+        try{
+            if(target.getSavepoint() != null){
+                connectionTotheDatabase.commit();
+            }
+        }catch(SQLException e){
+            System.out.println("Aucun savepoint n'a été enregistré");
+            System.exit(1);
+        }
+    }
+
 
     public static boolean deleteAccount(int userId) {
         Savepoint savePoint = null;

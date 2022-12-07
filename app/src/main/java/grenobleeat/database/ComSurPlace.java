@@ -2,6 +2,14 @@ package grenobleeat.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
+import grenobleeat.App;
 
 public class ComSurPlace extends Table {
     private static String tableName = "ComSurPlace";
@@ -45,20 +53,39 @@ public class ComSurPlace extends Table {
             ResultSet rs = JavaConnectorDB.executeCustomQuery(query, res.getCurrentSelectedTable().get("idRest"));
             int number = 1;
             String restaurantHours;
+            Set<String> hours = new HashSet<>();
             while(rs.next()){
                 restaurantHours = rs.getString("horaireOuvertureRest");
+                String[] tokenisedVersion = restaurantHours.stripLeading().stripTrailing().split("et");
+                hours.addAll(Arrays.asList(tokenisedVersion));
+            }
+
+
+            for(String hour: hours){
                 sb.append(number);
                 sb.append(". ");
-                sb.append(restaurantHours);
+                sb.append(hour.strip());
                 sb.append("\n");
                 ++number;
             }
 
+
+
+            sb.append("\nEcrivez votre choix : ");
+            System.out.println(sb.toString());
+
+            App.sc = new Scanner(System.in);
+            int userChoice = App.sc.nextInt();
+            List<String> hoursList = new ArrayList<>(hours);
+            if(this.getCurrentSelectedTable().containsKey("heureArriveSurPlace")){
+                this.getCurrentSelectedTable().replace("heureArriveSurPlace", hoursList.get(userChoice-1));
+            }else{
+                this.getCurrentSelectedTable().put("heureArriveSurPlace", hoursList.get(userChoice-1));
+            }
         }catch(SQLException e){
             System.out.println("Impossible de récupérer les horaires de ce restaurant");
         }
-        sb.append("\nEcrivez votre choix : "); // The user will write his choice because we want to store it for later use
-        getUserChoice(sb.toString(), "heureArriveSurPlace");
+
     }
 
 }

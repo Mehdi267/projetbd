@@ -12,9 +12,6 @@ public class Commande extends Table {
        super(tableName, fields);
     }
 
-    /**
-     * Afficher dans le menu le choix d'un restaurant à l'utilisateur en affichant les noms des
-     * commandes comme choix dans le menu */
     public void getCommands() {
         printTableValues(fieldToPrintAsName);
     }

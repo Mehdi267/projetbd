@@ -10,6 +10,7 @@ import java.util.Scanner;
 import grenobleeat.database.Categorie;
 import grenobleeat.database.ComSurPlace;
 import grenobleeat.database.JavaConnectorDB;
+import grenobleeat.database.PasserCommande;
 import grenobleeat.database.Plat;
 import grenobleeat.database.Restaurant;
 import grenobleeat.database.TypeCommandeRest;
@@ -20,13 +21,14 @@ import grenobleeat.session.DeleteAccount;
 public class App {
 
     public static Scanner sc;
-    private static int[] choices = new int[5];
+    private static int[] choices = new int[6];
 
     private static Categorie categorie;
     private static Restaurant restaurant;
     private static TypeCommandeRest typeCommandeRest;
     private static ComSurPlace comSurPlace;
     private static Plat plats;
+    private static PasserCommande passerCommande = new PasserCommande();
 
     private static void depthZero() {
 
@@ -142,16 +144,42 @@ public class App {
  
     private static void depthFour(){
         if(choices[3] == 1){
+            choices[4] = 1;
             plats = new Plat();
             plats.getMealList(restaurant);
             plats.selectMeal();
             plats.printSelectedMealsAllergenes();
             plats.askForRemoval();
+            depthFive();
 
         }else if(choices[3] == 2){
 
         }else if(choices[3] == 3){
 
+        }
+    }
+
+    private static void depthFive(){
+        if(choices[4] == 1){
+            choices[5] = 1;
+            System.out.println("\nConfirmer la commande ?\n");
+            // TODO take the user prompt
+            passerCommande.passerCommandeSurPlace(typeCommandeRest, restaurant, comSurPlace, plats);
+            depthSix();
+        }
+    }
+
+    private static void depthSix(){
+        if(choices[5] == 1){
+            System.out.println("\nVoulez-vous noter cette commande ?\n");
+            System.out.print("Veuillez entrer votre note : ");
+            sc = new Scanner(System.in);
+            int note = sc.nextInt();
+            System.out.println("Veuillez entrer une description: ");
+            sc = new Scanner(System.in);
+            String desc = sc.nextLine();
+
+            passerCommande.evaluateCommande(restaurant, Integer.toString(note), desc);
         }
     }
 

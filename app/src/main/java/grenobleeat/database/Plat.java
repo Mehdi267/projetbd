@@ -15,6 +15,7 @@ public class Plat extends Table {
     private static String tableName = "Plat";
     private static String[] fields = {"idPlat", "nomPlat", "descPlat", "prixPlat", "allergene"};
 
+    // TODO if user enters wrong format do not leave with the stack error
 
     private List<String> meals = new ArrayList<>();
     private Map<String, Integer> selectedMeals = new HashMap<>();
@@ -24,6 +25,8 @@ public class Plat extends Table {
        super(tableName, fields);
     }
 
+
+    public Map<String, Integer> getSelectedMeals(){ return this.selectedMeals; }
 
     private void sortUserChoices(String listePlats, Map<String, Integer> storageLocation){
        listePlats = listePlats.strip();
@@ -142,6 +145,15 @@ public class Plat extends Table {
         for(String meal: mealToremove){
             this.selectedMeals.remove(meal);
         }
+    }
+
+    public Map<String, String> getMealFields(String mealName){
+        for(Map<String, String> line: this.getBdContents().values()) {
+            if(line.get("nomPlat").equals(mealName)){
+                return line;
+            }
+        }
+        return null;
     }
 
 
