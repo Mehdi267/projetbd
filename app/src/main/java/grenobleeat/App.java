@@ -20,6 +20,10 @@ import grenobleeat.session.DeleteAccount;
 
 public class App {
 
+    /**
+     * Classe principale collecte toutes les interactions avec l'utilisateur */
+
+
     public static Scanner sc;
     private static int[] choices = new int[6];
 
@@ -215,7 +219,7 @@ public class App {
                 if (entryuser == 2){depthZero(); return;}
             }
             catch(Exception e){
-                System.out.println("La entre doit être entre 1 et 2");
+                System.out.println("La valeur entree doit être entre 1 et 2");
             }
         }
         if(choices[4] == 1){
@@ -253,10 +257,10 @@ public class App {
                     if (entryuser == 2){depthZero();return;}
                 }
                 catch(Exception e){
-                    System.out.println("La entre doit être entre 1 et 2");
+                    System.out.println("La valeur entree doit être entre 1 et 2");
                 }
             }
-            System.out.print("Veuillez entrer votre note : ");
+            System.out.print("Veuillez entrer votre note (intervalle 1-5) : ");
             sc = new Scanner(System.in);
             int note = sc.nextInt();
             System.out.println("Veuillez entrer une description: ");
@@ -280,7 +284,7 @@ public class App {
                 if (entryuser == 2){ JavaConnectorDB.closeConnection(); System.exit(0);}
             }
             catch(Exception e){
-                System.out.println("La entre doit être entre 1 et 2");
+                System.out.println("La valeur entree doit être entre 1 et 2");
             }
         }
 

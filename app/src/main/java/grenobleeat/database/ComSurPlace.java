@@ -11,41 +11,38 @@ import java.util.Set;
 
 import grenobleeat.App;
 
+/**
+ * Représente la commande sur place souhaitée par l'utilisateur */
 public class ComSurPlace extends Table {
     private static String tableName = "ComSurPlace";
     private static String[] fields = {"idComSurPlace", "nbrPersonne", "heureArriveSurPlace"};
-
-    private static boolean isCreated = false;
 
     public ComSurPlace(){
         super(tableName, fields);
     }
 
-    public static boolean isCreated(){
-       return isCreated;
-    }
-
     /**
-     * Set that the instance was created */
-    public static void setIsCreated(boolean create){
-        isCreated = create;
-    }
-
+     * Récupérer l'heure d'arrivée souhaitée par l'utilisateur */
     public String getHeureArriveSurPlace(){
         return this.getCurrentSelectedTable().get("heureArriveSurPlace");
     }
 
-
+    /**
+     * Récupérer le nombre de personne souhaitée pour la réservation
+     * que l'utilisateur a enregistré */
     public int getNbPersonnes(){
         return Integer.parseInt(this.getCurrentSelectedTable().get("nbrPersonne"));
     }
 
 
+    /**
+     * Demander à l'utilisateur le nombre de personnes souhaitée pour la réservation */
     public void getNbPeopleFromUser(){
         String message = "\nVeuillez entrer le nombre de places requises\n";
         getUserChoice(message, "nbrPersonne");
     }
 
+    /** Demander à l'utilisateur l'heure d'arrivee dans le restaurant */
     public void getHeureArriveeFromUser(Restaurant res){
         StringBuilder sb = new StringBuilder("\nVoici les horaires que propose votre restaurant :\n");
         String query = "SELECT horaireOuvertureRest FROM Restaurant WHERE idRest = ?";

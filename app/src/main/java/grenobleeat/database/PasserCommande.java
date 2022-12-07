@@ -6,6 +6,10 @@ import java.util.Map;
 import grenobleeat.session.Connexion;
 
 public class PasserCommande {
+    /**
+     * Création et ajout d'une nouvelle commande dans la base de données
+     * <br>
+     * Récupère toutes les données collectées après les intéractions avec l'utilisateur  */
 
     private Savepoint savepoint;
 
@@ -64,6 +68,14 @@ public class PasserCommande {
         JavaConnectorDB.commitSavePoint(this);
     }
 
+
+    /**
+     * Insérer une nouvelle commande sur place dans la base de donnees
+     *
+     * @param typeCommande - le type de commande demandé par l'utilisateur
+     * @param restaurant - le restaurant dans lequel passer la commande
+     * @param commande - contient toutes les informations sur la commande sur place
+     * @param plat - les plats concernés par la commande */
     public void passerCommandeSurPlace(TypeCommandeRest typeCommande, Restaurant restaurant, ComSurPlace commande, Plat plat){
         createCommande(typeCommande);
         createPasserCommande(restaurant);
@@ -72,6 +84,13 @@ public class PasserCommande {
         updateCommande("validee");
     }
 
+    /**
+     * Insérer une nouvelle commande à livrer dans la base de donnees
+     *
+     * @param typeCommande - le type de commande demandé par l'utilisateur
+     * @param restaurant - le restaurant dans lequel passer la commande
+     * @param commande - contient toutes les informations sur la livraison
+     * @param plat - les plats concernés par la commande */
     public void passerCommandeLivraison(TypeCommandeRest typeCommande, Restaurant restaurant, ComLivraison commande, Plat plat){
         createCommande(typeCommande);
         createPasserCommande(restaurant);
@@ -80,6 +99,12 @@ public class PasserCommande {
         updateCommande("en livraison");
     }
 
+    /**
+     * Insérer une nouvelle commande à emporter dans la base de donnees
+     *
+     * @param typeCommande - le type de commande demandé par l'utilisateur
+     * @param restaurant - le restaurant dans lequel passer la commande
+     * @param plat - les plats concernés par la commande */
     public void passerCommandeEmporter(TypeCommandeRest typeCommande, Restaurant restaurant, Plat plat){
         createCommande(typeCommande);
         createPasserCommande(restaurant);
@@ -88,6 +113,12 @@ public class PasserCommande {
     }
 
 
+    /**
+     * Insérer l'évaluation de l'utilisateur dans la base de données
+     *
+     * @param restaurant - restaurant concerné par l'évaluation
+     * @param note - la note de l'utilisateur
+     * @param comments - les commentaires de l'utilisateur */
     public void evaluateCommande(Restaurant restaurant, String note, String comments){
         StringBuilder sb = new StringBuilder("INSERT INTO Evaluation(idCommandeEval, idRest, dateEval, heureEval, avisEval, noteEval) ");
         sb.append("SELECT max(idCommande), ?, CURDATE(), CURRENT_TIME(), ?, ?");

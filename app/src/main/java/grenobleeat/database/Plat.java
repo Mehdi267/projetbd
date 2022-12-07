@@ -26,8 +26,16 @@ public class Plat extends Table {
     }
 
 
+    /** Récupère la liste des plats qui ont été choisi par l'utilisateur
+     * ainsi que leur quantité */
     public Map<String, Integer> getSelectedMeals(){ return this.selectedMeals; }
 
+
+    /** Format l'entrée de l'utilisateur pour pouvoir faire le stockage ensuite
+     * dans la liste des plats qui ont été sélectionnés
+     *
+     * @param listePlats - entree de l'utilisateur (1:4, 2:6)
+     * @param storageLocation - variable dans laquelle stockée les résultats */
     private void sortUserChoices(String listePlats, Map<String, Integer> storageLocation){
        listePlats = listePlats.strip();
        int number;
@@ -39,6 +47,7 @@ public class Plat extends Table {
        }
     }
 
+
     private void sortUserChoices(String listePlats, List<String> storageLocation){
        listePlats = listePlats.strip();
        int number;
@@ -49,6 +58,12 @@ public class Plat extends Table {
     }
 
 
+    /**
+     * Récupérer tous les allergènes d'un plat
+     *
+     * @param meal - nom du plat
+     *
+     * @return - la liste des allergènes */
     private List<String> getAllallergenesOfaMeal(String meal){
         List<String> allergenes = new ArrayList<>();
         for(Map<String, String> line: this.getBdContents().values()){
@@ -92,7 +107,9 @@ public class Plat extends Table {
 
 
     /**
-     * Affiche la liste des plats d'un restaurant selon la catégorie de plat choisie par l'utilisateur */
+     * Affiche la liste des plats d'un restaurant selon la catégorie de plat choisie par l'utilisateur
+     *
+     * @param r - le restaurant */
     public void getMealList(Restaurant r) {
         String restId = r.getCurrentSelectedTable().get("idRest"); // en supposant que le premier élément est la clé primaire
 
@@ -119,6 +136,8 @@ public class Plat extends Table {
 
 
 
+    /**
+     * Afficher la liste des plats sélectionnés par l'utilisateur avec leur allergènes */
     public void printSelectedMealsAllergenes(){
         this.buildMealAllergenes();
         for(Map.Entry<String, List<String>> mealAller: this.selectedMealsAllergenes.entrySet()){
@@ -127,6 +146,8 @@ public class Plat extends Table {
     }
 
 
+    /**
+     * Demander à l'utilisateur s'il souhaite supprimer des plats dû à ses allergies */
     public void askForRemoval(){
         System.out.print("Voulez-vous supprimer des plats ? Oui(O) ou Non(N) :");
         App.sc = new Scanner(System.in);
@@ -148,6 +169,12 @@ public class Plat extends Table {
         printSelectedMealsAllergenes();
     }
 
+    /**
+     * Récupérer les données d'un plat
+     *
+     * @param mealName - nom du plat
+     *
+     * @return - les champs et leur valeur concernant ce plat */
     public Map<String, String> getMealFields(String mealName){
         for(Map<String, String> line: this.getBdContents().values()) {
             if(line.get("nomPlat").equals(mealName)){

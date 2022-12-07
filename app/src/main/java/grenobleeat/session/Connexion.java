@@ -5,7 +5,10 @@ import java.io.InputStreamReader;
 
 import grenobleeat.database.JavaConnectorDB;
 
+/**
+ * Connexion du client de grenoble eat */
 public class Connexion {
+    /** id de l'utilisateur qui est actuellement connecté */
     private static int userIdCourant;
     
     public static int connexion() {

@@ -1,9 +1,9 @@
 package grenobleeat.database;
 
+/**
+* Récupérer la liste des catégories disponibles chez grenobleeat sans recommandations */
 public class Categorie extends Table {
 
-    /**
-     * Récupérer la liste des catégories disponibles chez grenobleeat sans recommandations */
 
     private static String tableName = "Categorie";
     private static String[] fields = {"categorie"};
@@ -14,7 +14,7 @@ public class Categorie extends Table {
        super(tableName, fields);
     }
 
-    /* Afficher la liste des plats pour que l'utilisateur fasse son choix */
+    /** Afficher la liste des plats pour que l'utilisateur fasse son choix */
     public void getCategoryList() {
         printTableValues(fieldToPrintAsName);
     }

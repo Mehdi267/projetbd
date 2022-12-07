@@ -11,10 +11,16 @@ import grenobleeat.App;
  */
 public class Table {
 
+    /** nom de la table dans la base de données */
     private String name;
+
+    /** liste des colonnes de la table dans la base de données */
     private String[] fields; // on considère que le premier élément est la clé primaire
+
+    /** toutes les données récupérées depuis la base de données */
     private Map<Integer, Map<String, String>> bdContents; // le contenu de la table dans la base de données ligne par ligne
 
+    /** l'instance qui a été sélectionné par l'utilisateur lors des interactions */
     private Map<String, String> currentSelectedTable = new HashMap<>(); // représente le choix de l'utilisateur
 
     public Table(String name, String[] fls) {
@@ -40,7 +46,18 @@ public class Table {
     }
 
     /**
-     * Affichage des valeurs contenues dans la bd pour le choix de l'utilisateur dans le menu */
+     * Affichage des valeurs contenues dans la bd pour le choix de l'utilisateur dans le menu
+     *
+     * @param fieldToPrintAsAchoice - le champ à utiliser comme choix à l'utilisateur
+     *
+     * Example:
+     * <pre>
+     * printTableValues("nomPlat");
+     * </pre>
+     * <br>
+     * Affiche à l'utilisateur : <br>
+     * 1. Rizotto de Poulet <br>
+     * 2. Attiéké */
     protected void printTableValues(String fieldToPrintAsAchoice) {
 
         if(this.getBdContents().size() < 1){
@@ -59,7 +76,7 @@ public class Table {
      * On peut constater que le choix de l'utilisateur correspondant aux clés dans bdContents
      *
      * Parameters:
-     * @param choice - choix de l'utilisateur dans le menu contextuelle
+     * @param field - choix de l'utilisateur dans le menu contextuelle
      * */
     protected String getFieldValue(String field){
         return currentSelectedTable.get(field);
@@ -106,6 +123,13 @@ public class Table {
         }
     }
 
+    /**
+     * Demander à l'utilisateur d'entrer une valeur qui sera ensuite stockée.
+     *<br>
+     * Ici l'utilisateur n'a pas une liste de choix mais doit entrer une valeur souhaitée
+     *
+     * @param promptMessage - le message à afficher à l'utilisateur
+     * @param fieldToDefine - le champ dans la table qui doit avoir cette valeur */
     protected void getUserChoice(String promptMessage, String fieldToDefine){
         System.out.println(promptMessage);
         App.sc = new Scanner(System.in);
@@ -117,6 +141,7 @@ public class Table {
         }
     }
 
+    /** Récupérer le choix qui a été défini par l'utilisateur */
     public Map<String, String> getCurrentSelectedTable(){
         return this.currentSelectedTable;
     }

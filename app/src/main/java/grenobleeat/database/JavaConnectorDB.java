@@ -147,7 +147,7 @@ public class JavaConnectorDB {
      * <pre>
      * String query = "SELECT * FROM Restaurant";
      * String[] fields = {"idRest", "nomRest", "emailRest"};
-     * Map<Integer, Map<String, String>> bdContents = executeQueryAndBuildResult(query, fields);
+     * Map&lt;Integer, Map&lt;String, String&gt;&gt; bdContents = executeQueryAndBuildResult(query, fields);
      * </pre>
      *  */
     public static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields){
@@ -171,7 +171,7 @@ public class JavaConnectorDB {
      * <pre>
      * String query = "SELECT * FROM Restaurant WHERE idRest = ?";
      * String[] fields = {"idRest", "nomRest", "emailRest"};
-     * Map<Integer, Map<String, String>> bdContents = executeQueryAndBuildResult(query, fields, 2);
+     * Map&lt;Integer, Map&lt;String, String&gt;&gt; bdContents = executeQueryAndBuildResult(query, fields, 2);
      * </pre>
      *  */
     public static Map<Integer, Map<String, String>> executeQueryAndBuildResult(String query, String[] fields, String ...values){
@@ -213,7 +213,7 @@ public class JavaConnectorDB {
      * @param valueTofilterWith - valeur que le champ filtré doit avoir dans les résultats
      *
      * Return:
-     * @return - map avec le numéro de ligne comme clé et la paire <champ_de_la_base_de_donnee, valeur> comme valeur */
+     * @return - map avec le numéro de ligne comme clé et la paire &lt;champ_de_la_base_de_donnee, valeur&gt; comme valeur */
     public static Map<Integer, Map<String, String>> fetchDataFromDB(String table, String[] fieldsToPrint, String fieldTofilter, String valueTofilterWith){
         String query = String.format("SELECT * FROM %s WHERE %s = %s", table, fieldTofilter, valueTofilterWith);
         return executeQueryAndBuildResult(query, fieldsToPrint);
