@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+
+import grenobleeat.session.Connexion;
+
 import java.sql.*;
 
 
@@ -46,12 +49,13 @@ public class JavaConnectorDB {
         //     System.exit(1);
         // }
 
-        String url = "jdbc:mysql://localhost:3306/grenobleeat";
-        String uname = "samuel";
-        String password = "20082001";
+        // String url = "jdbc:mysql://localhost:3306/grenobleeat";
+        // String uname = "samuel";
+        // String password = "20082001";
 
-        // String uname = "etudiant";
-        // String password = "mypass123";
+        String url = "jdbc:mysql://localhost:3306/baseGrenobleEats";
+        String uname = "etudiant";
+        String password = "mypass123";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -282,6 +286,7 @@ public class JavaConnectorDB {
 
             Statement st = connectionTotheDatabase.createStatement();
             int numberOfRows = st.executeUpdate(query);
+            System.out.println(st);
             if(numberOfRows <= 0){
                 connectionTotheDatabase.rollback(target.getSavepoint());
             }
@@ -308,6 +313,7 @@ public class JavaConnectorDB {
                     ps.setString(i+1, values[i]);
                 }
             }
+            // System.out.println(ps);
             int numberOfrows = ps.executeUpdate();
             if(numberOfrows <= 0){
                 connectionTotheDatabase.rollback(target.getSavepoint());
@@ -463,4 +469,29 @@ public class JavaConnectorDB {
         }
     }
 
+    public static String getUserAdress(int idUser) {
+        PreparedStatement statementToCLientAdress = null;
+        ResultSet rs = null;
+        String adresseClient = null;
+        try {
+            StringBuilder querygetResto = new StringBuilder();
+            querygetResto.append(" select addrClient from Client where idCLient = "+idUser+";");
+            statementToCLientAdress = connectionTotheDatabase.prepareStatement(querygetResto.toString());
+            System.out.println(statementToCLientAdress);
+            rs = statementToCLientAdress.executeQuery();
+            while (rs.next()){
+                adresseClient = rs.getString("addrClient");
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Problem when getting user id");
+        }
+        finally{
+            if (statementToCLientAdress != null) { try { statementToCLientAdress.close(); } catch (SQLException e) {} statementToCLientAdress = null; } 
+            if (rs != null) { try { rs.close(); } catch (SQLException e) {} rs = null; } 
+        }
+        return adresseClient;
+    }
+
+    
 }

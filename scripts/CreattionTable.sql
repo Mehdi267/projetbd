@@ -120,14 +120,11 @@ CREATE VIEW NoteMoyenneDesRest AS (
                 FROM Evaluation
                 GROUP BY idRest);
 
-CREATE VIEW PrixCommade AS (
-		SELECT SUM(prixPlat*Quantite), idCommande
-		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat and Plat.idRest = PlatsDeCommande.idRest
-		GROUP BY idCommande);
 
 CREATE VIEW PrixCommade AS (
 		SELECT SUM(prixPlat*Quantite) as prixcommande, idCommande
-		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat and Plat.idRest = PlatsDeCommande.idRest
+		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat
+                and Plat.idRest = PlatsDeCommande.idRest
 		GROUP BY idCommande);
                 
 CREATE VIEW CategorieRestoAssocieOrdreDecroissant AS (

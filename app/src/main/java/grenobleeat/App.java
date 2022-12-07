@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import grenobleeat.database.Categorie;
+import grenobleeat.database.ComLivraison;
 import grenobleeat.database.ComSurPlace;
 import grenobleeat.database.JavaConnectorDB;
 import grenobleeat.database.PasserCommande;
@@ -27,7 +28,10 @@ public class App {
     private static Restaurant restaurant;
     private static TypeCommandeRest typeCommandeRest;
     private static ComSurPlace comSurPlace;
+    private static ComLivraison comLivraison;
+    private static int nbPersonneProposition;
     private static Plat plats;
+    private static boolean filtreOn = false;
     private static PasserCommande passerCommande = new PasserCommande();
 
     private static void depthZero() {
@@ -39,20 +43,23 @@ public class App {
 
         System.out.println(sb.toString());
         sc = new Scanner(System.in);
-
         String choix = sc.next();
 
         switch (choix) {
         case "1":
-            choices[0] = 1;
+            checkfiler();
             categorie = new Categorie();
             categorie.getCategoryList();
             categorie.selectCategory();
+            if (!filtreOn){choices[0] = 1;}
+            else{choices[0] = 3;}
             depthOne();
             break;
 
         case "2":
-            choices[0] = 2;
+            checkfiler();
+            if (!filtreOn){choices[0] = 2;}
+            else{choices[0] = 4;}
             depthOne();
             break;
 
@@ -68,6 +75,28 @@ public class App {
 
     }
 
+    private static void checkfiler(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n\n Voulez filtrer les résultats par jour/horaire?     \n");  
+        sb.append("1  oui\n");
+        sb.append("2. non \n");
+        System.out.println(sb.toString());
+        while(true){
+            try{
+                sc = new Scanner(System.in);
+                int entryuser = sc.nextInt(); 
+                if (entryuser == 1){
+                    filtreOn = true; break;}
+                if (entryuser == 2){
+                    filtreOn = false; break; }
+                System.out.println("La entre doit être entre 1 et 2");
+            }
+            catch(Exception e){
+                System.out.println("La entre doit être entre 1 et 2");
+            }
+        }
+    }
+
 
     /**
      * Les fonctions qui sont exécutées en fonction du choix effectué au premier menu */
@@ -76,23 +105,38 @@ public class App {
         choices[1] = 1;
         restaurant = new Restaurant();
         restaurant.getRestaurantList(categorie);
-        //ourRestaurants.getCategorieAuChoixRestaurentsFilter("");
         restaurant.selectRestaurant();
         depthTwo();
 
       }else if(choices[0] == 2){
+        choices[1] = 1;
         restaurant = new Restaurant();
         restaurant.getRecommendedRestaurents();
-        //restaurant.getPropositionRestaurant(30);
-        //restaurant.getRecommendedRestaurentsFilter();
         restaurant.selectRestaurant();
+        depthTwo();
 
       }else if(choices[0] == 3){
+        choices[1] = 1;
+        restaurant = new Restaurant();
+        restaurant.getCategorieAuChoixRestaurentsFilter(categorie.getCurrentSelectedTable().get("categorie"));
+        restaurant.selectRestaurant();
+        depthTwo();
 
-        }else if(choices[0] == 4){
+      }else if(choices[0] == 4){
+        choices[1] = 1;
+        restaurant = new Restaurant();
+        restaurant.getRecommendedRestaurentsFilter();
+        restaurant.selectRestaurant();
+        depthTwo();
 
-      }
-    }
+      }else if(choices[0] == 5){
+        choices[1] = 1;
+        restaurant = new Restaurant();
+        restaurant.getPropositionRestaurant(nbPersonneProposition);
+        restaurant.selectRestaurant();
+        depthTwo();
+    }    
+}
 
 
     private static void depthTwo(){
@@ -102,7 +146,6 @@ public class App {
             typeCommandeRest.getCommandTypesOfRestaurant(restaurant);
             typeCommandeRest.selectTypeOfCommand();
             depthThree();
-
         }else if(choices[1] == 2){
 
         }else if(choices[1] == 3){
@@ -114,21 +157,29 @@ public class App {
 
     private static void depthThree(){
         if(choices[2] == 1){
-            choices[3] = 1;
             Map<String, String> selectedType = typeCommandeRest.getCurrentSelectedTable();
-            comSurPlace = new ComSurPlace();
             if(selectedType.get("type").equals("surPlace")){
+                choices[3] = 1;
+                comSurPlace = new ComSurPlace();
                 comSurPlace.getNbPeopleFromUser();
                 comSurPlace.getHeureArriveeFromUser(restaurant);
                 int nombreDePlaceRest = restaurant.getPlacesLeft(comSurPlace.getHeureArriveSurPlace());
                 if(nombreDePlaceRest > comSurPlace.getNbPersonnes()){
+                    System.out.println("\n Pas assez de place pour faire la commande  ?\n");
+                    System.out.println("\n voici la restaurants pouvant accueillir\n");
                     depthFour();
                 }else{
-
+                    nbPersonneProposition = comSurPlace.getNbPersonnes();
+                    choices[0] = 5;
+                    depthOne();
                 }
             }else if(selectedType.get("type").equals("livraison")){
-
+                choices[3] = 2;
+                comLivraison = new ComLivraison();
+                depthFour();
             }else if(selectedType.get("type").equals("emporte")){
+                choices[3] = 3;
+                depthFour();
 
             }
         }else if(choices[2] == 2){
@@ -140,17 +191,17 @@ public class App {
         }
     }
 
-
  
     private static void depthFour(){
+        choices[4] = choices [3];
+        plats = new Plat();
+        plats.getMealList(restaurant);
+        plats.selectMeal();
+        plats.printSelectedMealsAllergenes();
+        plats.askForRemoval();
+        depthFive();
+
         if(choices[3] == 1){
-            choices[4] = 1;
-            plats = new Plat();
-            plats.getMealList(restaurant);
-            plats.selectMeal();
-            plats.printSelectedMealsAllergenes();
-            plats.askForRemoval();
-            depthFive();
 
         }else if(choices[3] == 2){
 
@@ -160,11 +211,36 @@ public class App {
     }
 
     private static void depthFive(){
+        System.out.println("\n\n");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Confirmation commande \n");  
+        sb.append("1 Confirmer la commande ?\n");
+        sb.append("2. retour au menu principale \n");
+        System.out.println(sb.toString());
+        while(true){
+            try{
+                sc = new Scanner(System.in);
+                int entryuser = sc.nextInt(); 
+                if (entryuser == 1){break;}
+                if (entryuser == 2){depthZero(); return;}
+            }
+            catch(Exception e){
+                System.out.println("La entre doit être entre 1 et 2");
+            }
+        }
         if(choices[4] == 1){
             choices[5] = 1;
-            System.out.println("\nConfirmer la commande ?\n");
-            // TODO take the user prompt
             passerCommande.passerCommandeSurPlace(typeCommandeRest, restaurant, comSurPlace, plats);
+            depthSix();
+        }
+        if(choices[4] == 2){
+            choices[5] = 1;
+            passerCommande.passerCommandeLivraison(typeCommandeRest, restaurant, comLivraison, plats);
+            depthSix();
+        }
+        if(choices[4] == 3){
+            choices[5] = 1;
+            passerCommande.passerCommandeEmporter(typeCommandeRest, restaurant, plats);
             depthSix();
         }
     }
@@ -172,15 +248,48 @@ public class App {
     private static void depthSix(){
         if(choices[5] == 1){
             System.out.println("\nVoulez-vous noter cette commande ?\n");
+            StringBuilder sb = new StringBuilder();
+            sb.append("Evaluation\n");  
+            sb.append("1 faire une evaluation ?\n");
+            sb.append("2. retour au menu principale \n");
+            System.out.println(sb.toString());
+            while(true){
+                try{
+                    sc = new Scanner(System.in);
+                    int entryuser = sc.nextInt(); 
+                    if (entryuser == 1){break;}
+                    if (entryuser == 2){depthZero();return;}
+                }
+                catch(Exception e){
+                    System.out.println("La entre doit être entre 1 et 2");
+                }
+            }
             System.out.print("Veuillez entrer votre note : ");
             sc = new Scanner(System.in);
             int note = sc.nextInt();
             System.out.println("Veuillez entrer une description: ");
             sc = new Scanner(System.in);
             String desc = sc.nextLine();
-
             passerCommande.evaluateCommande(restaurant, Integer.toString(note), desc);
         }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n Faire une autre commande ?\n");  
+        sb.append("1  retour au menu principale ?\n");
+        sb.append("2. quitter l'application \n");
+        System.out.println(sb.toString());
+        while(true){
+            try{
+                sc = new Scanner(System.in);
+                int entryuser = sc.nextInt(); 
+                if (entryuser == 1){ depthZero(); return;}
+                if (entryuser == 2){ JavaConnectorDB.closeConnection(); System.exit(0);}
+            }
+            catch(Exception e){
+                System.out.println("La entre doit être entre 1 et 2");
+            }
+        }
+
     }
 
 
@@ -193,9 +302,6 @@ public class App {
             //the right categories
             
             //JavaConnectorDB.setUpCategorie();
-            
-            // TODO Draw something cool
-
             int codeRetournConnexion = Connexion.connexion();
 
             if (codeRetournConnexion == 0) {

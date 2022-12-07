@@ -48,7 +48,6 @@ public class Restaurant extends Table {
         sb.append(" JOIN NoteMoyenneDesRest ON Restaurant.idRest = NoteMoyenneDesRest.idRest");
         sb.append(" WHERE categorie = ?");
         sb.append(" ORDER BY noteRest DESC, nomRest ASC");
-
         setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, currentCategory));
         printTableValues(fieldToPrintAsName);
     }
@@ -68,7 +67,7 @@ public class Restaurant extends Table {
      */
     public void getRecommendedRestaurents(){
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT Restaurant.idRest,Restaurant.nomRest ");
+        sb.append("SELECT Restaurant.idRest,Restaurant.nomRest, Restaurant.nbPlaceRest ");
         sb.append("FROM CategorieRest ");
         sb.append("join Restaurant on CategorieRest.idRest = Restaurant.idRest ");
         sb.append("join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest ");
@@ -79,7 +78,7 @@ public class Restaurant extends Table {
         sb.append(")");
         sb.append(" GROUP BY Restaurant.idRest ");
         sb.append("ORDER BY noteRest DESC, nomRest ASC;");
-        // System.out.println(sb.toString());
+        //System.out.println(sb.toString());
         setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, Integer.toString(Connexion.getCurrentUserId())));
         printTableValues(fieldToPrintAsName);
     }
@@ -94,7 +93,7 @@ public class Restaurant extends Table {
         ArrayList<String> jour = getDays();
         
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT Restaurant.idRest, Restaurant.nomRest ");
+        sb.append("SELECT Restaurant.idRest, Restaurant.nomRest, Restaurant.nbPlaceRest ");
         sb.append("FROM Restaurant join JourResto on Restaurant.idRest = JourResto.idRest ");
         sb.append("WHERE  Restaurant.nomRest IN ( ");
         sb.append("SELECT Restaurant.nomRest ");
@@ -127,7 +126,7 @@ public class Restaurant extends Table {
             sb.append(" ) ");
         }
         sb.append(" GROUP by Restaurant.idRest;");
-        // System.out.println(sb.toString());
+        //System.out.println(sb.toString());
         setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields, Integer.toString(Connexion.getCurrentUserId())));
         printTableValues(fieldToPrintAsName);
     }
@@ -143,7 +142,7 @@ public class Restaurant extends Table {
         ArrayList<String> horaire = gethoraire();
         ArrayList<String> jour = getDays();
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT Restaurant.idRest, Restaurant.nomRest ");
+        sb.append("SELECT Restaurant.idRest, Restaurant.nomRest, Restaurant.nbPlaceRest ");
         sb.append("FROM Restaurant join JourResto on Restaurant.idRest = JourResto.idRest ");
         sb.append("WHERE  Restaurant.nomRest IN  ( ");
         sb.append("SELECT Restaurant.nomRest ");
@@ -172,7 +171,7 @@ public class Restaurant extends Table {
             sb.append(" ) ");
         }
         sb.append(" GROUP by Restaurant.idRest;");
-        // System.out.println(sb.toString());
+        //System.out.println(sb.toString());
         setBdContents(JavaConnectorDB.executeQueryAndBuildResult(sb.toString(), fields));
         printTableValues(fieldToPrintAsName);
     }
@@ -185,7 +184,7 @@ public class Restaurant extends Table {
      */
     public void getPropositionRestaurant(int nbPlace){
         StringBuilder sb = new StringBuilder();
-        sb.append("        SELECT Restaurant.idRest, Restaurant.nomRest FROM ");
+        sb.append("        SELECT Restaurant.idRest, Restaurant.nomRest, Restaurant.nbPlaceRest FROM ");
         sb.append("        CategorieRest ");
         sb.append("        join Restaurant on CategorieRest.idRest = Restaurant.idRest");
         sb.append("        join NoteMoyenneDesRest on Restaurant.idRest = NoteMoyenneDesRest.idRest");
@@ -246,7 +245,6 @@ public class Restaurant extends Table {
         String restId = this.getCurrentSelectedTable().get(fields[0]); // en supposant que le premier élément est la clé primaire
         ResultSet rs = JavaConnectorDB.executeCustomQuery(sb.toString(), restId, heureArrivee);
 
-
         try{
             if(rs.next()){
                 nombreDePlaces = rs.getInt("placeRestante");
@@ -274,8 +272,8 @@ public class Restaurant extends Table {
         sb.append("8. appuyez sur 8 quand vous avez termine\n");
         System.out.println(sb.toString());
         HashSet<String> listDaysSet = new HashSet<>();
-        App.sc = new Scanner(System.in);
         boolean isSuccessful = false;
+        App.sc = new Scanner(System.in);
         while(!isSuccessful){
             try{
                 int entryuser = App.sc.nextInt();
@@ -284,6 +282,7 @@ public class Restaurant extends Table {
                         listDaysSet.add(daysHashMap.get(entryuser));
                     }
                     System.out.println("Donner un jour ou appuyez sur 8 pour quitter "); 
+                    App.sc = new Scanner(System.in);
                     entryuser = App.sc.nextInt();
                 }
                 isSuccessful = true;
@@ -309,18 +308,17 @@ public class Restaurant extends Table {
         sb.append("3. n'importe\n");
         System.out.println(sb.toString());
         ArrayList<String> horaire = new ArrayList<String>();
-        Scanner sc = new Scanner(System.in);
         boolean isSuccessful = false;
         while(!isSuccessful){
             try{
-                int entryuser = sc.nextInt(); 
+                App.sc = new Scanner(System.in);
+                int entryuser = App.sc.nextInt(); 
                 if (entryuser == 1){horaire.add("midi"); return horaire;}
                 if (entryuser == 2){horaire.add("soir"); return horaire;}
                 if (entryuser == 3){horaire.add("soir"); horaire.add("midi"); return horaire;}
-                System.out.println("La entre doit être entre 1 et 3");
             }
             catch(Exception e){
-                System.out.println("La entre doit être entre 1 et 3");
+                //System.out.println("La entre doit être entre 1 et 3");
             }
         }
         return null;

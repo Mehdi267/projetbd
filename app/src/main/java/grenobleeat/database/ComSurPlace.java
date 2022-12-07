@@ -56,10 +56,9 @@ public class ComSurPlace extends Table {
             Set<String> hours = new HashSet<>();
             while(rs.next()){
                 restaurantHours = rs.getString("horaireOuvertureRest");
-                String[] tokenisedVersion = restaurantHours.stripLeading().stripTrailing().split("et");
+                String[] tokenisedVersion = restaurantHours.stripLeading().stripTrailing().split(" et ");
                 hours.addAll(Arrays.asList(tokenisedVersion));
             }
-
 
             for(String hour: hours){
                 sb.append(number);
