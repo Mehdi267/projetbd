@@ -5,7 +5,7 @@
 # make build
 #
 # To run the principal application :
-# make run local_database_name port username password
+# make run local_database_name port username password database_address
 #
 
 ifeq (run,$(firstword $(MAKECMDGOALS)))
