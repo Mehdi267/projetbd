@@ -10,7 +10,7 @@ NB : *Le projet utilise une base de données MySQL*
 
 Si vous ne disposez pas d'une base de données MySQL, vous pouvez effectuer le lancement
 de l'application sur notre base de données à distance en tapant la commande :
-`make run mehdi`
+`make run_mehdi`
 
 Si jamais cette commande ne marche pas, alors mon adresse ip a sûrement changée.
 Une solution est vous m'envoyer un mail sur mahdi.bc1@gmail.com pour que je vous donne ma
@@ -97,9 +97,17 @@ passer dans le dossier scriptsSetUpMysql
 Copier tout le fichier Creationtable dans le terminal mysql pour crée les tables
 Copier tout le fichier ajoutElement dans le terminal mysql pour créer les tables
  
-Une autre solution est d'importer notre base de données directement avec la commande:
- 
+Une autre solution est d'importer les données de base de données directement
+du fichier qui dans le drive avec la commande exécutée cette commande dans le mode administrateur
+et si jamais il vous dit qu'il faut mettre un mot de passe appuyez sur entrée:
+mysql -u root -p baseGrenobleEats < baseGrenobleEats.sql
+
 9/
 Maintenant, quand vous êtes dans sql une commande qui est importante pour pouvoir faire certain
 group by est la suivant :
 Set sql_mode = '';
+
+10/
+Enfin il faut juste faire un : 
+make build 
+make run baseGrenobleEats 3306 etudiant mypass123 localhost

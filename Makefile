@@ -20,7 +20,7 @@ build: clean
 run:
 	java -cp build:app/src/main/resources/mysql-connector.jar grenobleeat/App $(ARGS)
 
-run mehdi:
+run_mehdi:
 	java -cp build:app/src/main/resources/mysql-connector.jar grenobleeat/App baseGrenobleEats 3306 etudiant mypass123 79.88.105.10
 
 doc: clean
