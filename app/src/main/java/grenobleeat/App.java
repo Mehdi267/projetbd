@@ -3,7 +3,6 @@
  */
 package grenobleeat;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -71,6 +70,10 @@ public class App {
             if (deleteChoice == 1){depthZero();}
             if (deleteChoice == 0){System.exit(0);}
             break;
+
+        default:
+            depthZero();
+            break;
         }
 
     }
@@ -135,8 +138,10 @@ public class App {
         restaurant.getPropositionRestaurant(nbPersonneProposition);
         restaurant.selectRestaurant();
         depthTwo();
-    }    
-}
+      }else{
+          depthZero();
+      }
+    }
 
 
     private static void depthTwo(){
@@ -146,12 +151,8 @@ public class App {
             typeCommandeRest.getCommandTypesOfRestaurant(restaurant);
             typeCommandeRest.selectTypeOfCommand();
             depthThree();
-        }else if(choices[1] == 2){
-
-        }else if(choices[1] == 3){
-
-        }else if(choices[1] == 4){
-
+        }else{
+            depthOne();
         }
     }
 
@@ -166,7 +167,7 @@ public class App {
                 int nombreDePlaceRest = restaurant.getPlacesLeft(comSurPlace.getHeureArriveSurPlace());
                 if(nombreDePlaceRest > comSurPlace.getNbPersonnes()){
                     System.out.println("\n Pas assez de place pour faire la commande  ?\n");
-                    System.out.println("\n voici la restaurants pouvant accueillir\n");
+                    System.out.println("\n Voici les restaurants pouvant accueillir\n");
                     depthFour();
                 }else{
                     nbPersonneProposition = comSurPlace.getNbPersonnes();
@@ -182,12 +183,8 @@ public class App {
                 depthFour();
 
             }
-        }else if(choices[2] == 2){
-
-        }else if(choices[2] == 3){
-
-        }else if(choices[2] == 4){
-
+        }else{
+            depthTwo();
         }
     }
 
@@ -201,13 +198,6 @@ public class App {
         plats.askForRemoval();
         depthFive();
 
-        if(choices[3] == 1){
-
-        }else if(choices[3] == 2){
-
-        }else if(choices[3] == 3){
-
-        }
     }
 
     private static void depthFive(){
@@ -215,7 +205,7 @@ public class App {
         StringBuilder sb = new StringBuilder();
         sb.append("Confirmation commande \n");  
         sb.append("1 Confirmer la commande ?\n");
-        sb.append("2. retour au menu principale \n");
+        sb.append("2. retour au menu principal \n");
         System.out.println(sb.toString());
         while(true){
             try{
@@ -242,6 +232,8 @@ public class App {
             choices[5] = 1;
             passerCommande.passerCommandeEmporter(typeCommandeRest, restaurant, plats);
             depthSix();
+        }else{
+            depthFour();
         }
     }
 
@@ -271,11 +263,13 @@ public class App {
             sc = new Scanner(System.in);
             String desc = sc.nextLine();
             passerCommande.evaluateCommande(restaurant, Integer.toString(note), desc);
+        }else{
+            depthFour();
         }
 
         StringBuilder sb = new StringBuilder();
         sb.append("\n Faire une autre commande ?\n");  
-        sb.append("1  retour au menu principale ?\n");
+        sb.append("1. Retour au menu principal ?\n");
         sb.append("2. quitter l'application \n");
         System.out.println(sb.toString());
         while(true){
