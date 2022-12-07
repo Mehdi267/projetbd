@@ -56,7 +56,6 @@ public class JavaConnectorDB {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connectionTotheDatabase = DriverManager.getConnection(url, uname, password);
             connectionTotheDatabase.setAutoCommit(false);
-            connectionTotheDatabase.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Erreur de connexion à la base de données");
             System.exit(1);
