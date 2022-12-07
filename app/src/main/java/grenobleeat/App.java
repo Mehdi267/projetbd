@@ -42,8 +42,9 @@ public class App {
 
         StringBuilder sb = new StringBuilder().append("1. Afficher nos catégories de restaurants\n")
                 .append("2. Afficher nos recommandations de catégories pour vous\n")
-                .append("3. Un restaurant en tête ? Parcourir la liste de nos restaurants\n")
-                .append("4. Supprimer votre compte");
+                .append("3. Supprimer votre compte")
+                .append("4. Quitter l'application");
+
 
         System.out.println(sb.toString());
         sc = new Scanner(System.in);
@@ -68,13 +69,17 @@ public class App {
             break;
 
         case "3":
-            break;
-        
-        case "4":
             int deleteChoice = DeleteAccount.deleteAccount();
             if (deleteChoice == 1){depthZero();}
             if (deleteChoice == 0){System.exit(0);}
             break;
+
+        case "4":
+            System.out.println("----------------");
+            System.out.println();
+            System.out.println("Merci d'avoir utilisé GrenobleEat");
+            System.out.println("A très bientôt :-)");
+            System.exit(1);
 
         default:
             depthZero();
