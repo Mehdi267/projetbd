@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.31, for Linux (x86_64)
 --
--- Host: localhost    Database: projetbd
+-- Host: localhost    Database: baseGrenobleEats
 -- ------------------------------------------------------
 -- Server version	8.0.31-0ubuntu0.20.04.2
 
@@ -144,21 +144,6 @@ INSERT INTO `CategorieRest` VALUES (4,'cuisine à la bière'),(5,'cuisine à la 
 UNLOCK TABLES;
 
 --
--- Temporary view structure for view `CategorieRestoAssocieOrdreDecroissant`
---
-
-DROP TABLE IF EXISTS `CategorieRestoAssocieOrdreDecroissant`;
-/*!50001 DROP VIEW IF EXISTS `CategorieRestoAssocieOrdreDecroissant`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `CategorieRestoAssocieOrdreDecroissant` AS SELECT 
- 1 AS `categorie`,
- 1 AS `idRest`,
- 1 AS `nomRest`,
- 1 AS `noteRest`*/;
-SET character_set_client = @saved_cs_client;
-
---
 -- Table structure for table `Client`
 --
 
@@ -196,9 +181,9 @@ DROP TABLE IF EXISTS `ComLivraison`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ComLivraison` (
   `idComLivraison` int NOT NULL,
-  `adresseLivraison` varchar(100) DEFAULT NULL,
-  `textLivreur` varchar(100) DEFAULT NULL,
-  `heureLivraison` date DEFAULT NULL,
+  `adresseLivraison` varchar(100) NOT NULL,
+  `textLivreur` varchar(100) NOT NULL,
+  `heureLivraison` date NOT NULL,
   PRIMARY KEY (`idComLivraison`),
   CONSTRAINT `ComLivraison_ibfk_1` FOREIGN KEY (`idComLivraison`) REFERENCES `Commande` (`idCommande`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -210,7 +195,7 @@ CREATE TABLE `ComLivraison` (
 
 LOCK TABLES `ComLivraison` WRITE;
 /*!40000 ALTER TABLE `ComLivraison` DISABLE KEYS */;
-INSERT INTO `ComLivraison` VALUES (20,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-04'),(21,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-04'),(22,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-04'),(23,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-04');
+INSERT INTO `ComLivraison` VALUES (17,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-06'),(18,'adresse de livraison donnée par l\'utilisateur','i have ran into some traffic i will be there 5 min late','2022-12-06'),(27,'2 rue de la liberté, Grenoble','i have ran into some traffic i will be there 5 min late','2022-12-07'),(30,'4 rue Stalingrad, Grenoble','i have ran into some traffic i will be there 5 min late','2022-12-07'),(37,'4 rue Stalingrad, Grenoble','i have ran into some traffic i will be there 5 min late','2022-12-07');
 /*!40000 ALTER TABLE `ComLivraison` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,7 +208,7 @@ DROP TABLE IF EXISTS `ComSurPlace`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ComSurPlace` (
   `idComSurPlace` int NOT NULL,
-  `nbrPersonne` int DEFAULT NULL,
+  `nbrPersonne` int NOT NULL,
   `heureArriveSurPlace` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`idComSurPlace`),
   KEY `heureArriveSurPlace` (`heureArriveSurPlace`),
@@ -238,7 +223,7 @@ CREATE TABLE `ComSurPlace` (
 
 LOCK TABLES `ComSurPlace` WRITE;
 /*!40000 ALTER TABLE `ComSurPlace` DISABLE KEYS */;
-INSERT INTO `ComSurPlace` VALUES (1,6,'midi'),(7,6,'midi'),(8,6,'midi'),(9,6,'soir'),(10,6,'soir'),(11,7,'soir'),(12,7,'soir'),(13,7,'soir'),(14,5,'midi'),(15,5,'midi'),(17,5,'midi'),(18,5,'midi'),(25,5,'midi');
+INSERT INTO `ComSurPlace` VALUES (1,6,'midi'),(7,6,'midi'),(8,6,'midi'),(9,6,'soir'),(10,6,'soir'),(11,7,'soir'),(12,7,'soir'),(13,7,'soir'),(15,5,'midi'),(20,5,'midi'),(21,5,'soir'),(22,5,'soir'),(23,5,'midi'),(24,5,'soir'),(25,5,'soir'),(26,5,'soir'),(28,3,'soir'),(29,5,'soir'),(32,5,'soir'),(33,10,'soir'),(34,5,'soir'),(35,10,'soir'),(36,5,'soir'),(38,10,'midi');
 /*!40000 ALTER TABLE `ComSurPlace` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,9 +236,9 @@ DROP TABLE IF EXISTS `Commande`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Commande` (
   `idCommande` int NOT NULL,
-  `dateCommande` date DEFAULT NULL,
-  `heureCommande` date DEFAULT NULL,
-  `prixCommande` int DEFAULT NULL,
+  `dateCommande` date NOT NULL,
+  `heureCommande` date NOT NULL,
+  `prixCommande` int NOT NULL,
   `statutCommande` varchar(30) DEFAULT NULL,
   `typeCommande` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`idCommande`),
@@ -271,7 +256,7 @@ CREATE TABLE `Commande` (
 
 LOCK TABLES `Commande` WRITE;
 /*!40000 ALTER TABLE `Commande` DISABLE KEYS */;
-INSERT INTO `Commande` VALUES (1,'2022-11-13','2022-11-13',30,'attente de confirmation','surPlace'),(2,'2022-11-14','2022-11-14',30,'disponible','livraison'),(3,'2022-11-14','2022-11-14',30,'disponible','livraison'),(4,'2022-11-16','2022-11-16',30,'annulee par le client','emporte'),(5,'2022-11-17','2022-11-17',30,'attente de confirmation','emporte'),(7,'2022-11-13','2022-11-13',30,'validee','surPlace'),(8,'2022-11-13','2022-11-13',30,'validee','surPlace'),(9,'2022-11-13','2022-11-13',30,'validee','surPlace'),(10,'2022-11-13','2022-11-13',30,'validee','surPlace'),(11,'2022-11-13','2022-11-13',30,'validee','surPlace'),(12,'2022-11-14','2022-11-14',30,'validee','surPlace'),(13,'2022-11-14','2022-11-14',30,'validee','surPlace'),(14,'2022-12-04','2022-12-04',1,'attente de confirmation','livraison'),(15,'2022-12-04','2022-12-04',115,'validee','livraison'),(16,'2022-12-04','2022-12-04',1,'validee','emporte'),(17,'2022-12-04','2022-12-04',115,'validee','surPlace'),(18,'2022-12-04','2022-12-04',115,'validee','surPlace'),(19,'2022-12-04','2022-12-04',115,'validee','livraison'),(20,'2022-12-04','2022-12-04',115,'validee','livraison'),(21,'2022-12-04','2022-12-04',115,'validee','livraison'),(22,'2022-12-04','2022-12-04',115,'validee','livraison'),(23,'2022-12-04','2022-12-04',115,'validee','livraison'),(24,'2022-12-04','2022-12-04',115,'validee','emporte'),(25,'2022-12-04','2022-12-04',274,'validee','surPlace'),(26,'2022-12-04','2022-12-04',274,'disponible','emporte');
+INSERT INTO `Commande` VALUES (1,'2022-11-13','2022-11-13',30,'attente de confirmation','surPlace'),(2,'2022-11-14','2022-11-14',30,'disponible','livraison'),(3,'2022-11-14','2022-11-14',30,'disponible','livraison'),(4,'2022-11-16','2022-11-16',30,'annulee par le client','emporte'),(5,'2022-11-17','2022-11-17',30,'attente de confirmation','emporte'),(7,'2022-11-13','2022-11-13',30,'validee','surPlace'),(8,'2022-11-13','2022-11-13',30,'validee','surPlace'),(9,'2022-11-13','2022-11-13',30,'validee','surPlace'),(10,'2022-11-13','2022-11-13',30,'validee','surPlace'),(11,'2022-11-13','2022-11-13',30,'validee','surPlace'),(12,'2022-11-14','2022-11-14',30,'validee','surPlace'),(13,'2022-11-14','2022-11-14',30,'validee','surPlace'),(14,'2022-12-06','2022-12-06',1,'attente de confirmation','emporte'),(15,'2022-12-06','2022-12-06',1,'validee','surPlace'),(16,'2022-12-06','2022-12-06',1,'attente de confirmation','livraison'),(17,'2022-12-06','2022-12-06',1,'en livraison','livraison'),(18,'2022-12-06','2022-12-06',1,'en livraison','livraison'),(19,'2022-12-06','2022-12-06',1,'disponible','emporte'),(20,'2022-12-06','2022-12-06',1,'validee','surPlace'),(21,'2022-12-07','2022-12-07',1,'attente de confirmation','surPlace'),(22,'2022-12-07','2022-12-07',1,'validee','surPlace'),(23,'2022-12-07','2022-12-07',274,'validee','surPlace'),(24,'2022-12-07','2022-12-07',31,'validee','surPlace'),(25,'2022-12-07','2022-12-07',71,'validee','surPlace'),(26,'2022-12-07','2022-12-07',101,'validee','surPlace'),(27,'2022-12-07','2022-12-07',60,'en livraison','livraison'),(28,'2022-12-07','2022-12-07',124,'disponible','emporte'),(29,'2022-12-07','2022-12-07',69,'validee','surPlace'),(30,'2022-12-07','2022-12-07',103,'en livraison','livraison'),(31,'2022-12-07','2022-12-07',115,'disponible','emporte'),(32,'2022-12-07','2022-12-07',198,'validee','surPlace'),(33,'2022-12-07','2022-12-07',45,'validee','surPlace'),(34,'2022-12-07','2022-12-07',45,'validee','surPlace'),(35,'2022-12-07','2022-12-07',69,'validee','surPlace'),(36,'2022-12-07','2022-12-07',473,'validee','surPlace'),(37,'2022-12-07','2022-12-07',114,'en livraison','livraison'),(38,'2022-12-07','2022-12-07',16,'validee','surPlace');
 /*!40000 ALTER TABLE `Commande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,10 +270,10 @@ DROP TABLE IF EXISTS `Evaluation`;
 CREATE TABLE `Evaluation` (
   `idCommandeEval` int NOT NULL,
   `idRest` int DEFAULT NULL,
-  `dateEval` date DEFAULT NULL,
-  `heureEval` date DEFAULT NULL,
-  `avisEval` varchar(100) DEFAULT NULL,
-  `noteEval` int DEFAULT NULL,
+  `dateEval` date NOT NULL,
+  `heureEval` date NOT NULL,
+  `avisEval` varchar(100) NOT NULL,
+  `noteEval` int NOT NULL,
   PRIMARY KEY (`idCommandeEval`),
   KEY `idRest` (`idRest`),
   CONSTRAINT `Evaluation_ibfk_1` FOREIGN KEY (`idRest`) REFERENCES `Restaurant` (`idRest`),
@@ -303,7 +288,7 @@ CREATE TABLE `Evaluation` (
 
 LOCK TABLES `Evaluation` WRITE;
 /*!40000 ALTER TABLE `Evaluation` DISABLE KEYS */;
-INSERT INTO `Evaluation` VALUES (1,1,'2022-11-13','2022-11-13','good food',4),(2,2,'2022-11-13','2022-11-13','good food',4),(3,3,'2022-11-13','2022-11-13','good food',4),(4,4,'2022-11-13','2022-11-13','good food',4),(5,5,'2022-11-13','2022-11-13','good food',4),(7,1,'2022-11-13','2022-11-13','good food',4),(8,6,'2022-11-13','2022-11-13','good food',4),(9,6,'2022-11-13','2022-11-13','good food',4),(10,4,'2022-11-13','2022-11-13','good food',3),(11,1,'2022-11-13','2022-11-13','good food',2),(12,1,'2022-11-14','2022-11-14','good food',5),(13,1,'2022-11-14','2022-11-14','bad food',2),(14,2,'2022-12-04','2022-12-04','good food',4),(15,2,'2022-12-04','2022-12-04','good food',4),(17,2,'2022-12-04','2022-12-04','good food',4),(18,2,'2022-12-04','2022-12-04','good food',4),(19,2,'2022-12-04','2022-12-04','good food',4),(20,2,'2022-12-04','2022-12-04','good food',4),(21,2,'2022-12-04','2022-12-04','good food',4),(24,2,'2022-12-04','2022-12-04','good food',4),(25,2,'2022-12-04','2022-12-04','good food',4),(26,2,'2022-12-04','2022-12-04','good food',5);
+INSERT INTO `Evaluation` VALUES (1,1,'2022-11-13','2022-11-13','good food',2),(2,2,'2022-11-13','2022-11-13','good food',3),(3,3,'2022-11-13','2022-11-13','good food',3),(4,4,'2022-11-13','2022-11-13','good food',4),(5,5,'2022-11-13','2022-11-13','good food',5),(7,1,'2022-11-13','2022-11-13','good food',5),(8,6,'2022-11-13','2022-11-13','good food',3),(9,6,'2022-11-13','2022-11-13','good food',4),(10,4,'2022-11-13','2022-11-13','good food',3),(11,1,'2022-11-13','2022-11-13','good food',2),(12,1,'2022-11-14','2022-11-14','good food',5),(13,1,'2022-11-14','2022-11-14','bad food',2),(14,2,'2022-12-06','2022-12-06','good food',5),(15,2,'2022-12-06','2022-12-06','good food',5),(17,2,'2022-12-06','2022-12-06','good food',5),(18,2,'2022-12-06','2022-12-06','good food',5),(19,2,'2022-12-06','2022-12-06','good food',5),(20,2,'2022-12-06','2022-12-06','good food',5),(21,NULL,'2022-12-07','2022-12-07','\'test\'',5),(23,2,'2022-12-07','2022-12-07','good food',5),(24,NULL,'2022-12-07','2022-12-07','test',5),(25,NULL,'2022-12-07','2022-12-07','test',5),(26,6,'2022-12-07','2022-12-07','not bad',5),(27,1,'2022-12-07','2022-12-07','test',5),(29,2,'2022-12-07','2022-12-07','eazezara',5),(32,4,'2022-12-07','2022-12-07','love the food',5),(35,2,'2022-12-07','2022-12-07','testing',5),(36,4,'2022-12-07','2022-12-07','tesint ....',5),(37,1,'2022-12-07','2022-12-07','good food would recommend',5),(38,1,'2022-12-07','2022-12-07','very good !!!!',5);
 /*!40000 ALTER TABLE `Evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -437,7 +422,7 @@ CREATE TABLE `PasserCommande` (
 
 LOCK TABLES `PasserCommande` WRITE;
 /*!40000 ALTER TABLE `PasserCommande` DISABLE KEYS */;
-INSERT INTO `PasserCommande` VALUES (2,2,2),(3,3,3),(1,4,4),(4,5,5),(2,7,1),(1,8,6),(1,9,3),(3,10,4),(2,11,1),(2,12,1),(2,13,1),(3,15,1),(3,16,1),(3,17,1),(3,18,1),(3,19,1),(3,20,1),(3,21,1),(3,22,1),(3,23,1),(3,24,1),(3,25,2),(3,26,2);
+INSERT INTO `PasserCommande` VALUES (5,1,1),(2,2,2),(3,3,3),(5,4,4),(4,5,5),(2,7,1),(5,8,6),(5,9,3),(3,10,4),(2,11,1),(2,12,1),(2,13,1),(3,15,2),(3,17,2),(3,18,2),(3,19,2),(3,20,2),(4,21,4),(4,22,6),(3,23,2),(4,24,6),(1,25,6),(4,26,6),(1,27,1),(1,28,1),(1,29,2),(4,30,1),(4,31,2),(4,32,4),(4,33,5),(4,34,5),(4,35,2),(4,36,4),(4,37,1),(4,38,1);
 /*!40000 ALTER TABLE `PasserCommande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -451,9 +436,9 @@ DROP TABLE IF EXISTS `Plat`;
 CREATE TABLE `Plat` (
   `idPlat` int NOT NULL,
   `idRest` int NOT NULL,
-  `nomPlat` varchar(30) DEFAULT NULL,
-  `descPlat` varchar(100) DEFAULT NULL,
-  `prixPlat` int DEFAULT NULL,
+  `nomPlat` varchar(30) NOT NULL,
+  `descPlat` varchar(100) NOT NULL,
+  `prixPlat` int NOT NULL,
   PRIMARY KEY (`idPlat`,`idRest`),
   KEY `idRest` (`idRest`),
   CONSTRAINT `Plat_ibfk_1` FOREIGN KEY (`idRest`) REFERENCES `Restaurant` (`idRest`),
@@ -467,7 +452,7 @@ CREATE TABLE `Plat` (
 
 LOCK TABLES `Plat` WRITE;
 /*!40000 ALTER TABLE `Plat` DISABLE KEYS */;
-INSERT INTO `Plat` VALUES (1,1,'Menu naan kebab','Naan fromage, kebab, crudités et 2 sauces au choix. Servi avec frites et 1 boisson au choix.',10),(1,2,'2 MENUS + 2 EXTRAS','2 menus aux choix parmi une sélection de menus phares BURGER KING',23),(1,3,'5 Fromages','Base sauce tomate, mozzarella, chèvre, bleu, raclette et emmental.',15),(1,4,'Poke Sucré Saumon Wasabi','BRiz vinaigré Protéine : saumon mariné avec une sauce soja sucrée Légume : carotte cranberries ,',60),(1,5,'Nouilles Sautées aux légumes','Nouilles sautées aux légumes',20),(1,6,'Nougat glacé','Glace nougat façon Baba Louni',10),(2,1,'Maxi cheese naan kebab','Double viande, crudités et 2 sauces au choix.',9),(2,2,'3 MENUS + 3 EXTRAS','3 menus aux choix parmi une sélection de menus phares BURGER KING',30),(2,3,'Norvégienne','Base crème fraîche, mozzarella, saumon fumé, tomates cerises et citron.',16),(2,4,'Poke végétarien(vegan)','BDuo de céréales au curcuma \"quinoa et riz curcuma\" Protéine tofu grillé',70),(2,6,'Sandwich Babayon','Bouscoutou + glace Zabayon',11),(3,1,'classique kebab','Kebab, pain, crudités et 2 sauces au choix.',8),(3,2,'Tendercrisp Cheese & Bacon','LIrrésistible Tendercrisp et son poulet pané croustillant dans sa version cheese & bacon',11),(3,3,'Tartiflette','Base crème fraîche, mozzarella, pommes de terre, lardons, oignons et raclette.',14),(3,4,'Pastels boeuf x2','Beignets frits fourrés au boeuf. 2 pièces',55),(3,5,'M1','1 plat et 1 accompagnement au choix.',15),(3,6,'Bambaloni','Beignet Tunisien façon Sidi Bou Said',7),(4,1,'Mozzarella stick','apéritifs ou hors-dœuvre faits de fromage pané',15),(4,2,'Double Cheese Bacon XXL','Deux viandes de bœuf grillées à la flamme, des tranches de cheddar fondu et du bacon',12),(4,3,'3 Fondus','Base crème fraîche, mozzarella, lardons grillés',16),(4,4,'Alokos extra','Bananes plantains frites, légèrement croquantes à lextérieur',66),(4,5,'BO2 Bobun Au Bœuf','Grande salade, vermicelle, pousse de soja, concombre, carotte, bœuf, cacahuète',18),(4,6,'Boule au miel','La fameuse boule au miel tunisienne',6);
+INSERT INTO `Plat` VALUES (1,1,'Menu naan kebab','Naan fromage, kebab, crudités et 2 sauces au choix. Servi avec frites et 1 boisson au choix.',10),(1,2,'2 MENUS + 2 EXTRAS','2 menus aux choix parmi une sélection de menus phares BURGER KING',23),(1,3,'5 Fromages','Base sauce tomate, mozzarella, chèvre, bleu, raclette et emmental.',15),(1,4,'Poke Sucré Saumon Wasabi','BRiz vinaigré Protéine : saumon mariné avec une sauce soja sucrée Légume : carotte cranberries ,',60),(1,5,'Nouilles Sautées aux légumes','Nouilles sautées aux légumes',20),(1,6,'Nougat glacé','Glace nougat façon Baba Louni',10),(2,1,'Maxi cheese naan kebab','Double viande, crudités et 2 sauces au choix.',9),(2,2,'3 MENUS + 3 EXTRAS','3 menus aux choix parmi une sélection de menus phares BURGER KING',30),(2,3,'Norvégienne','Base crème fraîche, mozzarella, saumon fumé, tomates cerises et citron.',16),(2,4,'Poke végétarien(vegan)','BDuo de céréales au curcuma \"quinoa et riz curcuma\" Protéine tofu grillé',70),(2,6,'Sandwich Babayon','Bouscoutou + glace Zabayon',11),(3,1,'classique kebab','Kebab, pain, crudités et 2 sauces au choix.',8),(3,2,'Tendercrisp Cheese & Bacon','LIrrésistible Tendercrisp et son poulet pané croustillant dans sa version cheese & bacon',11),(3,3,'Tartiflette','Base crème fraîche, mozzarella, pommes de terre, lardons, oignons et raclette.',14),(3,4,'Pastels boeuf x2','Beignets frits fourrés au boeuf. 2 pièces',55),(3,5,'M1','1 Plat et 1 accompagnement au choix.',15),(3,6,'Bambaloni','Beignet Tunisien façon Sidi Bou Said',7),(4,1,'Mozzarella stick','apéritifs ou hors-dœuvre faits de fromage pané',15),(4,2,'Double Cheese Bacon XXL','Deux viandes de bœuf grillées à la flamme, des tranches de cheddar fondu et du bacon',12),(4,3,'3 Fondus','Base crème fraîche, mozzarella, lardons grillés',16),(4,4,'Alokos extra','Bananes plantains frites, légèrement croquantes à lextérieur',66),(4,5,'BO2 Bobun Au Bœuf','Grande salade, vermicelle, pousse de soja, concombre, carotte, bœuf, cacahuète',18),(4,6,'Boule au miel','La fameuse boule au miel tunisienne',6);
 /*!40000 ALTER TABLE `Plat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -482,7 +467,7 @@ CREATE TABLE `PlatsDeCommande` (
   `idCommande` int NOT NULL,
   `idRest` int NOT NULL,
   `idPlat` int NOT NULL,
-  `Quantite` int DEFAULT NULL,
+  `Quantite` int NOT NULL,
   PRIMARY KEY (`idCommande`,`idRest`,`idPlat`),
   KEY `idPlat` (`idPlat`,`idRest`),
   CONSTRAINT `PlatsDeCommande_ibfk_1` FOREIGN KEY (`idCommande`) REFERENCES `Commande` (`idCommande`),
@@ -497,7 +482,7 @@ CREATE TABLE `PlatsDeCommande` (
 
 LOCK TABLES `PlatsDeCommande` WRITE;
 /*!40000 ALTER TABLE `PlatsDeCommande` DISABLE KEYS */;
-INSERT INTO `PlatsDeCommande` VALUES (1,1,1,3),(1,1,3,3),(2,2,1,3),(2,2,3,3),(3,3,1,3),(3,3,3,3),(4,4,2,3),(4,4,3,3),(5,5,3,3),(5,5,4,3),(7,1,1,3),(7,1,3,3),(8,6,2,3),(8,6,3,3),(9,3,1,3),(9,3,3,3),(10,4,2,1),(10,4,3,3),(11,1,2,1),(11,1,3,3),(12,4,2,1),(12,4,3,3),(13,1,2,1),(13,1,3,3),(14,1,1,3),(14,1,3,5),(15,1,1,3),(15,1,2,5),(15,1,3,5),(16,1,1,3),(16,1,2,5),(16,1,3,5),(17,1,1,3),(17,1,2,5),(17,1,3,5),(18,1,1,3),(18,1,2,5),(18,1,3,5),(19,1,1,3),(19,1,2,5),(19,1,3,5),(20,1,1,3),(20,1,2,5),(20,1,3,5),(21,1,1,3),(21,1,2,5),(21,1,3,5),(22,1,1,3),(22,1,2,5),(22,1,3,5),(23,1,1,3),(23,1,2,5),(23,1,3,5),(24,1,1,3),(24,1,2,5),(24,1,3,5),(25,2,1,3),(25,2,2,5),(25,2,3,5),(26,2,1,3),(26,2,2,5),(26,2,3,5);
+INSERT INTO `PlatsDeCommande` VALUES (1,1,1,3),(1,1,3,3),(2,2,1,3),(2,2,3,3),(3,3,1,3),(3,3,3,3),(4,4,2,3),(4,4,3,3),(5,5,3,3),(5,5,4,3),(7,1,1,3),(7,1,3,3),(8,6,2,3),(8,6,3,3),(9,3,1,3),(9,3,3,3),(10,4,2,1),(10,4,3,3),(11,1,2,1),(11,1,3,3),(12,4,2,1),(12,4,3,3),(13,1,2,1),(13,1,3,3),(15,2,1,3),(15,2,2,5),(15,2,3,5),(17,1,1,3),(17,1,2,5),(17,1,3,5),(18,1,1,3),(18,1,2,5),(18,1,3,5),(19,2,1,3),(19,2,2,5),(19,2,3,5),(20,2,1,3),(20,2,2,5),(20,2,3,5),(21,4,3,1),(21,4,4,3),(22,6,1,3),(22,6,3,3),(23,2,1,3),(23,2,2,5),(23,2,3,5),(24,6,1,1),(24,6,3,3),(25,6,1,5),(25,6,3,3),(26,6,2,6),(26,6,3,5),(27,1,2,4),(27,1,3,3),(28,1,1,10),(28,1,3,3),(29,2,1,3),(30,1,2,7),(30,1,3,5),(31,2,1,5),(32,4,4,3),(33,5,3,3),(34,5,3,3),(35,2,1,3),(36,4,3,5),(36,4,4,3),(37,1,3,3),(37,1,4,6),(38,1,3,2);
 /*!40000 ALTER TABLE `PlatsDeCommande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -526,14 +511,15 @@ CREATE TABLE `Restaurant` (
   `emailRest` varchar(30) NOT NULL,
   `nomRest` varchar(30) NOT NULL,
   `addrRest` varchar(100) NOT NULL,
-  `nbPlaceRest` int DEFAULT NULL,
-  `textPresentaionRest` varchar(100) DEFAULT NULL,
+  `nbPlaceRest` int NOT NULL,
+  `textPresentaionRest` varchar(100) NOT NULL,
   `horaireOuvertureRest` varchar(15) DEFAULT NULL,
+  `numTel` varchar(30) NOT NULL,
   PRIMARY KEY (`idRest`),
   UNIQUE KEY `emailRest` (`emailRest`),
   KEY `horaireOuvertureRest` (`horaireOuvertureRest`),
   CONSTRAINT `Restaurant_ibfk_1` FOREIGN KEY (`horaireOuvertureRest`) REFERENCES `Horaire` (`horaire`),
-  CONSTRAINT `Restaurant_chk_1` CHECK ((`nbPlaceRest` > 0))
+  CONSTRAINT `Restaurant_chk_1` CHECK ((`nbPlaceRest` >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -543,7 +529,7 @@ CREATE TABLE `Restaurant` (
 
 LOCK TABLES `Restaurant` WRITE;
 /*!40000 ALTER TABLE `Restaurant` DISABLE KEYS */;
-INSERT INTO `Restaurant` VALUES (1,'bestkebab@gmail.com','OriginalKebab','2 rue de  Victor Hugo, Grenoble',20,'For the love of delicious kebab.','midi et soir'),(2,'FASTFOOD@gmail.com','FastFood','5 rue de Louis Pasteur, Grenoble',50,'Low cost. High quality.','midi et soir'),(3,'Pizza@gmail.com','World of Pizza','6 rue de Général Leclerc, Grenoble',10,'We are always here to serve you the best pizza in the world.','midi'),(4,'Blue_Diamond@gmail.com','Blue Diamond','2 rue boulevard, Grenoble',15,'High class restaurant for high class people','soir'),(5,'Dragonfly_China@gmail.com','Dragonfly China','17 rue de Stalingrad, Grenoble',30,'Every bowl of noodles is a surprise.','soir'),(6,'Tunisian_magic@gmail.com','Tunisian magic','17 rue de Victoire, Grenoble',50,'Best food that you will ever eat.','soir');
+INSERT INTO `Restaurant` VALUES (1,'bestkebab@gmail.com','OriginalKebab','2 rue de  Victor Hugo, Grenoble',20,'For the love of delicious kebab.','midi et soir','+337545723'),(2,'FASTFOOD@gmail.com','FastFood','5 rue de Louis Pasteur, Grenoble',50,'Low cost. High quality.','midi et soir','+3374468723'),(3,'Pizza@gmail.com','World of Pizza','6 rue de Général Leclerc, Grenoble',10,'We are always here to serve you the best pizza in the world.','midi','+3378768723'),(4,'Blue_Diamond@gmail.com','Blue Diamond','2 rue boulevard, Grenoble',15,'High class restaurant for high class people','soir','+3375468999'),(5,'Dragonfly_China@gmail.com','Dragonfly China','17 rue de Stalingrad, Grenoble',30,'Every bowl of noodles is a surprise.','soir','+33754568723'),(6,'Tunisian_magic@gmail.com','Tunisian magic','17 rue de Victoire, Grenoble',50,'Best food that you will ever eat.','soir','+33754687254');
 /*!40000 ALTER TABLE `Restaurant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -623,24 +609,6 @@ INSERT INTO `typeCommande` VALUES ('emporte'),('livraison'),('surPlace');
 UNLOCK TABLES;
 
 --
--- Final view structure for view `CategorieRestoAssocieOrdreDecroissant`
---
-
-/*!50001 DROP VIEW IF EXISTS `CategorieRestoAssocieOrdreDecroissant`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `CategorieRestoAssocieOrdreDecroissant` AS select `CategorieRest`.`categorie` AS `categorie`,`Restaurant`.`idRest` AS `idRest`,`Restaurant`.`nomRest` AS `nomRest`,`NoteMoyenneDesRest`.`noteRest` AS `noteRest` from ((`CategorieRest` join `Restaurant` on((`Restaurant`.`idRest` = `CategorieRest`.`idRest`))) join `NoteMoyenneDesRest` on((`NoteMoyenneDesRest`.`idRest` = `Restaurant`.`idRest`))) group by `CategorieRest`.`categorie`,`CategorieRest`.`idRest` order by `NoteMoyenneDesRest`.`noteRest` desc,`Restaurant`.`nomRest` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
 -- Final view structure for view `NbrPlaceRestante`
 --
 
@@ -703,4 +671,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-04 18:15:33
+-- Dump completed on 2022-12-07 14:03:00
