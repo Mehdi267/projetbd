@@ -291,8 +291,7 @@ public class App {
         try {
             System.out.println("Connexion à la base de données en cours...");
             JavaConnectorDB.initConnection(args);
-            
-
+                
             // JavaConnectorDB.setUpCategorie();
             int codeRetournConnexion = Connexion.connexion();
 
