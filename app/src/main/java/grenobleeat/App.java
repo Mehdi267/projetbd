@@ -3,6 +3,7 @@
  */
 package grenobleeat;
 
+import java.io.FileInputStream;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -293,6 +294,19 @@ public class App {
 
     public static void main(String[] args) {
         try {
+
+            FileInputStream welcome = new FileInputStream("./grenobleeat.txt");
+            Scanner scan = new Scanner(welcome);
+            while(scan.hasNext()){
+                System.out.println(scan.nextLine());
+            }
+            scan.close();
+
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+
             System.out.println("Connexion à la base de données en cours...");
             JavaConnectorDB.initConnection(args);
                 
@@ -301,7 +315,7 @@ public class App {
 
             if (codeRetournConnexion == 0) {
                 depthZero();
-
+                App.sc.close();
             } else {
                 System.out.println("Erreur du système, vérifier votre connexion à internet");
                 System.exit(1);
