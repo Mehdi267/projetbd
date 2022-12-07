@@ -266,22 +266,15 @@ INSERT INTO Commande VALUES (1, DATE '2022-11-13',  TO_DATE('2022/11/13 8:30:25'
 INSERT INTO Commande VALUES (2, DATE '2022-11-14',  TO_DATE('2022/11/14 8:33:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'disponible', 'livraison');
 INSERT INTO Commande VALUES (3, DATE '2022-11-14',  TO_DATE('2022/11/14 8:35:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'disponible', 'livraison');
 INSERT INTO Commande VALUES (4, DATE '2022-11-16',  TO_DATE('2022/11/16 8:36:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'annulee par le client', 'emporte');
-INSERT INTO Commande VALUES (5, DATE '2022-11-17',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'attente de confirmation', 'emporte');
-
-/*--mysql*/
-INSERT INTO Commande VALUES (1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'attente de confirmation', 'surPlace');
-INSERT INTO Commande VALUES (2, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'disponible', 'livraison');
-INSERT INTO Commande VALUES (3, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'disponible', 'livraison');
-INSERT INTO Commande VALUES (4, DATE '2022-11-16',  STR_TO_DATE('20221116 103545', '%Y%m%d %h%i%s'), 30, 'annulee par le client', 'emporte');
-INSERT INTO Commande VALUES (5, DATE '2022-11-17',  STR_TO_DATE('20221117 103545', '%Y%m%d %h%i%s'), 30, 'attente de confirmation', 'emporte');
-
-INSERT INTO Commande VALUES (7, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
-INSERT INTO Commande VALUES (8, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
-INSERT INTO Commande VALUES (9, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
-INSERT INTO Commande VALUES (10, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
-INSERT INTO Commande VALUES (11, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
-INSERT INTO Commande VALUES (12, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
-INSERT INTO Commande VALUES (13, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (5, DATE '2022-11-17',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'annule par le restaurant', 'emporte');
+INSERT INTO Commande VALUES (6, DATE '2022-11-17',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'attente de confirmation', 'emporte');
+INSERT INTO Commande VALUES (7, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (8, DATE '2022-11-13', TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (9, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (10, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (11, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (12, DATE '2022-11-14', TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'validee', 'surPlace');
+INSERT INTO Commande VALUES (13, DATE '2022-11-14', TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 30, 'validee', 'surPlace');
 
 
 INSERT INTO ComSurPlace VALUES (1, 6, 'midi'); 
@@ -353,19 +346,18 @@ INSERT INTO PlatsDeCommande VALUES (13,1,3, 3);
 INSERT INTO PlatsDeCommande VALUES (13,1,2, 1);
 
 
-
-INSERT INTO Evaluation VALUES (1, 1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  2);
-INSERT INTO Evaluation VALUES (2, 2, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  3);
-INSERT INTO Evaluation VALUES (3, 3, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  3);
-INSERT INTO Evaluation VALUES (4, 4, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  4);
-INSERT INTO Evaluation VALUES (5, 5, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  5);
-INSERT INTO Evaluation VALUES (6, 6, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  4);
-INSERT INTO Evaluation VALUES (7, 1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  5);
-INSERT INTO Evaluation VALUES (8, 6, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  3);
-INSERT INTO Evaluation VALUES (9, 6, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  4);
-INSERT INTO Evaluation VALUES (10, 4, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  3);
-INSERT INTO Evaluation VALUES (11, 1, DATE '2022-11-13',  STR_TO_DATE('20221113 103545', '%Y%m%d %h%i%s'), 'good food',  2);
-INSERT INTO Evaluation VALUES (12, 1, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 'good food',  5);
-INSERT INTO Evaluation VALUES (13, 1, DATE '2022-11-14',  STR_TO_DATE('20221114 103545', '%Y%m%d %h%i%s'), 'bad food',  2);
+INSERT INTO Evaluation VALUES (1, 1, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  2);
+INSERT INTO Evaluation VALUES (2, 2, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  3);
+INSERT INTO Evaluation VALUES (3, 3, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  3);
+INSERT INTO Evaluation VALUES (4, 4, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  4);
+INSERT INTO Evaluation VALUES (5, 5, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  5);
+INSERT INTO Evaluation VALUES (6, 6, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  4);
+INSERT INTO Evaluation VALUES (7, 1, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  5);
+INSERT INTO Evaluation VALUES (8, 6, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  3);
+INSERT INTO Evaluation VALUES (9, 6, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  4);
+INSERT INTO Evaluation VALUES (10, 4, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  3);
+INSERT INTO Evaluation VALUES (11, 1, DATE '2022-11-13',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  2);
+INSERT INTO Evaluation VALUES (12, 1, DATE '2022-11-14',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'good food',  5);
+INSERT INTO Evaluation VALUES (13, 1, DATE '2022-11-14',  TO_DATE('2022/11/17 8:37:25', 'YYYY/MM/DD HH:MI:SS'), 'bad food',  2);
 
 

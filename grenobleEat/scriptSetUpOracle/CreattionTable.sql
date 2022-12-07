@@ -127,7 +127,7 @@ CREATE VIEW NoteMoyenneDesRest AS (
                 GROUP BY idRest);
 
 CREATE VIEW PrixCommade AS (
-		SELECT SUM(prixPlat*Quantite), idCommande
+		SELECT SUM(prixPlat*Quantite) prixcommande, idCommande
 		FROM Plat join PlatsDeCommande on Plat.idPlat = PlatsDeCommande.idPlat
                 and Plat.idRest = PlatsDeCommande.idRest
 		GROUP BY idCommande);
@@ -141,5 +141,3 @@ CREATE VIEW NbrPlaceRestante AS (
         WHERE Commande.statutCommande = 'validee'
         group by Restaurant.idRest , dateCommande , heureArriveSurPlace , Restaurant.nomRest   );
 
-
-SET sql_mode = '';
