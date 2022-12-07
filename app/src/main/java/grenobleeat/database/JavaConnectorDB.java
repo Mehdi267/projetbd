@@ -44,7 +44,7 @@ public class JavaConnectorDB {
         //     connectionTotheDatabase.setAutoCommit(false);
         // } catch (SQLException e) {
         //     System.out.println("Erreur de connexion à la base de données");
-        //     System.exit(1);
+        //     System.exit(1)
         // }
 
         String url = String.format("jdbc:mysql://%s:%s/%s", args[4], args[1], args[0]);

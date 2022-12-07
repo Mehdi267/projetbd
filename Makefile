@@ -14,7 +14,6 @@ ifeq (run,$(firstword $(MAKECMDGOALS)))
   $(eval $(ARGS):;@:)
 endif
 
-
 build: clean
 	javac -d build -cp ./app/src/main/resources/mysql-connector.jar ./app/src/main/java/grenobleeat/database/*.java ./app/src/main/java/grenobleeat/session/*.java ./app/src/main/java/grenobleeat/App.java
 
@@ -25,6 +24,4 @@ run mehdi:
 	java -cp build:app/src/main/resources/mysql-connector.jar grenobleeat/App baseGrenobleEats 3306 etudiant mypass123 79.88.105.10
 
 clean:
-	rm -dr build
-
-
+	if [ -d "build" ]; then rm -dr build; fi
