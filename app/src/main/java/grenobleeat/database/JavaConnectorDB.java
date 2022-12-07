@@ -47,7 +47,7 @@ public class JavaConnectorDB {
         //     System.exit(1);
         // }
 
-        String url = String.format("jdbc:mysql://localhost:%s/%s", args[1], args[0]);
+        String url = String.format("jdbc:mysql://%s:%s/%s", args[4], args[1], args[0]);
         String uname = args[2];
         String password = args[3];
 

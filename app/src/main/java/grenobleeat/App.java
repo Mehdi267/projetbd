@@ -293,7 +293,7 @@ public class App {
             JavaConnectorDB.initConnection(args);
             
 
-            //JavaConnectorDB.setUpCategorie();
+            // JavaConnectorDB.setUpCategorie();
             int codeRetournConnexion = Connexion.connexion();
 
             if (codeRetournConnexion == 0) {
