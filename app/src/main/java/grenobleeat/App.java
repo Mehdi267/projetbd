@@ -204,8 +204,8 @@ public class App {
         System.out.println("\n\n");
         StringBuilder sb = new StringBuilder();
         sb.append("Confirmation commande \n");  
-        sb.append("1 Confirmer la commande ?\n");
-        sb.append("2. retour au menu principal \n");
+        sb.append("1. Confirmer la commande ?\n");
+        sb.append("2. Retour au menu principal \n");
         System.out.println(sb.toString());
         while(true){
             try{
@@ -242,8 +242,8 @@ public class App {
             System.out.println("\nVoulez-vous noter cette commande ?\n");
             StringBuilder sb = new StringBuilder();
             sb.append("Evaluation\n");  
-            sb.append("1 faire une evaluation ?\n");
-            sb.append("2. retour au menu principale \n");
+            sb.append("1. Faire une evaluation ?\n");
+            sb.append("2. Retour au menu principale \n");
             System.out.println(sb.toString());
             while(true){
                 try{
@@ -270,7 +270,7 @@ public class App {
         StringBuilder sb = new StringBuilder();
         sb.append("\n Faire une autre commande ?\n");  
         sb.append("1. Retour au menu principal ?\n");
-        sb.append("2. quitter l'application \n");
+        sb.append("2. Quitter l'application \n");
         System.out.println(sb.toString());
         while(true){
             try{
@@ -290,45 +290,13 @@ public class App {
     public static void main(String[] args) {
         try {
             System.out.println("Connexion à la base de données en cours...");
-            JavaConnectorDB.initConnection();
+            JavaConnectorDB.initConnection(args);
             
-            //This function is only called when we add new restaurent and we did not math them to all 
-            //the right categories
-            
+
             //JavaConnectorDB.setUpCategorie();
             int codeRetournConnexion = Connexion.connexion();
 
             if (codeRetournConnexion == 0) {
-                /*
-                 * TODO 1. 2. Après avoir choisi le restaurant Demander le type de commande
-                 * souhaité (en fonction du restaurant choisi) Si surplace demander le nombre de
-                 * places (continuer si le restaurant a assez de place, sinon recommander
-                 * d'autres) Demander la période de la journée. (Midi, soir, ou peut importe
-                 * pour afficher midi et soir) Afficher la liste des plats pour qu'il puisse
-                 * faire un choix (garder quelque part les prix des plats pour le calcul du prix
-                 * total) Recommandations ou découverte
-                 *
-                 * 3. Demander le type de commande souhaité Demander la période de la journée
-                 * (Midi, soir ou peut importe) Afficher les restaurants qui font ce type de
-                 * commande et qui ont sont disponibles dans cette période Si type de commande
-                 * surplace demander le nombre de place afin d'afficher que les restaurants qui
-                 * ont assez de place. Afficher la liste des plats (selon recommandations ou
-                 * découvrir)
-                 */
-
-                /* commande - type de commande - plats - */
-                /*
-                 * si typecommande surplace - utiliser vue nbplacerestante pour voir s'il y a assez de place dans le restaurant
-                 * ajouter l'id de l'utilisateur connecté ajouter une instance dans commande
-                 * ensuite passercommande ensuite ajouter le plats
-                 *
-                 * prixcommande est une vue qui calcule le prix final
-                 */
-
-                /*
-                 * View nbrplacerestante fonctionne pas encore mais peut ajouter du pseudo code
-                 * pour faire fonctionner
-                 */
                 depthZero();
 
             } else {
@@ -337,8 +305,7 @@ public class App {
             }
         } catch (Exception e) {
             System.out.println("Echec pendant le fonctionnement de l'application");
-            e.printStackTrace();
-            // System.exit(1);
+            System.exit(1);
         }
 
     }

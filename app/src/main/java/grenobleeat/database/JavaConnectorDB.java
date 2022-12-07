@@ -23,7 +23,7 @@ public class JavaConnectorDB {
      *
      * @return 0 si tout s'est bien passé -1 si non
      */
-    public static void initConnection() {
+    public static void initConnection(String[] args) {
         /*
          * Creation de tous les objets qui vont nous permettre d'obtenir la connectionTotheDatabase
          * url : l'url complete de connectionTotheDatabase - uname : nom d'utilisateur utilise pour
@@ -47,13 +47,10 @@ public class JavaConnectorDB {
         //     System.exit(1);
         // }
 
-        String url = "jdbc:mysql://localhost:3306/grenobleeat";
-        String uname = "samuel";
-        String password = "20082001";
+        String url = String.format("jdbc:mysql://localhost:%s/%s", args[1], args[0]);
+        String uname = args[2];
+        String password = args[3];
 
-        // String url = "jdbc:mysql://localhost:3306/baseGrenobleEats";
-        // String uname = "etudiant";
-        // String password = "mypass123";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -62,7 +59,6 @@ public class JavaConnectorDB {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Erreur de connexion à la base de données");
             System.exit(1);
-
         }
 
         System.out.println("Connexion réussie");
