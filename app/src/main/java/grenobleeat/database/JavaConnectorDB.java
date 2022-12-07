@@ -56,6 +56,7 @@ public class JavaConnectorDB {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connectionTotheDatabase = DriverManager.getConnection(url, uname, password);
             connectionTotheDatabase.setAutoCommit(false);
+            connectionTotheDatabase.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Erreur de connexion à la base de données");
             System.exit(1);
@@ -271,6 +272,8 @@ public class JavaConnectorDB {
     }
 
 
+    /**
+     *  */
     public static void executeUpdate(String query, PasserCommande target){
 
         try{
@@ -292,6 +295,14 @@ public class JavaConnectorDB {
 
     }
 
+    /**
+     * Exécuter une requête préparée de mise à jour sur la base de données
+     * Une requête de mise à jour est une requête d'insertion ou update, elle affecte les données de la base
+     * de données.
+     *
+     * @param query - requête préparée (avec les points d'interrogation)
+     * @param target - l'instance de commande à créer
+     * @param values - les valeurs que l'on veut pour les variables dans l'ordre d'apparition des points d'interrogation */
     public static void executeUpdate(String query, PasserCommande target, String ...values){
         try{
             if(target.getSavepoint() == null){
@@ -463,6 +474,10 @@ public class JavaConnectorDB {
         }
     }
 
+
+    /**
+     * Permet de récupérer l'adresse du client
+     * @param idUser - id de l'utilisateur */
     public static String getUserAdress(int idUser) {
         PreparedStatement statementToCLientAdress = null;
         ResultSet rs = null;

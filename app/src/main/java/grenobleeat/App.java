@@ -166,10 +166,10 @@ public class App {
                 comSurPlace.getHeureArriveeFromUser(restaurant);
                 int nombreDePlaceRest = restaurant.getPlacesLeft(comSurPlace.getHeureArriveSurPlace());
                 if(nombreDePlaceRest > comSurPlace.getNbPersonnes()){
-                    System.out.println("\n Pas assez de place pour faire la commande  ?\n");
-                    System.out.println("\n Voici les restaurants pouvant accueillir\n");
                     depthFour();
                 }else{
+                    System.out.println("\n Pas assez de place pour faire la commande  ?\n");
+                    System.out.println("\n Voici les restaurants pouvant accueillir\n");
                     nbPersonneProposition = comSurPlace.getNbPersonnes();
                     choices[0] = 5;
                     depthOne();

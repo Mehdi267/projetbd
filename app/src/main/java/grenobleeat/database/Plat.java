@@ -145,6 +145,7 @@ public class Plat extends Table {
         for(String meal: mealToremove){
             this.selectedMeals.remove(meal);
         }
+        printSelectedMealsAllergenes();
     }
 
     public Map<String, String> getMealFields(String mealName){
